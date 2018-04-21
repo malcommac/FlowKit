@@ -1,18 +1,15 @@
 Pod::Spec.new do |s|
   s.name         = "FlowKit"
-  s.version      = "0.1"
-  s.summary      = ""
+  s.version      = "0.9.0"
+  s.summary      = "Declarative and type-safe UITableView & UICollectionView; a new way to work with tables and collections"
   s.description  = <<-DESC
-    Your description here.
+    Efficient, declarative and type-safe approach to create and manage UITableView and UICollectionView with built-in animation support.
   DESC
   s.homepage     = "https://github.com/malcommac/FlowKit"
   s.license      = { :type => "MIT", :file => "LICENSE" }
   s.author             = { "Daniele Margutti" => "me@danielemargutti.com" }
   s.social_media_url   = ""
-  s.ios.deployment_target = "8.0"
-  s.osx.deployment_target = "10.9"
-  s.watchos.deployment_target = "2.0"
-  s.tvos.deployment_target = "9.0"
+  s.ios.deployment_target = "10.0"
   s.source       = { :git => "https://github.com/malcommac/FlowKit.git", :tag => s.version.to_s }
   s.source_files  = "Sources/**/*"
   s.frameworks  = "Foundation"
