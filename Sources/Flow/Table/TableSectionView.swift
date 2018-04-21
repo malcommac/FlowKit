@@ -30,7 +30,7 @@
 import Foundation
 import UIKit
 
-public class CollectionSectionView<T: HeaderFooterProtocol>: AbstractCollectionHeaderFooterItem, CustomStringConvertible {
+public class TableSectionView<T: HeaderFooterProtocol>: AbstractTableHeaderFooterItem, CustomStringConvertible {
 	
 	/// Context of the event sent to section's view.
 	public struct Context<T> {
@@ -86,7 +86,7 @@ public class CollectionSectionView<T: HeaderFooterProtocol>: AbstractCollectionH
 	/// Initialize a new section view.
 	///
 	/// - Parameter configuration: configuration callback
-	public init(_ configuration: ((CollectionSectionView) -> (Void))? = nil) {
+	public init(_ configuration: ((TableSectionView) -> (Void))? = nil) {
 		configuration?(self)
 	}
 	

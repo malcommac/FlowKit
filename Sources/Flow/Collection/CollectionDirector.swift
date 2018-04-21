@@ -90,6 +90,7 @@ UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource
 	/// Sections of the collection
 	public private(set) var sections: [CollectionSection] = []
 	
+	/// Events of the collection
 	public var on = CollectionDirector.Events()
 	
 	/// Internal representation of the cell size

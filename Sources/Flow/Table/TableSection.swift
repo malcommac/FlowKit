@@ -58,11 +58,11 @@ public class TableSection: Hashable {
 	/// Unique identifier of the section
 	public let UUID: String = NSUUID().uuidString
 	
-	/// Initialize a new section with given initial items.
+	/// Initialize a new section with given initial models.
 	///
-	/// - Parameter items: items to add (`nil` means empty array)
-	public init(_ items: [ModelProtocol]?) {
-		self.models = (items ?? [])
+	/// - Parameter models: items to add (`nil` means empty array)
+	public init(_ models: [ModelProtocol]?) {
+		self.models = (models ?? [])
 	}
 	
 	/// Initialize a new section with given header/footer's titles and initial items.
@@ -70,10 +70,10 @@ public class TableSection: Hashable {
 	/// - Parameters:
 	///   - headerTitle: header title as string
 	///   - footerTitle: footer title as string
-	///   - items: items to add (`nil` means empty array)
-	public convenience init(headerTitle: String?, footerTitle: String?,
-							items: [ModelProtocol]? = nil) {
-		self.init(items)
+	///   - models: models to add (`nil` means empty array)
+	public convenience init(headerTitle: String? = nil, footerTitle: String? = nil,
+							models: [ModelProtocol]? = nil) {
+		self.init(models)
 		self.headerTitle = headerTitle
 		self.footerTitle = footerTitle
 	}
@@ -83,10 +83,10 @@ public class TableSection: Hashable {
 	/// - Parameters:
 	///   - headerView: header view
 	///   - footerView: footer view
-	///   - items: items to add (`nil` means empty array)
+	///   - models: models to add (`nil` means empty array)
 	public convenience init(headerView: AbstractTableHeaderFooterItem?, footerView: AbstractTableHeaderFooterItem?,
-							items: [ModelProtocol]? = nil) {
-		self.init(items)
+							models: [ModelProtocol]? = nil) {
+		self.init(models)
 		self.headerView = headerView
 		self.footerView = footerView
 	}

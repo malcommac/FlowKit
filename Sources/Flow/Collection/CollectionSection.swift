@@ -76,11 +76,11 @@ public class CollectionSection: Equatable, Hashable {
 		return idx
 	}
 	
-	/// Initialize a new section with given objects as items.
+	/// Initialize a new section with given objects as models.
 	///
-	/// - Parameter items: items, `nil` create an empty set.
-	public init(_ items: [ModelProtocol]?) {
-		self.models = (items ?? [])
+	/// - Parameter models: models, `nil` create an empty set.
+	public init(_ models: [ModelProtocol]?) {
+		self.models = (models ?? [])
 	}
 	
 	/// Hash identifier of the section

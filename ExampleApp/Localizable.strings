@@ -1,0 +1,13 @@
+/* 
+  Localizable.strings
+  FlowKit
+
+  Created by Daniele Margutti on 21/04/2018.
+  Copyright © 2018 FlowKit. All rights reserved.
+*/
+
+"Article_Title_0" = "Unformatted, Plain Lorem Ipsum Dummy Text";
+"Article_Text_0" = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr,  sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.";
+
+"Article_Title_1" = "orem Ipsum Dolor Sit Amet Copyfitting Text";
+"Article_Text_1" = "Below is a sample of “Lorem ipsum dolor sit” dummy copy text often used to show font face samples, for page layout and design as sample layout text by printers, graphic designers, Web designers, people creating Microsoft Word templates, and many other uses. It mimics the look of real text quite well as you design and set up your page layouts.";

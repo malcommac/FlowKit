@@ -66,6 +66,7 @@ public class TableDirector: NSObject, UITableViewDelegate, UITableViewDataSource
 	/// This parameter maybe overriden by single TableSection's `footerHeight` event.
 	public var footerHeight: CGFloat? = nil
 	
+	/// Events of the table
 	public var on = TableDirector.Events()
 	
 	/// Set the height of the row.
@@ -515,7 +516,7 @@ public extension TableDirector {
 	public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		let (model,adapter) = self.context(forItemAt: indexPath)
 		
-		let action = ((adapter.dispatch(.didSelect, context: InternalContext(model,indexPath,nil,tableView)) as? TableSelectionState) ?? .none)
+		let action = ((adapter.dispatch(.tap, context: InternalContext(model,indexPath,nil,tableView)) as? TableSelectionState) ?? .none)
 		switch action {
 		case .deselect:			tableView.deselectRow(at: indexPath, animated: false)
 		case .deselectAnimated:	tableView.deselectRow(at: indexPath, animated: true)

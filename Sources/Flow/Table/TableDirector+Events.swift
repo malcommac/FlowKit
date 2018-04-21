@@ -85,7 +85,7 @@ public extension TableAdapter {
 		public var tapOnAccessory: ((EventContext) -> Void)? = nil
 		
 		public var willSelect: ((EventContext) -> IndexPath?)? = nil
-		public var didSelect: ((EventContext) -> TableSelectionState)? = nil
+		public var tap: ((EventContext) -> TableSelectionState)? = nil
 		public var willDeselect: ((EventContext) -> IndexPath?)? = nil
 		public var didDeselect: ((EventContext) -> IndexPath?)? = nil
 		

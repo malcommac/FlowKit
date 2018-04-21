@@ -47,6 +47,7 @@ public class TableAdapter<M: ModelProtocol, C: CellProtocol>: TableAdapterProtoc
 	}
 	
 	
+	/// Events of the adapter
 	public var on: Events<M,C> = Events()
 
 	/// Initialize a new adapter with optional configuration callback.
@@ -130,8 +131,8 @@ public class TableAdapter<M: ModelProtocol, C: CellProtocol>: TableAdapterProtoc
 			guard let callback = self.on.willSelect else { return nil }
 			return callback(Context<M,C>(generic: context))
 			
-		case .didSelect:
-			guard let callback = self.on.didSelect else { return nil }
+		case .tap:
+			guard let callback = self.on.tap else { return nil }
 			return callback(Context<M,C>(generic: context))
 			
 		case .willDeselect:

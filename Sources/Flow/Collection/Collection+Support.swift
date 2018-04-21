@@ -30,6 +30,25 @@
 import Foundation
 import UIKit
 
+public extension UICollectionView {
+	
+	private static let DIRECTOR_KEY = "flowkit.director"
+	
+	/// Return director associated with collection.
+	/// If not exist it will be created and assigned automatically.
+	public var director: CollectionDirector {
+		get {
+			return getAssociatedValue(key: UICollectionView.DIRECTOR_KEY,
+									  object: self,
+									  initialValue: CollectionDirector(self))
+		}
+		set {
+			set(associatedValue: newValue, key: UICollectionView.DIRECTOR_KEY, object: self)
+		}
+	}
+
+}
+
 public protocol ModelProtocol {
 	func isEqual(to other: ModelProtocol) -> Bool
 	var identifier: Int { get }
@@ -84,6 +103,21 @@ public extension CellProtocol {
 public protocol HeaderFooterProtocol: class {
 	static var reuseIdentifier: String { get }
 	static var registerAsClass: Bool { get }
+}
+
+public extension HeaderFooterProtocol {
+	
+	/// By default the identifier of the cell is the same name of the cell.
+	static var reuseIdentifier: String {
+		return String(describing: self)
+	}
+	
+	/// Return true if you want to allocate the cell via class name using classic
+	/// `initWithFrame`/`initWithCoder`. If your cell UI is defined inside a nib file
+	/// or inside a storyboard you must return `false`.
+	static var registerAsClass : Bool {
+		return false
+	}
 }
 
 extension UICollectionReusableView : HeaderFooterProtocol {
