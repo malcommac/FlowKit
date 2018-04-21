@@ -203,6 +203,13 @@ UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource
 		self.reusableRegister.registerCell(forAdapter: adapter) // register associated cell types into the collection
 	}
 	
+	/// Register multiple adapters for collection.
+	///
+	/// - Parameter adapters: adapters
+	public func register(adapters: [AbstractAdapterProtocol]) {
+		adapters.forEach { self.register(adapter: $0) }
+	}
+	
 	//MARK: Manage Content
 	
 	/// Create a new section, append it at the end of the sections list and insert in it passed models.

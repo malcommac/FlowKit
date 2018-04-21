@@ -120,6 +120,13 @@ public class TableDirector: NSObject, UITableViewDelegate, UITableViewDataSource
 		self.registerCell(forAdapter: adapter)
 	}
 	
+	/// Register multiple adapters for table.
+	///
+	/// - Parameter adapters: adapters
+	public func register(adapters: [AbstractAdapterProtocol]) {
+		adapters.forEach { self.register(adapter: $0) }
+	}
+	
 	/// Reload contents of table.
 	///
 	/// - Parameters:
@@ -261,11 +268,22 @@ public class TableDirector: NSObject, UITableViewDelegate, UITableViewDataSource
 	/// - Parameters:
 	///   - sourceIndex: source index
 	///   - destIndex: destination index
-	public func move(sectionAt sourceIndex: Int, to destIndex: Int) {
+	public func move(swappingAt sourceIndex: Int, with destIndex: Int) {
 		guard sourceIndex < self.sections.count, destIndex < self.sections.count else { return }
 		swap(&self.sections[sourceIndex], &self.sections[destIndex])
 	}
 	
+	/// Remove section at given index and insert at destination index.
+	///
+	/// - Parameters:
+	///   - sourceIndex: source index
+	///   - destIndex: destination index
+	public func move(from sourceIndex: Int, to destIndex: Int) {
+		guard sourceIndex < self.sections.count, destIndex < self.sections.count else { return }
+		let removed = self.sections.remove(at: sourceIndex)
+		self.sections.insert(removed, at: destIndex)
+	}
+		
 	//MARK: Internal Functions
 	
 	/// Return the context of operation which includes model instance and associated adapter.

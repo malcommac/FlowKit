@@ -170,9 +170,20 @@ public class TableSection: Hashable {
 	/// - Parameters:
 	///   - sourceIndex: source index
 	///   - destIndex: destination index
-	public func move(modelAt sourceIndex: Int, to destIndex: Int) {
+	public func move(swappingAt sourceIndex: Int, with destIndex: Int) {
 		guard sourceIndex < self.models.count, destIndex < self.models.count else { return }
 		swap(&self.models[sourceIndex], &self.models[destIndex])
+	}
+	
+	/// Remove model at given index and insert at destination index.
+	///
+	/// - Parameters:
+	///   - sourceIndex: source index
+	///   - destIndex: destination index
+	public func move(from sourceIndex: Int, to destIndex: Int) {
+		guard sourceIndex < self.models.count, destIndex < self.models.count else { return }
+		let removed = self.models.remove(at: sourceIndex)
+		self.models.insert(removed, at: destIndex)
 	}
 	
 }
