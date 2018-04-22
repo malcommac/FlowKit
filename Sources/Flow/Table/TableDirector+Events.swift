@@ -34,7 +34,15 @@ import UIKit
 public extension TableDirector {
 	
 	public struct Events {
+		typealias HeaderFooterEvent = (view: UIView, section: Int, table: UITableView)
+
 		var sectionForSectionIndex: ((_ title: String, _ index: Int) -> Int)? = nil
+		
+		var willDisplayHeader: ((HeaderFooterEvent) -> Void)? = nil
+		var willDisplayFooter: ((HeaderFooterEvent) -> Void)? = nil
+		
+		var didEndDisplayHeader: ((HeaderFooterEvent) -> Void)? = nil
+		var didEndDisplayFooter: ((HeaderFooterEvent) -> Void)? = nil
 	}
 	
 }
@@ -106,7 +114,7 @@ public extension TableAdapter {
 		public var didUnhighlight: ((EventContext) -> Void)? = nil
 		
 		public var canFocus: ((EventContext) -> Bool)? = nil
-		
+
 		//public var leadingSwipeActions: ((EventContext) -> UISwipeActionsConfiguration?)? = nil
 		//public var trailingSwipeActions: ((EventContext) -> UISwipeActionsConfiguration?)? = nil
 	}

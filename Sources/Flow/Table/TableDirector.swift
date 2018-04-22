@@ -426,23 +426,27 @@ public extension TableDirector {
 	public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
 		let item = (self.sections[section].headerView as? AbstractTableHeaderFooterItem)
 		let _ = item?.dispatch(.willDisplay, view: view, section: section, table: tableView)
+		self.on.willDisplayHeader?( (view,section,tableView) )
 	}
 	
 	public func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
 		let item = (self.sections[section].footerView as? AbstractTableHeaderFooterItem)
 		let _ = item?.dispatch(.willDisplay, view: view, section: section, table: tableView)
+		self.on.willDisplayFooter?( (view,section,tableView) )
 	}
 	
 	public func tableView(_ tableView: UITableView, didEndDisplayingFooterView view: UIView, forSection section: Int) {
 		guard section < self.sections.count else { return }
 		let item = (self.sections[section].footerView as? AbstractTableHeaderFooterItem)
 		let _ = item?.dispatch(.endDisplay, view: view, section: section, table: tableView)
+		self.on.didEndDisplayFooter?( (view,section,tableView) )
 	}
 	
 	public func tableView(_ tableView: UITableView, didEndDisplayingHeaderView view: UIView, forSection section: Int) {
 		guard section < self.sections.count else { return }
 		let item = (self.sections[section].headerView as? AbstractTableHeaderFooterItem)
 		let _ = item?.dispatch(.endDisplay, view: view, section: section, table: tableView)
+		self.on.didEndDisplayHeader?( (view,section,tableView) )
 	}
 	
 	// Inserting or Deleting Table Rows
