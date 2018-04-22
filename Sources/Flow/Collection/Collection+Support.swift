@@ -120,6 +120,22 @@ public extension HeaderFooterProtocol {
 	}
 }
 
+extension UITableViewHeaderFooterView: HeaderFooterProtocol {
+	
+	/// By default it uses the same name of the class.
+	public static var reuseIdentifier: String {
+		return String(describing: self)
+	}
+	
+	/// Return true if you want to allocate the cell via class name using classic
+	/// `initWithFrame`/`initWithCoder`. If your header/footer UI is defined inside a nib file
+	/// or inside a storyboard you must return `false`.
+	public static var registerAsClass: Bool {
+		return false
+	}
+
+}
+
 extension UICollectionReusableView : HeaderFooterProtocol {
 	
 	/// By default it uses the same name of the class.
@@ -144,6 +160,7 @@ public protocol AbstractAdapterProtocol {
 	var cellReuseIdentifier: String { get }
 	var cellClass: AnyClass { get }
 	var registerAsClass: Bool { get }
+	
 }
 
 public protocol AbstractCollectionReusableView {
@@ -162,7 +179,7 @@ internal protocol AbstractCollectionHeaderFooterItem {
 }
 
 public protocol CollectionSectionProtocol : AbstractCollectionReusableView {
-	
+	var section: CollectionSection? { get set }
 }
 
 

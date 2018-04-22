@@ -39,8 +39,10 @@ internal struct InternalContext {
 	var container: Any
 	var param1: Any?
 	var param2: Any?
-	
-	public init(_ model: ModelProtocol?, _ path: IndexPath, _ cell: CellProtocol?, _ scrollview: UIScrollView, param1: Any? = nil, param2: Any? = nil) {
+	var param3: Any?
+
+	public init(_ model: ModelProtocol?, _ path: IndexPath, _ cell: CellProtocol?, _ scrollview: UIScrollView,
+				param1: Any? = nil, param2: Any? = nil, param3: Any? = nil) {
 		self.model = model
 		self.path = path
 		self.cell = cell
@@ -54,6 +56,11 @@ internal struct InternalContext {
 		self.paths = paths
 		self.container = scrollview
 	}
+}
+
+public enum SectionType {
+	case header
+	case footer
 }
 
 ///MARK: UIScrollViewDelegate Events

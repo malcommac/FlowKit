@@ -30,13 +30,15 @@
 import Foundation
 import UIKit
 
-public class CollectionSectionView<T: HeaderFooterProtocol>: CollectionSectionProtocol, CustomStringConvertible {
+public class CollectionSectionView<T: HeaderFooterProtocol>: CollectionSectionProtocol, CustomStringConvertible {	
 	
 	// Protocol default implementation
 	public var viewClass: AnyClass { return T.self }
 	public var reuseIdentifier: String { return T.reuseIdentifier }
 	public var registerAsClass: Bool { return T.registerAsClass }
 	
+	public weak var section: CollectionSection? = nil
+
 	public var description: String {
 		return "CollectionSectionView<\(String(describing: type(of: T.self)))>"
 	}

@@ -86,15 +86,17 @@ public protocol TableAdapterProtocol : AbstractAdapterProtocol, Equatable { }
 
 internal protocol AbstractTableHeaderFooterItem  {
 	@discardableResult
-	func dispatch(_ event: TableSectionViewEventsKey, view: UIView?, section: Int, table: UITableView) -> Any?
+	func dispatch(_ event: TableSectionViewEventsKey, type: SectionType, view: UIView?, section: Int, table: UITableView) -> Any?
 }
 
-public protocol TableHeaderFooterProtocol : AbstractCollectionReusableView { }
+public protocol TableHeaderFooterProtocol : AbstractCollectionReusableView {
+	var section: TableSection? { get set }
+}
 
 internal protocol TableAdaterProtocolFunctions {
 	
 	@discardableResult
-	func dispatch(_ event: TableAdapterEventsKey, context: InternalContext) -> Any?
+	func dispatch(_ event: TableAdapterEventsKey,  context: InternalContext) -> Any?
 	
 	// Dequeue (UITableViewDatasource)
 	func _instanceCell(in table: UITableView, at indexPath: IndexPath?) -> UITableViewCell

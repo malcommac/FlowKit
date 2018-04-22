@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-public class TableHeaderView: UIView, HeaderFooterProtocol {
+public class TableExampleHeaderView: UITableViewHeaderFooterView {
 	
 	@IBOutlet public var titleLabel: UILabel?
 	

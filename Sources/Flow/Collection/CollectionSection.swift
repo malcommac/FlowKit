@@ -56,11 +56,25 @@ public class CollectionSection: Equatable, Hashable {
 	
 	/// Header of the sections; instantiate a new object of `CollectionSectionView<UIReusableView>`.
 	/// NOTE: It's valid only for flow layout.
-	open var header: CollectionSectionProtocol? = nil
+	open var header: CollectionSectionProtocol? = nil {
+		willSet {
+			self.header?.section = nil
+		}
+		didSet {
+			self.header?.section = self
+		}
+	}
 	
 	/// Footer of the sections; instantiate a new object of `CollectionSectionView<UIReusableView>`.
 	/// NOTE: It's valid only for flow layout.
-	open var footer: CollectionSectionProtocol? = nil
+	open var footer: CollectionSectionProtocol? = nil {
+		willSet {
+			self.footer?.section = nil
+		}
+		didSet {
+			self.footer?.section = self
+		}
+	}
 	
 	/// Temporary removed models, it's used to pass the correct model
 	/// to didEndDisplay event; after sent it will be removed automatically.

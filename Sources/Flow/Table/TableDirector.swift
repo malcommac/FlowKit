@@ -378,12 +378,16 @@ public extension TableDirector {
 	
 	public func tableView(_ tableView: UITableView, viewForHeaderInSection sectionIdx: Int) -> UIView? {
 		guard let header = sections[sectionIdx].headerView else { return nil }
-		return tableView.dequeueReusableHeaderFooterView(withIdentifier: self.registerView(header))
+		let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: self.registerView(header))
+		let _ = (header as? AbstractTableHeaderFooterItem)?.dispatch(.dequeue, type: .header, view: view, section: sectionIdx, table: tableView)
+		return view
 	}
 	
 	public func tableView(_ tableView: UITableView, viewForFooterInSection sectionIdx: Int) -> UIView? {
 		guard let footer = sections[sectionIdx].footerView else { return nil }
-		return tableView.dequeueReusableHeaderFooterView(withIdentifier: self.registerView(footer))
+		let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: self.registerView(footer))
+		let _ = (footer as? AbstractTableHeaderFooterItem)?.dispatch(.dequeue, type: .footer, view: view, section: sectionIdx, table: tableView)
+		return view
 	}
 	
 	public func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -396,7 +400,7 @@ public extension TableDirector {
 	
 	public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
 		let item = (self.sections[section].headerView as? AbstractTableHeaderFooterItem)
-		guard let height = item?.dispatch(.height, view: nil, section: section, table: tableView) as? CGFloat else {
+		guard let height = item?.dispatch(.height, type: .header, view: nil, section: section, table: tableView) as? CGFloat else {
 			return (self.headerHeight ?? UITableViewAutomaticDimension)
 		}
 		return height
@@ -404,7 +408,7 @@ public extension TableDirector {
 	
 	public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
 		let item = (self.sections[section].footerView as? AbstractTableHeaderFooterItem)
-		guard let height = item?.dispatch(.height, view: nil, section: section, table: tableView) as? CGFloat else {
+		guard let height = item?.dispatch(.height, type: .footer, view: nil, section: section, table: tableView) as? CGFloat else {
 			return (self.footerHeight ?? UITableViewAutomaticDimension)
 		}
 		return height
@@ -412,44 +416,50 @@ public extension TableDirector {
 	
 	public func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
 		let item = (self.sections[section].headerView as? AbstractTableHeaderFooterItem)
-		guard let height = item?.dispatch(.estimatedHeight, view: nil, section: section, table: tableView) as? CGFloat else {
-			return (self.headerHeight ?? UITableViewAutomaticDimension)
+		guard let estHeight = item?.dispatch(.estimatedHeight, type: .header, view: nil, section: section, table: tableView) as? CGFloat else {
+			guard let height = item?.dispatch(.height, type: .header, view: nil, section: section, table: tableView) as? CGFloat else {
+				return (self.headerHeight ?? UITableViewAutomaticDimension)
+			}
+			return height
 		}
-		return height
+		return estHeight
 	}
 	
 	public func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
 		let item = (self.sections[section].footerView as? AbstractTableHeaderFooterItem)
-		guard let height = item?.dispatch(.estimatedHeight, view: nil, section: section, table: tableView) as? CGFloat else {
-			return (self.footerHeight ?? UITableViewAutomaticDimension)
+		guard let height = item?.dispatch(.estimatedHeight,type: .footer, view: nil, section: section, table: tableView) as? CGFloat else {
+			guard let height = item?.dispatch(.height, type: .footer, view: nil, section: section, table: tableView) as? CGFloat else {
+				return (self.footerHeight ?? UITableViewAutomaticDimension)
+			}
+			return height
 		}
 		return height
 	}
 	
 	public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
 		let item = (self.sections[section].headerView as? AbstractTableHeaderFooterItem)
-		let _ = item?.dispatch(.willDisplay, view: view, section: section, table: tableView)
+		let _ = item?.dispatch(.willDisplay, type: .header, view: view, section: section, table: tableView)
 		self.on.willDisplayHeader?( (view,section,tableView) )
 	}
 	
 	public func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
 		let item = (self.sections[section].footerView as? AbstractTableHeaderFooterItem)
-		let _ = item?.dispatch(.willDisplay, view: view, section: section, table: tableView)
+		let _ = item?.dispatch(.willDisplay, type: .footer, view: view, section: section, table: tableView)
 		self.on.willDisplayFooter?( (view,section,tableView) )
-	}
-	
-	public func tableView(_ tableView: UITableView, didEndDisplayingFooterView view: UIView, forSection section: Int) {
-		guard section < self.sections.count else { return }
-		let item = (self.sections[section].footerView as? AbstractTableHeaderFooterItem)
-		let _ = item?.dispatch(.endDisplay, view: view, section: section, table: tableView)
-		self.on.endDisplayFooter?( (view,section,tableView) )
 	}
 	
 	public func tableView(_ tableView: UITableView, didEndDisplayingHeaderView view: UIView, forSection section: Int) {
 		guard section < self.sections.count else { return }
 		let item = (self.sections[section].headerView as? AbstractTableHeaderFooterItem)
-		let _ = item?.dispatch(.endDisplay, view: view, section: section, table: tableView)
+		let _ = item?.dispatch(.endDisplay, type: .header, view: view, section: section, table: tableView)
 		self.on.endDisplayHeader?( (view,section,tableView) )
+	}
+	
+	public func tableView(_ tableView: UITableView, didEndDisplayingFooterView view: UIView, forSection section: Int) {
+		guard section < self.sections.count else { return }
+		let item = (self.sections[section].footerView as? AbstractTableHeaderFooterItem)
+		let _ = item?.dispatch(.endDisplay, type: .footer, view: view, section: section, table: tableView)
+		self.on.endDisplayFooter?( (view,section,tableView) )
 	}
 	
 	// Inserting or Deleting Table Rows

@@ -30,7 +30,7 @@
 import Foundation
 import UIKit
 
-public class TableSectionView<T: HeaderFooterProtocol>: AbstractTableHeaderFooterItem, CustomStringConvertible {
+public class TableSectionView<T: HeaderFooterProtocol>: TableHeaderFooterProtocol, AbstractTableHeaderFooterItem, CustomStringConvertible {
 	
 	public var viewClass: AnyClass { return T.self }
 	public var reuseIdentifier: String { return T.reuseIdentifier }
@@ -42,6 +42,8 @@ public class TableSectionView<T: HeaderFooterProtocol>: AbstractTableHeaderFoote
 	
 	/// Context of the event sent to section's view.
 	public struct Context<T> {
+		
+		public private(set) var type: SectionType
 		
 		/// Parent collection
 		public private(set) weak var table: UITableView?
@@ -58,7 +60,8 @@ public class TableSectionView<T: HeaderFooterProtocol>: AbstractTableHeaderFoote
 		}
 		
 		/// Initialize a new context (private).
-		public init(view: UIView?, at section: Int, of table: UITableView) {
+		public init(type: SectionType, view: UIView?, at section: Int, of table: UITableView) {
+			self.type = type
 			self.table = table
 			self.view = view as? T
 			self.section = section
@@ -67,6 +70,9 @@ public class TableSectionView<T: HeaderFooterProtocol>: AbstractTableHeaderFoote
 	
 	/// Events
 	public var on = TableSectionView.Events<T>()
+	
+	/// Parent section
+	public weak var section: TableSection? = nil
 	
 	//MARK: INIT
 	
@@ -77,28 +83,29 @@ public class TableSectionView<T: HeaderFooterProtocol>: AbstractTableHeaderFoote
 		configuration?(self)
 	}
 	
+
 	//MARK: INTERNAL METHODS
 	@discardableResult
-	func dispatch(_ event: TableSectionViewEventsKey, view: UIView?, section: Int, table: UITableView) -> Any? {
+	func dispatch(_ event: TableSectionViewEventsKey, type: SectionType, view: UIView?, section: Int, table: UITableView) -> Any? {
 		switch event {
 		case .dequeue:
 			guard let callback = self.on.dequeue else { return nil }
-			callback(Context<T>(view: view, at: section, of: table))
+			callback(Context<T>(type: type, view: view, at: section, of: table))
 		case .height:
 			guard let callback = self.on.height else { return nil }
-			return callback(Context<T>(view: view, at: section, of: table))
+			return callback(Context<T>(type: type, view: view, at: section, of: table))
 		case .willDisplay:
 			guard let callback = self.on.willDisplay else { return nil }
-			return callback(Context<T>(view: view, at: section, of: table))
+			return callback(Context<T>(type: type, view: view, at: section, of: table))
 		case .didDisplay:
 			guard let callback = self.on.didDisplay else { return nil }
-			return callback(Context<T>(view: view, at: section, of: table))
+			return callback(Context<T>(type: type, view: view, at: section, of: table))
 		case .endDisplay:
 			guard let callback = self.on.endDisplay else { return nil }
-			return callback(Context<T>(view: view, at: section, of: table))
+			return callback(Context<T>(type: type, view: view, at: section, of: table))
 		case .estimatedHeight:
 			guard let callback = self.on.estimatedHeight else { return nil }
-			return callback(Context<T>(view: view, at: section, of: table))
+			return callback(Context<T>(type: type, view: view, at: section, of: table))
 		}
 		return nil
 	}
