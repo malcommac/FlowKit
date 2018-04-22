@@ -88,6 +88,7 @@ If you want to see a live example open `FlowKit.xcodeproj` and run the `Example`
 - [Setup Headers & Footers](#setupheadersfooters)
 - [Reload Data with/out Animations](#reloaddata)
 - [Listen for Events](#events)
+- [Sizing Cells](#sizingcells)
 
 **Note**: *The following concepts are valid even if work with tables or collections using FlowKit (each class used starts with `Table[...]` or `Collection[...]` prefixes and where there are similaties between functions the name of functions/properties are consistence).*
 
@@ -394,6 +395,19 @@ All events are hookable from their respective objects starting from `.on` proper
 - [Table Events](/Documentation/Table_Events.md)
 - [Collection Events](/Documentation/Collection_Events.md)
 - [UIScrollViewDelegate Events](/Documentation/UIScrollViewDelegate_Events.md)
+
+<a name="sizingcells"/>
+
+## Sizing Cells
+
+FlowKit support easy cell sizing using autolayout.
+You can set the size of the cell by adapter or collection based. For autolayout driven cell sizing set the `rowHeight` (for `TableDirector`) or `itemSize` (for `CollectionDirector`/`FlowCollectionDirector`) to the `autoLayout` value, then provide an estimated value.
+
+Accepted values are:
+- `default`: you must provide the height (table) or size (collection) of the cell
+- `autoLayout`: uses autolayout to evaluate the height of the cell; for Collection Views you can also provide your own calculation by overriding `preferredLayoutAttributesFitting()` function in cell instance.
+- `fixed`: provide a fixed height for all cell types (faster if you plan to have all cell sized same)
+
 
 <a name="installation"/>
 
