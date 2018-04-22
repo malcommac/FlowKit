@@ -72,12 +72,10 @@ Learn more about sections, header/footer & events by reading the rest of guide.
 
 ## Documentation
 
-[**How to use FlowKit**](#howtouse)
-
 The following guide explain how to use features available in FlowKit with a real example.
 If you want to see a live example open `FlowKit.xcodeproj` and run the `Example` app.
 
-- [Overview](#structure)
+- [Overview](#overview)
 - [Create the Director](#createdirector)
 - [Register Adapters](#registeradapters)
 - [Create Data Models](#createdatamodels)
@@ -86,28 +84,11 @@ If you want to see a live example open `FlowKit.xcodeproj` and run the `Example`
 - [Manage Models/Items in Section](#managemodels)
 - [Setup Headers & Footers](#setupheadersfooters)
 - [Reload Data with/out Animations](#reloaddata)
-
-**All Events**
-
-All events are hookable from their respective objects starting from `.on` property. All standard table & collections events are available from FlowKit; name of the events is similar to the their standard corrispettive in UIKit (see the official documentation for more info abou any specific event).
-
-- [Table Events](/Documentation/Table_Events.md)
-- [Collection Events](/Documentation/Collection_Events.md)
-- [UIScrollViewDelegate Events](/Documentation/UIScrollViewDelegate_Events.md)
-
---
-
-<a name="howtouse"/>
-
-### How to use FlowKit
+- [Listen for Events](#events)
 
 **Note**: *The following concepts are valid even if work with tables or collections using FlowKit (each class used starts with `Table[...]` or `Collection[...]` prefixes and where there are similaties between functions the name of functions/properties are consistence).*
 
-In FlowKit there are two important entities you will encounter: the Director and the Adapter.
-
-<a name="structure"/>
-
-#### Overview
+### Overview
 
 The following graph describe the infrastructure of FlowKit for Collection (the same graph is [also available for Tables](Documentation/Structure_TableKit.png))).
 
@@ -159,7 +140,7 @@ The following guide describe all the other features of the library.
 
 <a name="createdirector"/>
 
-#### Create the Director (`TableDirector`/`CollectionDirector`)
+### Create the Director (`TableDirector`/`CollectionDirector`)
 
 You can think about the Director has the owner/manager of the table/collection: using it you can declare what kind of data your scroller is able to show (both models and views/cells), add/remove/move both sections and items in sections.
 Since you will start using FlowKit you will use the director instance to manage the content of the UI.
@@ -189,7 +170,7 @@ let director = self.tableView.director // create a director automatically
 
 <a name="registeradapters"/>
 
-#### Register Adapters (`TableAdapter`/`CollectionAdapter`)
+### Register Adapters (`TableAdapter`/`CollectionAdapter`)
 
 Once you have a director you need to tell to it what kind of data you are about to render: you can have an etherogeneus collection of Models and View (cells) in your scroller but a single Model can be rendered to a single type of View.
 
@@ -210,7 +191,7 @@ Now you are ready to present your data.
 
 <a name="createdatamodels"/>
 
-#### Create Data Models (`ModelProtocol`)
+### Create Data Models (`ModelProtocol`)
 
 In order to render your data each object of the scroller must be conform to `ModelProtocol` which includes:
 
@@ -240,7 +221,7 @@ public class Contact: ModelProtocol, Hashable {
 
 <a name="createcells"/>
 
-#### Create Cells (`UITableViewCell`/`UICollectionViewCell`)
+### Create Cells (`UITableViewCell`/`UICollectionViewCell`)
 
 Both `UITableViewCell` and `UICollectionViewCell` and its subclasses are automatically conforms to `CellProtocol`.
 
@@ -266,7 +247,7 @@ public class ContactCell: UITableViewCell {
 
 <a name="addsections"/>
 
-#### Add Sections (`TableSection`/`CollectionSection`)
+### Add Sections (`TableSection`/`CollectionSection`)
 
 Each Table/Collection must have at least one section to show something.
 `TableSection`/`CollectionSection` instances hold the items to show (into `.models` property) and optionally any header/Footer you can apply.
@@ -295,7 +276,7 @@ table.director.add(section: section)
 
 <a name="managemodels"/>
 
-#### Manage Models/Items in Section
+### Manage Models/Items in Section
 
 As for section the same `add`/`remove`/`move` function are also available for `models` array which describe the content (rows/items) inside each section (`TableSection`/`CollectionSection` instances).
 
@@ -327,7 +308,7 @@ self.tableView.director.reloadData() // reload data
 
 <a name="setupheadersfooters"/>
 
-#### Setup Headers & Footers (`TableSectionView`/`CollectionSectionView`)
+### Setup Headers & Footers (`TableSectionView`/`CollectionSectionView`)
 
 **Simple Header/Footer**
 
@@ -366,7 +347,7 @@ table.director.add(section: section)
 
 <a name="reloaddata"/>
 
-#### Reload Data with/out Animations
+### Reload Data with/out Animations
 
 Each change to the data model must be done by calling the `add`/`remove`/`move` function available both at sections and items levels.
 After changes you need to call the director's `reloadData()` function to update the UI.
@@ -399,6 +380,17 @@ tableView.director.reloadData(after: { _ in
 For `TableDirector` you must provide a `TableReloadAnimations` configuration which defines what kind of `UITableViewRowAnimation` must be applied for each type of change (insert/delete/reload/move). `TableReloadAnimations.default()` just uses `.automatic` for each type.
 
 For `CollectionDirector` you don't need to return anything; evaluation is made for you based upon the layout used.
+
+
+<a name="events"/>
+
+## Listen for Events
+
+All events are hookable from their respective objects starting from `.on` property. All standard table & collections events are available from FlowKit; name of the events is similar to the their standard corrispettive in UIKit (see the official documentation for more info abou any specific event).
+
+- [Table Events](/Documentation/Table_Events.md)
+- [Collection Events](/Documentation/Collection_Events.md)
+- [UIScrollViewDelegate Events](/Documentation/UIScrollViewDelegate_Events.md)
 
 <a name="installation"/>
 
