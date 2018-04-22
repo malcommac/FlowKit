@@ -84,7 +84,8 @@ public class TableSection: Hashable {
 	///   - headerView: header view
 	///   - footerView: footer view
 	///   - models: models to add (`nil` means empty array)
-	public convenience init(headerView: AbstractTableHeaderFooterItem?, footerView: AbstractTableHeaderFooterItem?,
+	public convenience init(headerView: AbstractTableHeaderFooterItem? = nil,
+							footerView: AbstractTableHeaderFooterItem? = nil,
 							models: [ModelProtocol]? = nil) {
 		self.init(models)
 		self.headerView = headerView

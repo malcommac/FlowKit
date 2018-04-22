@@ -30,6 +30,23 @@
 import Foundation
 import UIKit
 
+// MARK: - CollectionSection Events
+
+public extension CollectionSectionView {
+	
+	public struct Event<T> {
+		public typealias EventContext = Context<T>
+		
+		public var dequeue: ((EventContext) -> Void)? = nil
+		public var referenceSize: ((EventContext) -> CGSize)? = nil
+		public var didDisplay: ((EventContext) -> Void)? = nil
+		public var endDisplay: ((EventContext) -> Void)? = nil
+		public var willDisplay: ((EventContext) -> Void)? = nil
+
+	}
+	
+}
+
 // MARK: - CollectionAdapter Events
 public extension CollectionAdapter {
 	

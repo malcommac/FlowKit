@@ -143,15 +143,21 @@ open class FlowCollectionDirector: CollectionDirector, UICollectionViewDelegateF
 	}
 	
 	open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-		let sectionItem = sections[section]
-		let value = sectionItem.header?._referenceSize(section: section, collection: collectionView) ?? .zero
-		return value
+		let header = (sections[section].header as? AbstractCollectionHeaderFooterItem)
+		guard let size = header?.dispatch(.referenceSize, view: nil, section: section, collection: collectionView) as? CGSize else {
+			debugPrint("Must specify .referenceSize of the header. Now returning 0")
+			return .zero
+		}
+		return size
 	}
 	
 	open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-		let sectionItem = sections[section]
-		let value = sectionItem.header?._referenceSize(section: section, collection: collectionView) ?? .zero
-		return value
+		let footer = (sections[section].footer as? AbstractCollectionHeaderFooterItem)
+		guard let size = footer?.dispatch(.referenceSize, view: nil, section: section, collection: collectionView) as? CGSize else {
+			debugPrint("Must specify .referenceSize of the footer. Now returning 0")
+			return .zero
+		}
+		return size
 	}
 	
 	public func collectionView(_ collectionView: UICollectionView, didEndDisplayingSupplementaryView view: UICollectionReusableView, forElementOfKind elementKind: String, at indexPath: IndexPath) {
@@ -160,20 +166,25 @@ open class FlowCollectionDirector: CollectionDirector, UICollectionViewDelegateF
 		
 		switch elementKind {
 		case UICollectionElementKindSectionHeader:
-			self.sections[indexPath.section].header?._didEndDisplay(view: view, section: indexPath.section, collection: collectionView)
+			let header = (sections[indexPath.section].header as? AbstractCollectionHeaderFooterItem)
+			let _ = header?.dispatch(.endDisplay, view: view, section: indexPath.section, collection: collectionView)
 		case UICollectionElementKindSectionFooter:
-			self.sections[indexPath.section].footer?._didEndDisplay(view: view, section: indexPath.section, collection: collectionView)
+			let footer = (sections[indexPath.section].footer as? AbstractCollectionHeaderFooterItem)
+			let _ = footer?.dispatch(.endDisplay, view: view, section: indexPath.section, collection: collectionView)
 		default:
 			break
 		}
 	}
 	
 	public override func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
+		
 		switch elementKind {
 		case UICollectionElementKindSectionHeader:
-			self.sections[indexPath.section].header?._didDisplay(view: view, section: indexPath.section, collection: collectionView)
+			let header = (sections[indexPath.section].header as? AbstractCollectionHeaderFooterItem)
+			let _ = header?.dispatch(.willDisplay, view: view, section: indexPath.section, collection: collectionView)
 		case UICollectionElementKindSectionFooter:
-			self.sections[indexPath.section].footer?._didDisplay(view: view, section: indexPath.section, collection: collectionView)
+			let footer = (sections[indexPath.section].footer as? AbstractCollectionHeaderFooterItem)
+			let _ = footer?.dispatch(.willDisplay, view: view, section: indexPath.section, collection: collectionView)
 		default:
 			break
 		}

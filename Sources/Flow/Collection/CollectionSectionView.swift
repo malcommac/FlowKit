@@ -30,7 +30,16 @@
 import Foundation
 import UIKit
 
-public class CollectionSectionView<T: HeaderFooterProtocol>: AbstractCollectionHeaderFooterItem, CustomStringConvertible {
+public class CollectionSectionView<T: HeaderFooterProtocol>: CollectionSectionProtocol, CustomStringConvertible {
+	
+	// Protocol default implementation
+	public var viewClass: AnyClass { return T.self }
+	public var reuseIdentifier: String { return T.reuseIdentifier }
+	public var registerAsClass: Bool { return T.registerAsClass }
+	
+	public var description: String {
+		return "CollectionSectionView<\(String(describing: type(of: T.self)))>"
+	}
 	
 	/// Context of the event sent to section's view.
 	public struct Context<T> {
@@ -50,36 +59,15 @@ public class CollectionSectionView<T: HeaderFooterProtocol>: AbstractCollectionH
 		}
 		
 		/// Initialize a new context (private).
-		public init(view: T?, at section: Int, of collection: UICollectionView) {
+		public init(view: UIView?, at section: Int, of collection: UICollectionView) {
 			self.collection = collection
-			self.view = view
+			self.view = view as? T
 			self.section = section
 		}
 	}
 	
-	//MARK: PROPERTIES
-	
-	/// Event called when the view is dequeued and ready to be configured.
-	public var onConfigure : ((Context<T>) -> (Void))? = nil
-	
-	/// Return the size of the view.
-	public var onGetReferenceSize: ((Context<T>) -> (CGSize))? = nil
-	
-	/// Event called when view is displayed.
-	public var onDidDisplay: ((Context<T>) -> (Void))? = nil
-	
-	/// Event called when view is removed from the collection.
-	public var onEndDisplay: ((Context<T>) -> (Void))? = nil
-	
-	public var viewClass: AnyClass { return T.self }
-	
-	public var reuseIdentifier: String { return T.reuseIdentifier }
-	
-	public var registerAsClass: Bool { return T.registerAsClass }
-	
-	public var description: String {
-		return "CollectionSectionView<\(String(describing: type(of: T.self)))>"
-	}
+	/// Events for section
+	public var on = Event<T>()
 	
 	//MARK: INIT
 	
@@ -91,31 +79,26 @@ public class CollectionSectionView<T: HeaderFooterProtocol>: AbstractCollectionH
 	}
 	
 	//MARK: INTERNAL METHODS
-	
-	public func _configure(view: UICollectionReusableView, section: Int, collection: UICollectionView) {
-		guard let event = onConfigure else { return }
-		let context = Context<T>(view: view as? T, at: section, of: collection)
-		event(context)
-	}
-	
-	public func _referenceSize(section: Int, collection: UICollectionView) -> CGSize {
-		guard let event = self.onGetReferenceSize else {
-			fatalError("referenceSize is not implement for \(self)")
+	@discardableResult
+	func dispatch(_ event: CollectionSectionViewEventsKey, view: UICollectionReusableView?, section: Int, collection: UICollectionView) -> Any? {
+		switch event {
+		case .dequeue:
+			guard let callback = self.on.dequeue else { return nil }
+			callback(Context(view: view, at: section, of: collection))
+		case .didDisplay:
+			guard let callback = self.on.didDisplay else { return nil }
+			callback(Context(view: view, at: section, of: collection))
+		case .endDisplay:
+			guard let callback = self.on.endDisplay else { return nil }
+			callback(Context(view: view, at: section, of: collection))
+		case .willDisplay:
+			guard let callback = self.on.willDisplay else { return nil }
+			callback(Context(view: view, at: section, of: collection))
+		case .referenceSize:
+			guard let callback = self.on.referenceSize else { return nil }
+			return callback(Context(view: view, at: section, of: collection))
 		}
-		let context = Context<T>(view: nil, at: section, of: collection)
-		return event(context)
-	}
-	
-	public func _didDisplay(view: UICollectionReusableView, section: Int, collection: UICollectionView) {
-		guard let event = onDidDisplay else { return }
-		let context = Context<T>(view: view as? T, at: section, of: collection)
-		event(context)
-	}
-	
-	public func _didEndDisplay(view: UICollectionReusableView, section: Int, collection: UICollectionView) {
-		guard let event = onEndDisplay, let v = view as? T else { return }
-		let context = Context<T>(view: v, at: section, of: collection)
-		event(context)
+		return nil
 	}
 	
 }

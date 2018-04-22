@@ -154,14 +154,17 @@ public protocol AbstractCollectionReusableView {
 
 //MARK: INTERNAL PROTOCOLS
 
-public protocol AbstractCollectionHeaderFooterItem : AbstractCollectionReusableView {
-
-	func _configure(view: UICollectionReusableView, section : Int, collection: UICollectionView)
-	func _referenceSize(section: Int, collection: UICollectionView) -> CGSize
-	func _didDisplay(view: UICollectionReusableView, section: Int, collection: UICollectionView)
-	func _didEndDisplay(view: UICollectionReusableView, section: Int, collection: UICollectionView)
+internal protocol AbstractCollectionHeaderFooterItem {
+	
+	@discardableResult
+	func dispatch(_ event: CollectionSectionViewEventsKey, view: UICollectionReusableView?, section: Int, collection: UICollectionView) -> Any?
 	
 }
+
+public protocol CollectionSectionProtocol : AbstractCollectionReusableView {
+	
+}
+
 
 internal protocol AbstractAdapterProtocolFunctions {
 
@@ -198,3 +201,10 @@ internal enum CollectionAdapterEventKey: Int {
 	case shouldSpringLoad
 }
 
+internal enum CollectionSectionViewEventsKey: Int {
+	case dequeue
+	case referenceSize
+	case didDisplay
+	case endDisplay
+	case willDisplay
+}

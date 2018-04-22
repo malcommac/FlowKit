@@ -6,6 +6,8 @@
 //				hello@danielemargutti.com
 //				http://www.danielemargutti.com
 //
+//	DeepDiff is a project by Khoa - https://github.com/onmyway133/DeepDiff
+//
 //	Twitter:	@danielemargutti
 //
 //
@@ -27,7 +29,6 @@
 //	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //	THE SOFTWARE.
 
-import Foundation
 import Foundation
 
 // https://gist.github.com/ndarville/3166060

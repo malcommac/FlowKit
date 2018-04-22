@@ -503,9 +503,11 @@ public extension CollectionDirector {
 		
 		switch elementKind {
 		case UICollectionElementKindSectionHeader:
-			self.sections[indexPath.section].header?._didDisplay(view: view, section: indexPath.section, collection: collectionView)
+			let header = (sections[indexPath.section].header as? AbstractCollectionHeaderFooterItem)
+			let _ = header?.dispatch(.willDisplay, view: view, section: indexPath.section, collection: collectionView)
 		case UICollectionElementKindSectionFooter:
-			self.sections[indexPath.section].footer?._didDisplay(view: view, section: indexPath.section, collection: collectionView)
+			let footer = (sections[indexPath.section].footer as? AbstractCollectionHeaderFooterItem)
+			let _ = footer?.dispatch(.willDisplay, view: view, section: indexPath.section, collection: collectionView)
 		default:
 			break
 		}
@@ -593,7 +595,7 @@ public extension CollectionDirector {
 		///   - type: is it header or footer
 		/// - Returns: registered identifier
 		@discardableResult
-		internal func registerHeaderFooter(_ headerFooter: AbstractCollectionHeaderFooterItem, type: String) -> String {
+		internal func registerHeaderFooter(_ headerFooter: CollectionSectionProtocol, type: String) -> String {
 			let identifier = headerFooter.reuseIdentifier
 			if 	(type == UICollectionElementKindSectionHeader && self.headerIDs.contains(identifier)) ||
 				(type == UICollectionElementKindSectionFooter && self.footerIDs.contains(identifier)) {

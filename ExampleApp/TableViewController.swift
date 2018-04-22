@@ -27,8 +27,10 @@ class TableViewController: UIViewController {
 		self.tableView?.director.register(adapter: articleAdpt)
 		
 		
-		let section = TableSection(headerTitle: "Final Winners", models: self.getArticles())
-		let sectionHeader = TableSectionView<TableHeaderView>()
+		let section = TableSection(headerView: TableSectionView<TableHeaderView>(), models: self.getArticles())
+		section.on.headerHeigth = {
+			return 150
+		}
 		self.tableView?.director.add(section: section)
 
 		self.tableView?.director.rowHeight = .autoLayout(estimated: 100)
