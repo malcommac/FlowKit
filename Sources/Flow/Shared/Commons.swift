@@ -55,3 +55,22 @@ internal struct InternalContext {
 		self.container = scrollview
 	}
 }
+
+///MARK: UIScrollViewDelegate Events
+
+public struct ScrollViewEvents {
+	var didScroll: ((UIScrollView) -> Void)? = nil
+	var willBeginDragging: ((UIScrollView) -> Void)? = nil
+	var willEndDragging: ((_ scrollView: UIScrollView, _ velocity: CGPoint, _ targetOffset: UnsafeMutablePointer<CGPoint>) -> Void)? = nil
+	var endDragging: ((_ scrollView: UIScrollView, _ willDecelerate: Bool) -> Void)? = nil
+	var shouldScrollToTop: ((UIScrollView) -> Bool)? = nil
+	var didScrollToTop: ((UIScrollView) -> Void)? = nil
+	var willBeginDecelerating: ((UIScrollView) -> Void)? = nil
+	var endDecelerating: ((UIScrollView) -> Void)? = nil
+	var viewForZooming: ((UIScrollView) -> UIView?)? = nil
+	var willBeginZooming: ((_ scrollView: UIScrollView, _ view: UIView?) -> Void)? = nil
+	var endZooming: ((_ scrollView: UIScrollView, _ view: UIView?, _ scale: CGFloat) -> Void)? = nil
+	var didZoom: ((UIScrollView) -> Void)? = nil
+	var endScrollingAnimation: ((UIScrollView) -> Void)? = nil
+	var didChangeAdjustedContentInset: ((UIScrollView) -> Void)? = nil
+}

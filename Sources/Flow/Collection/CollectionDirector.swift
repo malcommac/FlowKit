@@ -93,6 +93,9 @@ UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource
 	/// Events of the collection
 	public var on = CollectionDirector.Events()
 	
+	/// Events for UIScrollViewDelegate
+	public var onScroll: ScrollViewEvents? = ScrollViewEvents()
+	
 	/// Internal representation of the cell size
 	private var _itemSize: ItemSize = .default
 
@@ -556,6 +559,68 @@ public extension CollectionDirector {
 		self.adapters(forIndexPath: indexPaths).forEach {
 			$0.adapter.dispatch(.cancelPrefetch, context: InternalContext.init($0.models, $0.indexPaths, collectionView))
 		}
+	}
+	
+}
+
+// MARK: - UIScrollViewDelegate Events
+
+public extension CollectionDirector {
+	
+	public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+		self.onScroll?.didScroll?(scrollView)
+	}
+	
+	public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+		self.onScroll?.willBeginDragging?(scrollView)
+	}
+	
+	public func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+		self.onScroll?.willEndDragging?(scrollView,velocity,targetContentOffset)
+	}
+	
+	public func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+		self.onScroll?.endDragging?(scrollView,decelerate)
+	}
+	
+	public func scrollViewShouldScrollToTop(_ scrollView: UIScrollView) -> Bool {
+		return (self.onScroll?.shouldScrollToTop?(scrollView) ?? true)
+	}
+	
+	public func scrollViewDidScrollToTop(_ scrollView: UIScrollView) {
+		self.onScroll?.didScrollToTop?(scrollView)
+	}
+	
+	public func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
+		self.onScroll?.willBeginDecelerating?(scrollView)
+	}
+	
+	public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+		self.onScroll?.endDecelerating?(scrollView)
+	}
+	
+	public func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+		return self.onScroll?.viewForZooming?(scrollView)
+	}
+	
+	public func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {
+		self.onScroll?.willBeginZooming?(scrollView,view)
+	}
+	
+	public func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
+		self.onScroll?.endZooming?(scrollView,view,scale)
+	}
+	
+	public func scrollViewDidZoom(_ scrollView: UIScrollView) {
+		self.onScroll?.didZoom?(scrollView)
+	}
+	
+	public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+		self.onScroll?.endScrollingAnimation?(scrollView)
+	}
+	
+	public func scrollViewDidChangeAdjustedContentInset(_ scrollView: UIScrollView) {
+		self.onScroll?.didChangeAdjustedContentInset?(scrollView)
 	}
 	
 }
