@@ -86,7 +86,7 @@ If you want to see a live example open `FlowKit.xcodeproj` and run the `Example`
 - [Setup Headers & Footers](#setupheadersfooters)
 - [Reload Data with/out Animations](#reloaddata)
 
-**Manage Events**
+**All Events**
 
 All events are hookable from their respective objects starting from `.on` property. All standard table & collections events are available from FlowKit; name of the events is similar to the their standard corrispettive in UIKit (see the official documentation for more info abou any specific event).
 
@@ -94,7 +94,7 @@ All events are hookable from their respective objects starting from `.on` proper
 - [Collection Events](/Documentation/Collection_Events.md)
 - [UIScrollViewDelegate Events](/Documentation/UIScrollViewDelegate_Events.md)
 
--- 
+--
 
 <a name="howtouse"/>
 
