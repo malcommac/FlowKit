@@ -51,7 +51,14 @@ class CollectionExampleController: UIViewController {
 		var list: [ModelProtocol] = (0..<70).map { return $0 }
 		list.append(contentsOf: ["A","B","C","D","E","F"])
 		list.shuffle()
-		self.director?.add(models: list)
+		
+		let header = CollectionSectionView<CollectionHeader>()
+		header.on.referenceSize = { _ in
+			return CGSize(width: self.collectionView!.frame.width, height: 40)
+		}
+		let section = CollectionSection.init(list, headerView: header)
+		
+		self.director?.add(section)
 		self.director?.reloadData()
 	}
 

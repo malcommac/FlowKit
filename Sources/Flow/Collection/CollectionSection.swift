@@ -92,10 +92,16 @@ public class CollectionSection: Equatable, Hashable {
 	
 	/// Initialize a new section with given objects as models.
 	///
-	/// - Parameter models: models, `nil` create an empty set.
-	public init(_ models: [ModelProtocol]?) {
+	/// - Parameters:
+	///   - models: models, `nil` create an empty set
+	///   - headerView: optional custom header
+	///   - footerView: optional custom footer
+	public init(_ models: [ModelProtocol]?, headerView: CollectionSectionProtocol? = nil, footerView: CollectionSectionProtocol? = nil) {
 		self.models = (models ?? [])
+		self.header = headerView
+		self.footer = footerView
 	}
+	
 	
 	/// Hash identifier of the section
 	public var hashValue: Int {
