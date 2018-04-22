@@ -18,7 +18,7 @@ With a declarative and type-safe approach you **don't need to implement datasour
 
 Want to know more about FlowKit?
 
-**I've made an introductory article: click here to read it now!**
+**I've made an introductory article: [click here to read it now!](http://danielemargutti.com/2018/04/23/tables-collections-with-declarative-approach/)**
 
 ## Features Highlights
 
