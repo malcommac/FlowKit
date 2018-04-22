@@ -2,7 +2,8 @@
 
 ## What's FlowKit
 FlowKit is a new approach to create, populate and manage `UITableView` and `UICollectionView`.
-With a declarative and type-safe approach you don't think to implement datasource/delegate patterns anymore: your code is easy to read, maintain and SOLID.
+
+With a declarative and type-safe approach you **don't need to implement datasource/delegate** anymore: your code is easy to read, maintain and SOLID.
 
 ## Features Highlights
 
@@ -10,10 +11,10 @@ With a declarative and type-safe approach you don't think to implement datasourc
 - **Type-safe**: register pair of model/cell types you want to render, then access to instances of them in pure Swift type-safe style.
 -  **Auto-Layout**: self-sized cells are easy to be configured, both for tables and collection views.
 -  **Built-In Auto Animations**: changes & sync between your datasource and table/collection is evaluated automatically and you can get animations for free.
--  **Compact & Efficient Code**: your code for table and collection is easy to read & maintain; changes in datasource are done declaratively via `add`/`move` and `remove` functions (both for sections, header/footers and single rows). 
+-  **Compact Code**: your code for table and collection is easy to read & maintain; changes in datasource are done declaratively via `add`/`move` and `remove` functions (both for sections, header/footers and single rows). 
 
 
-## What you will get: a small example
+## What you will get
 The following code is just a small example which shows how to make a simple Contacts list UITableView using FlowKit (it works similar with collection too):
 
 ```swift
@@ -44,18 +45,35 @@ director.reloadData()
 ```
 
 Pretty simple uh?
+
 No datasource, no delegate, just a declarative syntax to create & manage your data easily and in type-safe manner (both for models and cells).
-Learn more by continue reading the guide.
+Learn more about sections, header/footer & events by reading the rest of guide.
 
 ## Documentation
 
-### Introduction
+**How to use FlowKit**
+
+- Create the Director (`TableDirector`/`CollectionDirector`)
+- Register Adapters (`TableAdapter`/`CollectionAdapter`)
+- Create Data Models (objects conforms to `ModelProtocol`)
+- Create Cells (`UITableViewCell`/`UICollectionViewCell`)
+- Add Sections (`TableSection`/`CollectionSection`)
+- Setup Headers & Footers (`TableSectionView`/`CollectionSectionView`)
+- Reload Data with/out Animations
+
+**Events**
+
+- 
+
+-- 
+
+### How to use FlowKit
 
 **Note**: *The following concepts are valid even if work with tables or collections using FlowKit (each class used starts with `Table[...]` or `Collection[...]` prefixes and where there are similaties between functions the name of functions/properties are consistence).*
 
 In FlowKit there are two important entities you will encounter: the Director and the Adapter.
 
-#### Director (`TableDirector`/`CollectionDirector`)
+#### Create the Director (`TableDirector`/`CollectionDirector`)
 
 You can think about the Director has the owner/manager of the table/collection: using it you can declare what kind of data your scroller is able to show (both models and views/cells), add/remove/move both sections and items in sections.
 Since you will start using FlowKit you will use the director instance to manage the content of the UI.
@@ -83,7 +101,7 @@ let director = self.tableView.director // create a director automatically
 // do something with it...
 ```
 
-#### The Adapter (`TableAdapter`/`CollectionAdapter`)
+#### Register Adapters (`TableAdapter`/`CollectionAdapter`)
 
 Once you have a director you need to tell to it what kind of data you are about to render: you can have an etherogeneus collection of Models and View (cells) in your scroller but a single Model can be rendered to a single type of View.
 
@@ -102,7 +120,7 @@ tableView.director.register(adapters: [contactAdpt, groupAdpt])
 
 Now you are ready to present your data.
 
-#### Prepare your Model (`ModelProtocol`)
+#### Create Data Models (`ModelProtocol`)
 
 In order to render your data each object of the scroller must be conform to `ModelProtocol` which includes:
 
@@ -130,7 +148,7 @@ public class Contact: ModelProtocol, Hashable {
 }
 ```
 
-#### Prepare Cells (`UITableViewCell`/`UICollectionViewCell`)
+#### Create Cells (`UITableViewCell`/`UICollectionViewCell`)
 
 Both `UITableViewCell` and `UICollectionViewCell` and its subclasses are automatically conforms to `CellProtocol`.
 
@@ -154,7 +172,7 @@ public class ContactCell: UITableViewCell {
 }
 ```
 
-#### Sections (`TableSection`/`CollectionSection`)
+#### Add Sections (`TableSection`/`CollectionSection`)
 
 Each Table/Collection must have at least one section to show something.
 `TableSection`/`CollectionSection` instances hold the items to show (into `.models` property) and optionally any header/Footer you can apply.
@@ -176,11 +194,77 @@ In order to manage sections of your table you need to use the following methods 
 The following example create a new `TableSection` with some items inside, a `String` based header, then append it a the end of the table.
 
 ```swift
-let strangePeople = TableSection(headerTitle: "The Strangers", items: [mrBrown,mrGreen,mrWhite])
-table.director.add(section: strangePeople)
+let section = TableSection(headerTitle: "The Strangers", items: [mrBrown,mrGreen,mrWhite])
+table.director.add(section: section)
 ```
 
-#### Headers/Footers 
+#### Setup Headers & Footers (`TableSectionView`/`CollectionSectionView`)
+
+**Simple Header/Footer**
 
 Section may have or not headers/footers; these can be simple `String` (as you seen above) or custom views.
 
+Setting simple headers is pretty straightforward, just set the `headerTitle`/`footerTitle`:
+
+```swift
+section.headerTitle = "New Strangers"
+section.footerTitle = "\(contacts.count) contacts")
+```
+**Custom View Header/Footer**
+
+To use custom view as header/footer you need to create a custom `xib` file with a `UITableViewHeaderFooterView` (for table) or `UICollectionReusableView` (for collection) view subclass as root item.
+
+The following example shows a custom header and how to set it:
+
+```swift
+// we also need of TableExampleHeaderView.xib file
+// with TableExampleHeaderView view as root item
+public class TableExampleHeaderView: UITableViewHeaderFooterView {
+	@IBOutlet public var titleLabel: UILabel?
+}
+
+// create the header container (will receive events)
+let header = TableSectionView<TableExampleHeaderView>()
+// hooks any event. You need at least the `height` as below
+header.on.height = { _ in
+	return 150
+}
+
+// Use it
+let section = TableSection(headerView: header, items: [mrBrown,mrGreen,mrWhite])
+table.director.add(section: section)
+```
+
+#### Reload Data with/out Animations
+
+Each change to the data model must be done by calling the `add`/`remove`/`move` function available both at sections and items levels.
+After changes you need to call the director's `reloadData()` function to update the UI.
+
+The following example update a table after some changes:
+
+```swift
+// do some changes
+tableView.director.remove(section: 0)
+tableView.director.add(section: newSection, at: 2)
+...
+tableView.director.firstSection().remove(at: 0)
+
+// then reload
+tableView.director.reloadData()
+```
+
+If you need to perform an animated reload just make your changes to the model inside the callback available into the method.
+Animations are evaluated and applied for you!
+
+```swift
+tableView.director.reloadData(after: { _ in
+	tableView.director.remove(section: 0)
+	tableView.director.add(section: newSection, at: 2)
+	
+	return TableReloadAnimations.default()
+})
+```
+
+For `TableDirector` you must provide a `TableReloadAnimations` configuration which defines what kind of `UITableViewRowAnimation` must be applied for each type of change (insert/delete/reload/move). `TableReloadAnimations.default()` just uses `.automatic` for each type.
+
+For `CollectionDirector` you don't need to return anything; evaluation is made for you based upon the layout used.

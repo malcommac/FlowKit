@@ -31,7 +31,10 @@ class TableViewController: UIViewController {
 		self.tableView?.director.add(section: self.getWinnerSection())
 
 		self.tableView?.director.rowHeight = .autoLayout(estimated: 100)
-		self.tableView?.director.reload()
+		self.tableView?.director.reloadData(after: { _ in
+			
+			return TableReloadAnimations.default()
+		}, onEnd: <#T##(() -> (Void))?##(() -> (Void))?##() -> (Void)#>)
 		
 	}
 	
