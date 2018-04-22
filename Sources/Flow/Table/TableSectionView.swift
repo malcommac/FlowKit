@@ -32,6 +32,13 @@ import UIKit
 
 public class TableSectionView<T: HeaderFooterProtocol>: AbstractTableHeaderFooterItem, CustomStringConvertible {
 	
+	public var viewClass: AnyClass { return T.self }
+	public var reuseIdentifier: String { return T.reuseIdentifier }
+	public var registerAsClass: Bool { return T.registerAsClass }
+	
+	public var description: String {
+		return "CollectionSectionView<\(String(describing: type(of: T.self)))>"
+	}
 	
 	/// Context of the event sent to section's view.
 	public struct Context<T> {
@@ -58,31 +65,8 @@ public class TableSectionView<T: HeaderFooterProtocol>: AbstractTableHeaderFoote
 		}
 	}
 	
+	/// Events
 	public var on = TableSectionView.Events<T>()
-	
-	//MARK: PROPERTIES
-	
-	/// Event called when the view is dequeued and ready to be configured.
-	public var onConfigure : ((Context<T>) -> (Void))? = nil
-	
-	/// Return the size of the view.
-	public var onGetReferenceSize: ((Context<T>) -> (CGSize))? = nil
-	
-	/// Event called when view is displayed.
-	public var onDidDisplay: ((Context<T>) -> (Void))? = nil
-	
-	/// Event called when view is removed from the collection.
-	public var onEndDisplay: ((Context<T>) -> (Void))? = nil
-	
-	public var viewClass: AnyClass { return T.self }
-	
-	public var reuseIdentifier: String { return T.reuseIdentifier }
-	
-	public var registerAsClass: Bool { return T.registerAsClass }
-	
-	public var description: String {
-		return "CollectionSectionView<\(String(describing: type(of: T.self)))>"
-	}
 	
 	//MARK: INIT
 	
