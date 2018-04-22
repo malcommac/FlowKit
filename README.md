@@ -167,8 +167,10 @@ public class ViewController: UIViewController {
 
 or using implicitly, by accessing to the `director` property: the first time you call it a new director instance is created and assigned with strong reference to the table/collection instance.
 
+**Note:** For UICollectionView `FlowCollectionDirector` is created automatically; if you use another layout you must create a new one manually.
+
 ```swift
-let director = self.tableView.director // create a director automatically
+let director = self.tableView.director // create a director automatically and assign as strong reference to the table/collection
 // do something with it...
 ```
 

@@ -36,11 +36,11 @@ public extension UICollectionView {
 	
 	/// Return director associated with collection.
 	/// If not exist it will be created and assigned automatically.
-	public var director: CollectionDirector {
+	public var director: FlowCollectionDirector {
 		get {
 			return getAssociatedValue(key: UICollectionView.DIRECTOR_KEY,
 									  object: self,
-									  initialValue: CollectionDirector(self))
+									  initialValue: FlowCollectionDirector(self))
 		}
 		set {
 			set(associatedValue: newValue, key: UICollectionView.DIRECTOR_KEY, object: self)
