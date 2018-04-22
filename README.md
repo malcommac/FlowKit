@@ -16,10 +16,11 @@ Created by <b>Daniele Margutti</b> - <a href="http://www.danielemargutti.com">da
 ## What's FlowKit
 FlowKit is a new approach to create, populate and manage `UITableView` and `UICollectionView`.
 
-With a declarative and type-safe approach you **don't need to implement datasource/delegate** anymore: your code is easy to read, maintain and SOLID.
+With a declarative and type-safe approach you **don't need to implement datasource/delegate** anymore: your code is easy to read, maintain and [SOLID](https://en.wikipedia.org/wiki/SOLID_(object-oriented_design)).
 
 Want to know more about FlowKit?
-I've made an introductory article: click here to read it now!
+
+**I've made an introductory article: click here to read it now!**
 
 ## Features Highlights
 
