@@ -1,7 +1,7 @@
 # FlowKit
 
-[![Version](https://img.shields.io/cocoapods/v/FlowKit.svg?style=flat)](http://cocoadocs.org/docsets/FlowKit) [![License](https://img.shields.io/cocoapods/l/FlowKit.svg?style=flat)](http://cocoadocs.org/docsets/FlowKit) [![Platform](https://img.shields.io/cocoapods/p/FlowKit.svg?style=flat)](http://cocoadocs.org/docsets/FlowKit)
-[![CocoaPods Compatible](https://img.shields.io/cocoapods/v/FlowKit.svg)](https://img.shields.io/cocoapods/v/FlowKit.svg)
+[![Version](https://img.shields.io/cocoapods/v/FlowKitManager.svg?style=flat)](http://cocoadocs.org/docsets/FlowKitManager) [![License](https://img.shields.io/cocoapods/l/FlowKitManager.svg?style=flat)](http://cocoadocs.org/docsets/FlowKitManager) [![Platform](https://img.shields.io/cocoapods/p/FlowKitManager.svg?style=flat)](http://cocoadocs.org/docsets/FlowKitManager)
+[![CocoaPods Compatible](https://img.shields.io/cocoapods/v/FlowKitManager.svg)](https://img.shields.io/cocoapods/v/FlowKitManager.svg)
 [![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![Twitter](https://img.shields.io/badge/twitter-@danielemargutti-blue.svg?style=flat)](http://twitter.com/danielemargutti)
 
@@ -371,7 +371,7 @@ platform :ios, '8.0'
 
 target 'TargetName' do
 use_frameworks!
-pod 'FlowKit'
+pod 'FlowKitManager'
 end
 ```
 
@@ -397,7 +397,7 @@ $ brew install carthage
 To integrate FlowKit into your Xcode project using Carthage, specify it in your `Cartfile`:
 
 ```ogdl
-github "malcommac/FlowKit"
+github "malcommac/FlowKitManager"
 ```
 
 Run `carthage` to build the framework and drag the built `FlowKit.framework` into your Xcode project.

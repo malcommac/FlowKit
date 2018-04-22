@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
-  s.name         = "FlowKit"
-  s.version      = "0.9.0"
+  s.name         = "FlowKitManager"
+  s.version      = "0.5.0"
   s.summary      = "Declarative and type-safe UITableView & UICollectionView; a new way to work with tables and collections"
   s.description  = <<-DESC
     Efficient, declarative and type-safe approach to create and manage UITableView and UICollectionView with built-in animation support.
