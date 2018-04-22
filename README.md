@@ -77,7 +77,7 @@ Learn more about sections, header/footer & events by reading the rest of guide.
 The following guide explain how to use features available in FlowKit with a real example.
 If you want to see a live example open `FlowKit.xcodeproj` and run the `Example` app.
 
-- [Structure](#structure)
+- [Overview](#structure)
 - [Create the Director](#createdirector)
 - [Register Adapters](#registeradapters)
 - [Create Data Models](#createdatamodels)
@@ -107,7 +107,7 @@ In FlowKit there are two important entities you will encounter: the Director and
 
 <a name="structure"/>
 
-#### Structure
+#### Overview
 
 The following graph describe the infrastructure of FlowKit for Collection (the same graph is [also available for Tables](Documentation/Structure_TableKit.png))).
 
@@ -116,7 +116,7 @@ The following graph describe the infrastructure of FlowKit for Collection (the s
 The most important class of FlowKit is the Director; this class (`TableDirector` for tables, `CollectionDirector`/`FlowCollectionDirector` for collections) manage the sync between the data and the UI: you can add/remove/move sections and configure the appearance and the behaviour of the list directly from this instance.
 The first step to use FlowKit is to assign a director to your list: you can do it by calling `list.director` or just creating your own director with the list instance to manage:
 
-``swift
+```swift
 let director = FlowCollectionDirector(self.collectionView)
 ```
 
