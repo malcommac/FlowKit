@@ -1,9 +1,21 @@
 # FlowKit
 
+[![Version](https://img.shields.io/cocoapods/v/FlowKit.svg?style=flat)](http://cocoadocs.org/docsets/FlowKit) [![License](https://img.shields.io/cocoapods/l/FlowKit.svg?style=flat)](http://cocoadocs.org/docsets/FlowKit) [![Platform](https://img.shields.io/cocoapods/p/FlowKit.svg?style=flat)](http://cocoadocs.org/docsets/FlowKit)
+[![CocoaPods Compatible](https://img.shields.io/cocoapods/v/FlowKit.svg)](https://img.shields.io/cocoapods/v/FlowKit.svg)
+[![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+[![Twitter](https://img.shields.io/badge/twitter-@danielemargutti-blue.svg?style=flat)](http://twitter.com/danielemargutti)
+
+<p align="center" >★★ <b>Star me to follow the project! </b> ★★<br>
+Created by <b>Daniele Margutti</b> - <a href="http://www.danielemargutti.com">danielemargutti.com</a>
+</p>
+
 ## What's FlowKit
 FlowKit is a new approach to create, populate and manage `UITableView` and `UICollectionView`.
 
 With a declarative and type-safe approach you **don't need to implement datasource/delegate** anymore: your code is easy to read, maintain and SOLID.
+
+Want to know more about FlowKit?
+I've made an introductory article: click here to read it now!
 
 ## Features Highlights
 
@@ -49,41 +61,50 @@ Pretty simple uh?
 No datasource, no delegate, just a declarative syntax to create & manage your data easily and in type-safe manner (both for models and cells).
 Learn more about sections, header/footer & events by reading the rest of guide.
 
+
+## Table Of Contents
+
+- [Installation](#installation)
+- [Documentation](#documentation)
+- [Requirements](#requirements)
+
+<a name="documentation"/>
+
 ## Documentation
 
-**How to use FlowKit**
+[**How to use FlowKit**](#howtouse)
 
-- Create the Director
-- Register Adapters
-- Create Data Models
-- Create Cells
-- Add Sections
-- Setup Headers & Footers
-- Reload Data with/out Animations
+The following guide explain how to use features available in FlowKit with a real example.
+If you want to see a live example open `FlowKit.xcodeproj` and run the `Example` app.
 
-**Events**
+- [Create the Director](#createdirector)
+- [Register Adapters](#registeradapters)
+- [Create Data Models](#createdatamodels)
+- [Create Cells](#createcells)
+- [Add Sections](#addsections)
+- [Manage Models/Items in Section](#managemodels)
+- [Setup Headers & Footers](#setupheadersfooters)
+- [Reload Data with/out Animations](#reloaddata)
 
-**Table Events**
+**Manage Events**
 
-- `TableDirector` (general table events)
-- `TableSection` (events specific for sections)
-- `TableSectionView` (events specific for header/footer)
+All events are hookable from their respective objects starting from `.on` property. All standard table & collections events are available from FlowKit; name of the events is similar to the their standard corrispettive in UIKit (see the official documentation for more info abou any specific event).
 
-**Collection Events**
-
-- `CollectionDirector` (general collection events)
-- `CollectionSection` (events specific for sections)
-- `CollectionSectionView` (events specific for header/footer)
-
-- `UIScrollViewDelegate` events (generic `UIScrollView` events)
+- [Table Events](/Documentation/Table_Events.md)
+- [Collection Events](/Documentation/Collection_Events.md)
+- [UIScrollViewDelegate Events](/Documentation/UIScrollViewDelegate_Events.md)
 
 -- 
+
+<a name="howtouse"/>
 
 ### How to use FlowKit
 
 **Note**: *The following concepts are valid even if work with tables or collections using FlowKit (each class used starts with `Table[...]` or `Collection[...]` prefixes and where there are similaties between functions the name of functions/properties are consistence).*
 
 In FlowKit there are two important entities you will encounter: the Director and the Adapter.
+
+<a name="createdirector"/>
 
 #### Create the Director (`TableDirector`/`CollectionDirector`)
 
@@ -113,6 +134,8 @@ let director = self.tableView.director // create a director automatically
 // do something with it...
 ```
 
+<a name="registeradapters"/>
+
 #### Register Adapters (`TableAdapter`/`CollectionAdapter`)
 
 Once you have a director you need to tell to it what kind of data you are about to render: you can have an etherogeneus collection of Models and View (cells) in your scroller but a single Model can be rendered to a single type of View.
@@ -131,6 +154,8 @@ tableView.director.register(adapters: [contactAdpt, groupAdpt])
 ```
 
 Now you are ready to present your data.
+
+<a name="createdatamodels"/>
 
 #### Create Data Models (`ModelProtocol`)
 
@@ -160,6 +185,8 @@ public class Contact: ModelProtocol, Hashable {
 }
 ```
 
+<a name="createcells"/>
+
 #### Create Cells (`UITableViewCell`/`UICollectionViewCell`)
 
 Both `UITableViewCell` and `UICollectionViewCell` and its subclasses are automatically conforms to `CellProtocol`.
@@ -183,6 +210,8 @@ public class ContactCell: UITableViewCell {
 	@IBOutlet public var icon: UIImageView?
 }
 ```
+
+<a name="addsections"/>
 
 #### Add Sections (`TableSection`/`CollectionSection`)
 
@@ -211,7 +240,9 @@ let section = TableSection(headerTitle: "The Strangers", items: [mrBrown,mrGreen
 table.director.add(section: section)
 ```
 
-#### Manage Models in Section
+<a name="managemodels"/>
+
+#### Manage Models/Items in Section
 
 As for section the same `add`/`remove`/`move` function are also available for `models` array which describe the content (rows/items) inside each section (`TableSection`/`CollectionSection` instances).
 
@@ -241,6 +272,7 @@ section.remove(at: 0) // remove first item
 self.tableView.director.reloadData() // reload data
 ```
 
+<a name="setupheadersfooters"/>
 
 #### Setup Headers & Footers (`TableSectionView`/`CollectionSectionView`)
 
@@ -279,6 +311,8 @@ let section = TableSection(headerView: header, items: [mrBrown,mrGreen,mrWhite])
 table.director.add(section: section)
 ```
 
+<a name="reloaddata"/>
+
 #### Reload Data with/out Animations
 
 Each change to the data model must be done by calling the `add`/`remove`/`move` function available both at sections and items levels.
@@ -313,191 +347,66 @@ For `TableDirector` you must provide a `TableReloadAnimations` configuration whi
 
 For `CollectionDirector` you don't need to return anything; evaluation is made for you based upon the layout used.
 
---
-### Events
+<a name="installation"/>
 
-All events are hookable from their respective objects starting from `.on` property. All standard table & collections events are available from FlowKit; name of the events is similar to the their standard corrispettive in UIKit (see the official documentation for more info abou any specific event).
+## Installation
 
+### Install via CocoaPods
 
-#### Table Events
+[CocoaPods](http://cocoapods.org) is a dependency manager which automates and simplifies the process of using 3rd-party libraries like FlowKit in your projects. You can install it with the following command:
 
-**`TableDirector` (general table events)**
+```bash
+$ sudo gem install cocoapods
+```
 
-The following events are available from `TableDirector `'s `.on` property.
+> CocoaPods 1.0.1+ is required to build FlowKit.
 
-- `sectionForSectionIndex: ((_ title: String, _ index: Int) -> Int)` (name of the section is read automatically from `indexTitle` property of the section)
-- `willDisplayHeader: ((HeaderFooterEvent) -> Void)`
-- `willDisplayFooter: ((HeaderFooterEvent) -> Void)`
-- `endDisplayHeader: ((HeaderFooterEvent) -> Void)`
-- `endDisplayFooter: ((HeaderFooterEvent) -> Void)`
+#### Install via Podfile
 
-where `HeaderFooterEvent` is just a typealias:
+To integrate FlowKit into your Xcode project using CocoaPods, specify it in your `Podfile`:
 
-- `HeaderFooterEvent = (view: UIView, section: Int, table: UITableView)`
+```ruby
+source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '8.0'
 
---
+target 'TargetName' do
+use_frameworks!
+pod 'FlowKit'
+end
+```
 
-**`TableAdapter` (items/models related events)**
+Then, run the following command:
 
-The following events are available from `TableAdapter `'s `.on` property.
+```bash
+$ pod install
+```
 
-- `dequeue : ((EventContext) -> (Void))`
-- `canEdit: ((EventContext) -> Bool)`
-- `commitEdit: ((_ ctx: EventContext, _ commit: UITableViewCellEditingStyle) -> Void)`
-- `canMoveRow: ((EventContext) -> Bool)`
-- `moveRow: ((_ ctx: EventContext, _ dest: IndexPath) -> Void)`
-- `prefetch: ((_ models: [M], _ paths: [IndexPath]) -> Void)`
-- `cancelPrefetch: ((_ models: [M], _ paths: [IndexPath]) -> Void)`
-- `rowHeight: ((EventContext) -> CGFloat)`
-- `rowHeightEstimated: ((EventContext) -> CGFloat)`
-- `indentLevel: ((EventContext) -> Int)`
-- `willDisplay: ((EventContext) -> Void)`
-- `shouldSpringLoad: ((EventContext) -> Bool)`
-- `editActions: ((EventContext) -> [UITableViewRowAction]?)`
-- `tapOnAccessory: ((EventContext) -> Void)`
-- `willSelect: ((EventContext) -> IndexPath?)`
-- `tap: ((EventContext) -> TableSelectionState)`
-- `willDeselect: ((EventContext) -> IndexPath?)`
-- `didDeselect: ((EventContext) -> IndexPath?)`
-- `willBeginEdit: ((EventContext) -> Void)`
-- `didEndEdit: ((EventContext) -> Void)`
-- `editStyle: ((EventContext) -> UITableViewCellEditingStyle)`
-- `deleteConfirmTitle: ((EventContext) -> String?)`
-- `editShouldIndent: ((EventContext) -> Bool)`
-- `moveAdjustDestination: ((_ ctx: EventContext, _ proposed: IndexPath) -> IndexPath?)`
-- `endDisplay: ((_ cell: C, _ path: IndexPath) -> Void)`
-- `shouldShowMenu: ((EventContext) -> Bool)`
-- `canPerformMenuAction: ((_ ctx: EventContext, _ sel: Selector, _ sender: Any?) -> Bool)`
-- `performMenuAction: ((_ ctx: EventContext, _ sel: Selector, _ sender: Any?) -> Void)`
-- `shouldHighlight: ((EventContext) -> Bool)`
-- `didHighlight: ((EventContext) -> Void)`
-- `didUnhighlight: ((EventContext) -> Void)`
-- `canFocus: ((EventContext) -> Bool)`
+<a name="carthage" />
 
-Where `EventContext` is a typealias for Adapter's `Context<M,C>` with `M` is the `ModelProtocol` instance managed by the table and `C` is `CellProtocol` instance used to represent data.
+### Carthage
 
-The following properties are available:
+[Carthage](https://github.com/Carthage/Carthage) is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks.
 
-- `table: UITableView`: target table instance
-- `indexPath: IndexPath`: target model index path
-- `model: M`: target model instance (type-safe)
-- `cell: C?`: target cell instance (type-safe) / if available
+You can install Carthage with [Homebrew](http://brew.sh/) using the following command:
 
--- 
+```bash
+$ brew update
+$ brew install carthage
+```
 
-**`TableSectionView` (events specific for header/footer)**
+To integrate FlowKit into your Xcode project using Carthage, specify it in your `Cartfile`:
 
-The following events are available from `TableSectionView `'s `.on` property.
+```ogdl
+github "malcommac/FlowKit"
+```
 
-- `dequeue: ((Context<T>) -> Void)`
-- `height: ((Context<T>) -> CGFloat)`
-- `estimatedHeight: ((Context<T>) -> CGFloat)`
-- `willDisplay: ((Context<T>) -> Void)`
-- `endDisplay: ((Context<T>) -> Void)`
-- `didDisplay: ((Context<T>) -> Void)`
+Run `carthage` to build the framework and drag the built `FlowKit.framework` into your Xcode project.
 
-Where `Context<T>` is a structure which contains the following properties of the section view instance:
+<a name="requirements" />
 
-- `type: SectionType`: `header` if target view is header, `footer` for footer view
-- `table: UITableView`: target table instance
-- `view: T`: type-safe target instance of the header/footer view set
-- `section: Int`: target section
-- `tableSize: CGSize`: size of the target table
+## Requirements
 
-**Collection Events**
+FlowKit is compatible with Swift 4.x.
+All Apple platforms are supported:
 
-**`CollectionDirector` (general collection events)**
-
-The following events are available from `CollectionDirector `'s `.on` property.
-
-- `layoutDidChange: ((_ old: UICollectionViewLayout, _ new: UICollectionViewLayout) -> UICollectionViewTransitionLayout?)`
-- `targetOffset: ((_ proposedContentOffset: CGPoint) -> CGPoint)`
-- `moveItemPath: ((_ originalIndexPath: IndexPath, _ proposedIndexPath: IndexPath) -> IndexPath)`
-- `shouldUpdateFocus: ((_ context: UICollectionViewFocusUpdateContext) -> Bool)`
-- `didUpdateFocus: ((_ context: UICollectionViewFocusUpdateContext, _ coordinator: UIFocusAnimationCoordinator) -> Void)`
-- `willDisplayHeader : ((HeaderFooterEvent) -> Void)`
-- `willDisplayFooter : ((HeaderFooterEvent) -> Void)`
-- `endDisplayHeader : ((HeaderFooterEvent) -> Void)`
-- `endDisplayFooter : ((HeaderFooterEvent) -> Void)`
-
-Where `HeaderFooterEvent` is a typealias for:
-
-- `HeaderFooterEvent = (view: UICollectionReusableView, path: IndexPath, table: UICollectionView)`
-
--- 
-
-**`CollectionAdapter` (items/models related events)**
-
-The following events are available from `CollectionAdapter `'s `.on` property.
-
-- `dequeue: ((EventContext) -> Void)`
-- `shouldSelect: ((EventContext) -> Bool)`
-- `shouldDeselect: ((EventContext) -> Bool)`
-- `didSelect: ((EventContext) -> Void)`
-- `didDeselect: ((EventContext) -> Void)`
-- `didHighlight: ((EventContext) -> Void)`
-- `didUnhighlight: ((EventContext) -> Void)`
-- `shouldHighlight: ((EventContext) -> Bool)`
-- `willDisplay: ((_ cell: C, _ path: IndexPath) -> Void)`
-- `endDisplay: ((_ cell: C, _ path: IndexPath) -> Void)`
-- `shouldShowEditMenu: ((EventContext) -> Bool)`
-- `canPerformEditAction: ((EventContext) -> Bool)`
-- `performEditAction: ((_ ctx: EventContext, _ selector: Selector, _ sender: Any?) -> Void)`
-- `canFocus: ((EventContext) -> Bool)`
-- `itemSize: ((EventContext) -> CGSize)`
-- `prefetch: ((_ items: [M], _ paths: [IndexPath], _ collection: UICollectionView) -> Void)`
-- `cancelPrefetch: ((_ items: [M], _ paths: [IndexPath], _ collection: UICollectionView) -> Void)`
-- `shouldSpringLoad: ((EventContext) -> Bool)`
-
-Where `EventContext` is a typealias for Adapter's `Context<M,C>` with `M` is the `ModelProtocol` instance managed by the collection and `C` is `CellProtocol` instance used to represent data.
-
-The following properties are available:
-
-- `indexPath: IndexPath`: target model's index path
-- `model: M`: type-safe instance of the model
-- `cell: C`: type-safe instance of the cell
-- `collection: UICollectionView`: parent collection view
-- `collectionSize: CGSize`: parent collection view's size
-
---
-
-**CollectionSectionView` (events specific for header/footer)**
-
-The following events are available from `CollectionSectionView`'s `.on` property.
-
-- `dequeue: ((EventContext) -> Void)`
-- `referenceSize: ((EventContext) -> CGSize)`
-- `didDisplay: ((EventContext) -> Void)`
-- `endDisplay: ((EventContext) -> Void)`
-- `willDisplay: ((EventContext) -> Void)`
-
-where `EventContext` is a typealias for `Context<T>` where `T` is the instance of `UICollectionReusableView` header/footer set.
-
-The following properties are available:
-
-- `section: Int`: section of the item
-- `type: SectionType`: type of view (`footer` or `header`)
-- `view: T`: type safe instance of th header/footer
-- `collection: UICollectionView`: parent collection view
-- `collectionSize: CGSize`: parent collection view's size
-
--- 
-
-**`UIScrollViewDelegate` events (generic `UIScrollView` events)**
-
-The following events are available from director's `.onScroll` property both for `TableDirector` and `CollectionDirector`.
-
-- `didScroll: ((UIScrollView) -> Void)`
-- `willBeginDragging: ((UIScrollView) -> Void)`
-- `willEndDragging: ((_ scrollView: UIScrollView, _ velocity: CGPoint, _ targetOffset: UnsafeMutablePointer<CGPoint>) -> Void)`
-- `endDragging: ((_ scrollView: UIScrollView, _ willDecelerate: Bool) -> Void)`
-- `shouldScrollToTop: ((UIScrollView) -> Bool)`
-- `didScrollToTop: ((UIScrollView) -> Void)`
-- `willBeginDecelerating: ((UIScrollView) -> Void)`
-- `endDecelerating: ((UIScrollView) -> Void)`
-- `viewForZooming: ((UIScrollView) -> UIView?)`l
-- `willBeginZooming: ((_ scrollView: UIScrollView, _ view: UIView?) -> Void)`
-- `endZooming: ((_ scrollView: UIScrollView, _ view: UIView?, _ scale: CGFloat) -> Void)`
-- `didZoom: ((UIScrollView) -> Void)`
-- `endScrollingAnimation: ((UIScrollView) -> Void)`
-- `didChangeAdjustedContentInset: ((UIScrollView) -> Void)`
+* iOS 10.0+
