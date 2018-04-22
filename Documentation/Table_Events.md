@@ -1,5 +1,7 @@
 # Table Events
 
+![](Structure_TableKit.png)
+
 The following document describe the events available for FlowKit when you are using it to manage `UITableView`.
 
 Events are available at 3 different levels:

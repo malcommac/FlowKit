@@ -77,6 +77,7 @@ Learn more about sections, header/footer & events by reading the rest of guide.
 The following guide explain how to use features available in FlowKit with a real example.
 If you want to see a live example open `FlowKit.xcodeproj` and run the `Example` app.
 
+- [Structure](#structure)
 - [Create the Director](#createdirector)
 - [Register Adapters](#registeradapters)
 - [Create Data Models](#createdatamodels)
@@ -103,6 +104,58 @@ All events are hookable from their respective objects starting from `.on` proper
 **Note**: *The following concepts are valid even if work with tables or collections using FlowKit (each class used starts with `Table[...]` or `Collection[...]` prefixes and where there are similaties between functions the name of functions/properties are consistence).*
 
 In FlowKit there are two important entities you will encounter: the Director and the Adapter.
+
+<a name="structure"/>
+
+#### Structure
+
+The following graph describe the infrastructure of FlowKit for Collection (the same graph is [also available for Tables](Documentation/Structure_TableKit.png))).
+
+![](Documentation/Structure_CollectionKit.png)
+
+The most important class of FlowKit is the Director; this class (`TableDirector` for tables, `CollectionDirector`/`FlowCollectionDirector` for collections) manage the sync between the data and the UI: you can add/remove/move sections and configure the appearance and the behaviour of the list directly from this instance.
+The first step to use FlowKit is to assign a director to your list: you can do it by calling `list.director` or just creating your own director with the list instance to manage:
+
+``swift
+let director = FlowCollectionDirector(self.collectionView)
+```
+
+In order to render some data FlowKit must know what kind of data you want to show into the list; data is organized as pair of <Model,View> (where Model is the object you want to add into the table and view is the cell used to represent the data).
+A single model type **(any class which is conform to `ModelProtocol` and `Hashable`)** can be represented by one and only View (while a View can be used to represent different models).
+
+Adapter also allows to receive events used to configure the view and the behaviour: you can intercept tap for an instance of your model and do something, or just fillup received type-safe cell instance with model instance.
+
+So, as second step, you need to register some adapters:
+
+```swift
+let adapter = CollectionAdapter<Contact,ContactCell>()
+adapter.on.tap = { ctx in
+	print("User tapped on \(ctx.model.firstName)")
+}
+adapter.on.dequeue = { ctx in
+	ctx.cell?.titleLabel?.text = ctx.model.firstName
+}
+```
+
+Now you are ready to create sections with your models inside:
+
+```swift
+let section = TableSection(headerTitle: "Contacts", models: contactsList)
+self.tableView.director.add(section: section)
+```
+
+Models array can be etherogenous, just remeber to make your objects conform to `ModelProtocol` and `Hashable` protocol and register the associated adapter. FlowKit will take care to call your adapter events as it needs.
+
+Finally you can reload the data:
+
+```swift
+self.tableView.reloadData()
+```
+
+Et voilà! In just few lines of code you have created e managed even complex lists.
+
+The following guide describe all the other features of the library.
+
 
 <a name="createdirector"/>
 
