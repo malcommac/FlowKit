@@ -171,6 +171,13 @@ public class TableDirector: NSObject, UITableViewDelegate, UITableViewDataSource
 		DispatchQueue.main.asyncAfter(deadline: .now() + 0.25, execute: { onEnd?() })
 	}
 	
+	/// Change the content of the table.
+	///
+	/// - Parameter models: array of models to set.
+	public func set(sections: [TableSection]) {
+		self.sections = sections
+	}
+	
 	/// Append a new section a the end of the table with passed items.
 	///
 	/// - Parameter models: models to add into the section.

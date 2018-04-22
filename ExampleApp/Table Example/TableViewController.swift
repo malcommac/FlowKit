@@ -34,7 +34,7 @@ class TableViewController: UIViewController {
 		self.tableView?.director.reloadData(after: { _ in
 			
 			return TableReloadAnimations.default()
-		}, onEnd: <#T##(() -> (Void))?##(() -> (Void))?##() -> (Void)#>)
+		}, onEnd: nil)
 		
 	}
 	

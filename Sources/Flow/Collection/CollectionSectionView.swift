@@ -46,6 +46,9 @@ public class CollectionSectionView<T: HeaderFooterProtocol>: CollectionSectionPr
 	/// Context of the event sent to section's view.
 	public struct Context<T> {
 		
+		/// Type of item (footer or header)
+		public private(set) var type: SectionType
+		
 		/// Parent collection
 		public private(set) weak var collection: UICollectionView?
 		
@@ -61,7 +64,8 @@ public class CollectionSectionView<T: HeaderFooterProtocol>: CollectionSectionPr
 		}
 		
 		/// Initialize a new context (private).
-		public init(view: UIView?, at section: Int, of collection: UICollectionView) {
+		public init(type: SectionType, view: UIView?, at section: Int, of collection: UICollectionView) {
+			self.type = type
 			self.collection = collection
 			self.view = view as? T
 			self.section = section
@@ -82,23 +86,23 @@ public class CollectionSectionView<T: HeaderFooterProtocol>: CollectionSectionPr
 	
 	//MARK: INTERNAL METHODS
 	@discardableResult
-	func dispatch(_ event: CollectionSectionViewEventsKey, view: UICollectionReusableView?, section: Int, collection: UICollectionView) -> Any? {
+	func dispatch(_ event: CollectionSectionViewEventsKey, type: SectionType, view: UICollectionReusableView?, section: Int, collection: UICollectionView) -> Any? {
 		switch event {
 		case .dequeue:
 			guard let callback = self.on.dequeue else { return nil }
-			callback(Context(view: view, at: section, of: collection))
+			callback(Context(type: type, view: view, at: section, of: collection))
 		case .didDisplay:
 			guard let callback = self.on.didDisplay else { return nil }
-			callback(Context(view: view, at: section, of: collection))
+			callback(Context(type: type, view: view, at: section, of: collection))
 		case .endDisplay:
 			guard let callback = self.on.endDisplay else { return nil }
-			callback(Context(view: view, at: section, of: collection))
+			callback(Context(type: type, view: view, at: section, of: collection))
 		case .willDisplay:
 			guard let callback = self.on.willDisplay else { return nil }
-			callback(Context(view: view, at: section, of: collection))
+			callback(Context(type: type, view: view, at: section, of: collection))
 		case .referenceSize:
 			guard let callback = self.on.referenceSize else { return nil }
-			return callback(Context(view: view, at: section, of: collection))
+			return callback(Context(type: type, view: view, at: section, of: collection))
 		}
 		return nil
 	}

@@ -144,7 +144,7 @@ open class FlowCollectionDirector: CollectionDirector, UICollectionViewDelegateF
 	
 	open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
 		let header = (sections[section].header as? AbstractCollectionHeaderFooterItem)
-		guard let size = header?.dispatch(.referenceSize, view: nil, section: section, collection: collectionView) as? CGSize else {
+		guard let size = header?.dispatch(.referenceSize, type: .header, view: nil, section: section, collection: collectionView) as? CGSize else {
 			debugPrint("Must specify .referenceSize of the header. Now returning 0")
 			return .zero
 		}
@@ -153,7 +153,7 @@ open class FlowCollectionDirector: CollectionDirector, UICollectionViewDelegateF
 	
 	open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
 		let footer = (sections[section].footer as? AbstractCollectionHeaderFooterItem)
-		guard let size = footer?.dispatch(.referenceSize, view: nil, section: section, collection: collectionView) as? CGSize else {
+		guard let size = footer?.dispatch(.referenceSize, type: .footer, view: nil, section: section, collection: collectionView) as? CGSize else {
 			debugPrint("Must specify .referenceSize of the footer. Now returning 0")
 			return .zero
 		}

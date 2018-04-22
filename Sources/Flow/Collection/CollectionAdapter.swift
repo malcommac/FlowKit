@@ -53,6 +53,7 @@ public class CollectionAdapter<M: ModelProtocol, C: CellProtocol>: CollectionAda
 		return C.self
 	}
 	
+	/// Events for adapter
 	public var on = CollectionAdapter.Events<M,C>()
 
 	/// Initialize a new adapter and allows its configuration via builder callback.

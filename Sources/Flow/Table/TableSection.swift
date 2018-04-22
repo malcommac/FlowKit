@@ -112,6 +112,13 @@ public class TableSection: Hashable {
 		return (lhs.UUID == rhs.UUID)
 	}
 	
+	/// Change the content of the section.
+	///
+	/// - Parameter models: array of models to set.
+	public func set(models: [ModelProtocol]) {
+		self.models = models
+	}
+	
 	/// Add item at given index.
 	///
 	/// - Parameters:
@@ -155,7 +162,7 @@ public class TableSection: Hashable {
 	/// - Parameter indexes: indexes to remove.
 	/// - Returns: an array of removed indexes starting from the lower index to the last one. Invalid indexes are ignored.
 	@discardableResult
-	public func remove(at indexes: IndexSet) -> [ModelProtocol] {
+	public func remove(atIndexes indexes: IndexSet) -> [ModelProtocol] {
 		var removed: [ModelProtocol] = []
 		indexes.reversed().forEach {
 			if $0 < self.models.count {

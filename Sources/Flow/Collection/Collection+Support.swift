@@ -174,7 +174,7 @@ public protocol AbstractCollectionReusableView {
 internal protocol AbstractCollectionHeaderFooterItem {
 	
 	@discardableResult
-	func dispatch(_ event: CollectionSectionViewEventsKey, view: UICollectionReusableView?, section: Int, collection: UICollectionView) -> Any?
+	func dispatch(_ event: CollectionSectionViewEventsKey, type: SectionType,  view: UICollectionReusableView?, section: Int, collection: UICollectionView) -> Any?
 	
 }
 

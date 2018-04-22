@@ -216,6 +216,13 @@ UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource
 	
 	//MARK: Manage Content
 	
+	/// Change the content of the table.
+	///
+	/// - Parameter models: array of models to set.
+	public func set(sections: [CollectionSection]) {
+		self.sections = sections
+	}
+	
 	/// Create a new section, append it at the end of the sections list and insert in it passed models.
 	///
 	/// - Parameter models: models of the section
@@ -508,11 +515,11 @@ public extension CollectionDirector {
 		switch elementKind {
 		case UICollectionElementKindSectionHeader:
 			let header = (sections[indexPath.section].header as? AbstractCollectionHeaderFooterItem)
-			let _ = header?.dispatch(.willDisplay, view: view, section: indexPath.section, collection: collectionView)
+			let _ = header?.dispatch(.willDisplay, type: .header, view: view, section: indexPath.section, collection: collectionView)
 			self.on.willDisplayHeader?( (view,indexPath,collectionView) )
 		case UICollectionElementKindSectionFooter:
 			let footer = (sections[indexPath.section].footer as? AbstractCollectionHeaderFooterItem)
-			let _ = footer?.dispatch(.willDisplay, view: view, section: indexPath.section, collection: collectionView)
+			let _ = footer?.dispatch(.willDisplay, type: .footer, view: view, section: indexPath.section, collection: collectionView)
 			self.on.willDisplayFooter?( (view,indexPath,collectionView) )
 		default:
 			break
@@ -525,11 +532,11 @@ public extension CollectionDirector {
 		switch elementKind {
 		case UICollectionElementKindSectionHeader:
 			let header = (sections[indexPath.section].header as? AbstractCollectionHeaderFooterItem)
-			let _ = header?.dispatch(.endDisplay, view: view, section: indexPath.section, collection: collectionView)
+			let _ = header?.dispatch(.endDisplay, type: .header, view: view, section: indexPath.section, collection: collectionView)
 			self.on.endDisplayHeader?( (view,indexPath,collectionView) )
 		case UICollectionElementKindSectionFooter:
 			let footer = (sections[indexPath.section].footer as? AbstractCollectionHeaderFooterItem)
-			let _ = footer?.dispatch(.endDisplay, view: view, section: indexPath.section, collection: collectionView)
+			let _ = footer?.dispatch(.endDisplay, type: .footer, view: view, section: indexPath.section, collection: collectionView)
 			self.on.endDisplayFooter?( (view,indexPath,collectionView) )
 		default:
 			break
