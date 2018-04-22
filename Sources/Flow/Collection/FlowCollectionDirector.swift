@@ -160,34 +160,4 @@ open class FlowCollectionDirector: CollectionDirector, UICollectionViewDelegateF
 		return size
 	}
 	
-	public func collectionView(_ collectionView: UICollectionView, didEndDisplayingSupplementaryView view: UICollectionReusableView, forElementOfKind elementKind: String, at indexPath: IndexPath) {
-		
-		guard indexPath.section < self.sections.count else { return }
-		
-		switch elementKind {
-		case UICollectionElementKindSectionHeader:
-			let header = (sections[indexPath.section].header as? AbstractCollectionHeaderFooterItem)
-			let _ = header?.dispatch(.endDisplay, view: view, section: indexPath.section, collection: collectionView)
-		case UICollectionElementKindSectionFooter:
-			let footer = (sections[indexPath.section].footer as? AbstractCollectionHeaderFooterItem)
-			let _ = footer?.dispatch(.endDisplay, view: view, section: indexPath.section, collection: collectionView)
-		default:
-			break
-		}
-	}
-	
-	public override func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
-		
-		switch elementKind {
-		case UICollectionElementKindSectionHeader:
-			let header = (sections[indexPath.section].header as? AbstractCollectionHeaderFooterItem)
-			let _ = header?.dispatch(.willDisplay, view: view, section: indexPath.section, collection: collectionView)
-		case UICollectionElementKindSectionFooter:
-			let footer = (sections[indexPath.section].footer as? AbstractCollectionHeaderFooterItem)
-			let _ = footer?.dispatch(.willDisplay, view: view, section: indexPath.section, collection: collectionView)
-		default:
-			break
-		}
-	}
-	
 }

@@ -81,11 +81,19 @@ public extension CollectionAdapter {
 public extension CollectionDirector {
 	
 	public struct Events {
+		typealias HeaderFooterEvent = (view: UICollectionReusableView, path: IndexPath, table: UICollectionView)
+
 		var layoutDidChange: ((_ old: UICollectionViewLayout, _ new: UICollectionViewLayout) -> UICollectionViewTransitionLayout?)? = nil
 		var targetOffset: ((_ proposedContentOffset: CGPoint) -> CGPoint)? = nil
 		var moveItemPath: ((_ originalIndexPath: IndexPath, _ proposedIndexPath: IndexPath) -> IndexPath)? = nil
 		var shouldUpdateFocus: ((_ context: UICollectionViewFocusUpdateContext) -> Bool)? = nil
 		var didUpdateFocus: ((_ context: UICollectionViewFocusUpdateContext, _ coordinator: UIFocusAnimationCoordinator) -> Void)? = nil
+		
+		var willDisplayHeader : ((HeaderFooterEvent) -> Void)? = nil
+		var willDisplayFooter : ((HeaderFooterEvent) -> Void)? = nil
+		
+		var endDisplayHeader : ((HeaderFooterEvent) -> Void)? = nil
+		var endDisplayFooter : ((HeaderFooterEvent) -> Void)? = nil
 	}
 	
 }

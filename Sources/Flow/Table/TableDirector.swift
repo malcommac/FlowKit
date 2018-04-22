@@ -439,14 +439,14 @@ public extension TableDirector {
 		guard section < self.sections.count else { return }
 		let item = (self.sections[section].footerView as? AbstractTableHeaderFooterItem)
 		let _ = item?.dispatch(.endDisplay, view: view, section: section, table: tableView)
-		self.on.didEndDisplayFooter?( (view,section,tableView) )
+		self.on.endDisplayFooter?( (view,section,tableView) )
 	}
 	
 	public func tableView(_ tableView: UITableView, didEndDisplayingHeaderView view: UIView, forSection section: Int) {
 		guard section < self.sections.count else { return }
 		let item = (self.sections[section].headerView as? AbstractTableHeaderFooterItem)
 		let _ = item?.dispatch(.endDisplay, view: view, section: section, table: tableView)
-		self.on.didEndDisplayHeader?( (view,section,tableView) )
+		self.on.endDisplayHeader?( (view,section,tableView) )
 	}
 	
 	// Inserting or Deleting Table Rows

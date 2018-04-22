@@ -41,8 +41,8 @@ public extension TableDirector {
 		var willDisplayHeader: ((HeaderFooterEvent) -> Void)? = nil
 		var willDisplayFooter: ((HeaderFooterEvent) -> Void)? = nil
 		
-		var didEndDisplayHeader: ((HeaderFooterEvent) -> Void)? = nil
-		var didEndDisplayFooter: ((HeaderFooterEvent) -> Void)? = nil
+		var endDisplayHeader: ((HeaderFooterEvent) -> Void)? = nil
+		var endDisplayFooter: ((HeaderFooterEvent) -> Void)? = nil
 	}
 	
 }

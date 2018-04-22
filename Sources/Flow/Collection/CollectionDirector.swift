@@ -382,6 +382,7 @@ public extension CollectionDirector {
 			($0.value as! AbstractAdapterProtocolFunctions).dispatch(.endDisplay, context: InternalContext.init(nil, indexPath, cell, collectionView))
 		}
 	}
+
 	
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 		let (model,adapter) = self.context(forItemAt: indexPath)
@@ -505,13 +506,31 @@ public extension CollectionDirector {
 		case UICollectionElementKindSectionHeader:
 			let header = (sections[indexPath.section].header as? AbstractCollectionHeaderFooterItem)
 			let _ = header?.dispatch(.willDisplay, view: view, section: indexPath.section, collection: collectionView)
+			self.on.willDisplayHeader?( (view,indexPath,collectionView) )
 		case UICollectionElementKindSectionFooter:
 			let footer = (sections[indexPath.section].footer as? AbstractCollectionHeaderFooterItem)
 			let _ = footer?.dispatch(.willDisplay, view: view, section: indexPath.section, collection: collectionView)
+			self.on.willDisplayFooter?( (view,indexPath,collectionView) )
 		default:
 			break
 		}
 		view.layer.zPosition = 0
+	}
+	
+	public func collectionView(_ collectionView: UICollectionView, didEndDisplayingSupplementaryView view: UICollectionReusableView, forElementOfKind elementKind: String, at indexPath: IndexPath) {
+		
+		switch elementKind {
+		case UICollectionElementKindSectionHeader:
+			let header = (sections[indexPath.section].header as? AbstractCollectionHeaderFooterItem)
+			let _ = header?.dispatch(.endDisplay, view: view, section: indexPath.section, collection: collectionView)
+			self.on.endDisplayHeader?( (view,indexPath,collectionView) )
+		case UICollectionElementKindSectionFooter:
+			let footer = (sections[indexPath.section].footer as? AbstractCollectionHeaderFooterItem)
+			let _ = footer?.dispatch(.endDisplay, view: view, section: indexPath.section, collection: collectionView)
+			self.on.endDisplayFooter?( (view,indexPath,collectionView) )
+		default:
+			break
+		}
 	}
 	
 	//MARK: Prefetching
