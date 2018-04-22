@@ -1,5 +1,3 @@
-# FlowKit
-
 <p align="center" >
 <img src="https://raw.githubusercontent.com/malcommac/FlowKit/master/logo.png" width=393px alt="FlowKit" title="FlowKit">
 </p>

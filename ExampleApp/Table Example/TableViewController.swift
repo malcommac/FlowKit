@@ -39,7 +39,7 @@ class TableViewController: UIViewController {
 	}
 	
 	func getWinnerSection() -> TableSection {
-		let articles = (0..<2).map {
+		let articles = (0..<7).map {
 			return Article(title: "Article_Title_\($0)".loc, text: "Article_Text_\($0)".loc)
 		}
 		

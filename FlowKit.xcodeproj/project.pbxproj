@@ -10,7 +10,7 @@
 		52D6D9871BEFF229002C0205 /* FlowKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52D6D97C1BEFF229002C0205 /* FlowKit.framework */; };
 		642448C3208B792C0005C395 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 642448C2208B792C0005C395 /* AppDelegate.swift */; };
 		642448C5208B792C0005C395 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 642448C4208B792C0005C395 /* TableViewController.swift */; };
-		642448C7208B792C0005C395 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 642448C6208B792C0005C395 /* SecondViewController.swift */; };
+		642448C7208B792C0005C395 /* CollectionExampleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 642448C6208B792C0005C395 /* CollectionExampleController.swift */; };
 		642448CA208B792C0005C395 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 642448C8208B792C0005C395 /* Main.storyboard */; };
 		642448CC208B792D0005C395 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 642448CB208B792D0005C395 /* Assets.xcassets */; };
 		642448CF208B792D0005C395 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 642448CD208B792D0005C395 /* LaunchScreen.storyboard */; };
@@ -75,7 +75,7 @@
 		642448C0208B792C0005C395 /* ExampleApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExampleApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		642448C2208B792C0005C395 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		642448C4208B792C0005C395 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
-		642448C6208B792C0005C395 /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
+		642448C6208B792C0005C395 /* CollectionExampleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionExampleController.swift; sourceTree = "<group>"; };
 		642448C9208B792C0005C395 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		642448CB208B792D0005C395 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		642448CE208B792D0005C395 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -168,9 +168,9 @@
 			isa = PBXGroup;
 			children = (
 				642448C2208B792C0005C395 /* AppDelegate.swift */,
-				642448F0208C83A40005C395 /* Table Example */,
-				642448C6208B792C0005C395 /* SecondViewController.swift */,
 				642448C8208B792C0005C395 /* Main.storyboard */,
+				642448F0208C83A40005C395 /* Table Example */,
+				642448F9208CBC3E0005C395 /* Collection Example */,
 				642448CB208B792D0005C395 /* Assets.xcassets */,
 				642448CD208B792D0005C395 /* LaunchScreen.storyboard */,
 				642448D0208B792D0005C395 /* Info.plist */,
@@ -205,6 +205,14 @@
 				642448F2208C83DA0005C395 /* TableFooterExample.swift */,
 			);
 			path = "Custom Footer";
+			sourceTree = "<group>";
+		};
+		642448F9208CBC3E0005C395 /* Collection Example */ = {
+			isa = PBXGroup;
+			children = (
+				642448C6208B792C0005C395 /* CollectionExampleController.swift */,
+			);
+			path = "Collection Example";
 			sourceTree = "<group>";
 		};
 		64F7CAC7208B566D00676831 /* Flow */ = {
@@ -376,7 +384,7 @@
 					};
 					642448BF208B792C0005C395 = {
 						CreatedOnToolsVersion = 9.3;
-						DevelopmentTeam = F9HF7PK3KB;
+						DevelopmentTeam = E5DU3FA699;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -474,7 +482,7 @@
 				642448DF208B7A130005C395 /* CollectionSectionView.swift in Sources */,
 				642448E3208B7A130005C395 /* DeepDiff+Helpers.swift in Sources */,
 				642448D9208B7A130005C395 /* CollectionDirector.swift in Sources */,
-				642448C7208B792C0005C395 /* SecondViewController.swift in Sources */,
+				642448C7208B792C0005C395 /* CollectionExampleController.swift in Sources */,
 				642448D8208B7A130005C395 /* TableDirector+Events.swift in Sources */,
 				642448C3208B792C0005C395 /* AppDelegate.swift in Sources */,
 				642448EF208B81A00005C395 /* TableSectionView.swift in Sources */,
@@ -724,12 +732,12 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = F9HF7PK3KB;
+				DEVELOPMENT_TEAM = E5DU3FA699;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = ExampleApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.flowkit.ExampleApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.flowkit.demoapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_VERSION = 4.0;
@@ -751,12 +759,12 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = F9HF7PK3KB;
+				DEVELOPMENT_TEAM = E5DU3FA699;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = ExampleApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.flowkit.ExampleApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.flowkit.demoapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 4.0;
