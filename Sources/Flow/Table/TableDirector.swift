@@ -392,49 +392,57 @@ public extension TableDirector {
 	}
 	
 	public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-		guard let h = self.sections[section].on.headerHeigth else {
+		let item = (self.sections[section].headerView as? AbstractTableHeaderFooterItem)
+		guard let height = item?.dispatch(.height, view: nil, section: section, table: tableView) as? CGFloat else {
 			return (self.headerHeight ?? UITableViewAutomaticDimension)
 		}
-		return h()
+		return height
 	}
 	
 	public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-		guard let h = self.sections[section].on.footerHeight else {
-			return (self.headerHeight ?? UITableViewAutomaticDimension)
+		let item = (self.sections[section].footerView as? AbstractTableHeaderFooterItem)
+		guard let height = item?.dispatch(.height, view: nil, section: section, table: tableView) as? CGFloat else {
+			return (self.footerHeight ?? UITableViewAutomaticDimension)
 		}
-		return h()
+		return height
 	}
 	
 	public func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-		guard let h = self.sections[section].on.estimatedHeaderHeight else {
+		let item = (self.sections[section].headerView as? AbstractTableHeaderFooterItem)
+		guard let height = item?.dispatch(.estimatedHeight, view: nil, section: section, table: tableView) as? CGFloat else {
 			return (self.headerHeight ?? UITableViewAutomaticDimension)
 		}
-		return h()
+		return height
 	}
 	
 	public func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
-		guard let h = self.sections[section].on.estimatedFooterHeight else {
+		let item = (self.sections[section].footerView as? AbstractTableHeaderFooterItem)
+		guard let height = item?.dispatch(.estimatedHeight, view: nil, section: section, table: tableView) as? CGFloat else {
 			return (self.footerHeight ?? UITableViewAutomaticDimension)
 		}
-		return h()
+		return height
 	}
 	
 	public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-		self.sections[section].on.willDisplayHeader?(view)
+		let item = (self.sections[section].headerView as? AbstractTableHeaderFooterItem)
+		let _ = item?.dispatch(.willDisplay, view: view, section: section, table: tableView)
 	}
 	
 	public func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
-		self.sections[section].on.willDisplayFooter?(view)
+		let item = (self.sections[section].footerView as? AbstractTableHeaderFooterItem)
+		let _ = item?.dispatch(.willDisplay, view: view, section: section, table: tableView)
 	}
 	
 	public func tableView(_ tableView: UITableView, didEndDisplayingFooterView view: UIView, forSection section: Int) {
 		guard section < self.sections.count else { return }
-		self.sections[section].on.didEndDisplayFooter?(view)
+		let item = (self.sections[section].footerView as? AbstractTableHeaderFooterItem)
+		let _ = item?.dispatch(.endDisplay, view: view, section: section, table: tableView)
 	}
 	
 	public func tableView(_ tableView: UITableView, didEndDisplayingHeaderView view: UIView, forSection section: Int) {
 		guard section < self.sections.count else { return }
-		self.sections[section].on.didEndDisplayHeader?(view)
+		let item = (self.sections[section].headerView as? AbstractTableHeaderFooterItem)
+		let _ = item?.dispatch(.endDisplay, view: view, section: section, table: tableView)
 	}
 	
 	// Inserting or Deleting Table Rows
@@ -685,7 +693,7 @@ public extension TableDirector {
 	///
 	/// - Parameter view: abstract view to register.
 	/// - Returns: `true` if view is registered, `false` otherwise. If view is already registered it returns `false`.
-	internal func registerView(_ view: AbstractTableHeaderFooterItem) -> String {
+	internal func registerView(_ view: TableHeaderFooterProtocol) -> String {
 		let identifier = view.reuseIdentifier
 		guard !self.headersFootersIDs.contains(identifier) else { return identifier}
 		

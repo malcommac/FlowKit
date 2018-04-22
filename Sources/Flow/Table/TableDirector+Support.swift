@@ -83,7 +83,13 @@ public struct TableReloadAnimations {
 extension UITableViewCell: CellProtocol { }
 
 public protocol TableAdapterProtocol : AbstractAdapterProtocol, Equatable { }
-public protocol AbstractTableHeaderFooterItem : AbstractCollectionReusableView { }
+
+internal protocol AbstractTableHeaderFooterItem  {
+	@discardableResult
+	func dispatch(_ event: TableSectionViewEventsKey, view: UIView?, section: Int, table: UITableView) -> Any?
+}
+
+public protocol TableHeaderFooterProtocol : AbstractCollectionReusableView { }
 
 internal protocol TableAdaterProtocolFunctions {
 	
@@ -100,6 +106,15 @@ internal protocol TableDirectorEventable {
 
 internal enum TableDirectorEventKey: String {
 	case sectionForSectionIndex
+}
+
+internal enum TableSectionViewEventsKey: Int {
+	case dequeue
+	case height
+	case estimatedHeight
+	case didDisplay
+	case endDisplay
+	case willDisplay
 }
 
 internal enum TableAdapterEventsKey: Int {

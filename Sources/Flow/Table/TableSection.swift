@@ -33,10 +33,6 @@ import UIKit
 /// Represent a single section of the table
 public class TableSection: Hashable {
 	
-	/// Registered events for this section.
-	//internal var events: [TableSectionEventKey : TableSectionEvents] = [:]
-	public var on = TableSection.Events()
-	
 	/// Items inside the section.
 	public private(set) var models: [ModelProtocol] = []
 	
@@ -47,10 +43,10 @@ public class TableSection: Hashable {
 	public var footerTitle: String?
 	
 	/// View of the header
-	public var headerView: AbstractTableHeaderFooterItem?
+	public var headerView: TableHeaderFooterProtocol?
 	
 	/// View of the footer
-	public var footerView: AbstractTableHeaderFooterItem?
+	public var footerView: TableHeaderFooterProtocol?
 	
 	/// Optional index title for this section (used for `sectionIndexTitles(for: UITableView)`)
 	public var indexTitle: String?
@@ -84,8 +80,8 @@ public class TableSection: Hashable {
 	///   - headerView: header view
 	///   - footerView: footer view
 	///   - models: models to add (`nil` means empty array)
-	public convenience init(headerView: AbstractTableHeaderFooterItem? = nil,
-							footerView: AbstractTableHeaderFooterItem? = nil,
+	public convenience init(headerView: TableHeaderFooterProtocol? = nil,
+							footerView: TableHeaderFooterProtocol? = nil,
 							models: [ModelProtocol]? = nil) {
 		self.init(models)
 		self.headerView = headerView

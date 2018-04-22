@@ -32,11 +32,12 @@ import UIKit
 
 public class TableSectionView<T: HeaderFooterProtocol>: AbstractTableHeaderFooterItem, CustomStringConvertible {
 	
+	
 	/// Context of the event sent to section's view.
 	public struct Context<T> {
 		
 		/// Parent collection
-		public private(set) weak var collection: UICollectionView?
+		public private(set) weak var table: UITableView?
 		
 		/// Instance of the view dequeued for this section.
 		public private(set) var view: T?
@@ -45,17 +46,19 @@ public class TableSectionView<T: HeaderFooterProtocol>: AbstractTableHeaderFoote
 		public private(set) var section: Int
 		
 		/// Parent collection's size.
-		public var collectionSize: CGSize? {
-			return self.collection?.bounds.size
+		public var tableSize: CGSize? {
+			return self.table?.bounds.size
 		}
 		
 		/// Initialize a new context (private).
-		public init(view: T?, at section: Int, of collection: UICollectionView) {
-			self.collection = collection
-			self.view = view
+		public init(view: UIView?, at section: Int, of table: UITableView) {
+			self.table = table
+			self.view = view as? T
 			self.section = section
 		}
 	}
+	
+	public var on = TableSectionView.Events<T>()
 	
 	//MARK: PROPERTIES
 	
@@ -91,31 +94,29 @@ public class TableSectionView<T: HeaderFooterProtocol>: AbstractTableHeaderFoote
 	}
 	
 	//MARK: INTERNAL METHODS
-	
-	public func _configure(view: UICollectionReusableView, section: Int, collection: UICollectionView) {
-		guard let event = onConfigure else { return }
-		let context = Context<T>(view: view as? T, at: section, of: collection)
-		event(context)
-	}
-	
-	public func _referenceSize(section: Int, collection: UICollectionView) -> CGSize {
-		guard let event = self.onGetReferenceSize else {
-			fatalError("referenceSize is not implement for \(self)")
+	@discardableResult
+	func dispatch(_ event: TableSectionViewEventsKey, view: UIView?, section: Int, table: UITableView) -> Any? {
+		switch event {
+		case .dequeue:
+			guard let callback = self.on.dequeue else { return nil }
+			callback(Context<T>(view: view, at: section, of: table))
+		case .height:
+			guard let callback = self.on.height else { return nil }
+			return callback(Context<T>(view: view, at: section, of: table))
+		case .willDisplay:
+			guard let callback = self.on.willDisplay else { return nil }
+			return callback(Context<T>(view: view, at: section, of: table))
+		case .didDisplay:
+			guard let callback = self.on.didDisplay else { return nil }
+			return callback(Context<T>(view: view, at: section, of: table))
+		case .endDisplay:
+			guard let callback = self.on.endDisplay else { return nil }
+			return callback(Context<T>(view: view, at: section, of: table))
+		case .estimatedHeight:
+			guard let callback = self.on.estimatedHeight else { return nil }
+			return callback(Context<T>(view: view, at: section, of: table))
 		}
-		let context = Context<T>(view: nil, at: section, of: collection)
-		return event(context)
-	}
-	
-	public func _didDisplay(view: UICollectionReusableView, section: Int, collection: UICollectionView) {
-		guard let event = onDidDisplay else { return }
-		let context = Context<T>(view: view as? T, at: section, of: collection)
-		event(context)
-	}
-	
-	public func _didEndDisplay(view: UICollectionReusableView, section: Int, collection: UICollectionView) {
-		guard let event = onEndDisplay, let v = view as? T else { return }
-		let context = Context<T>(view: v, at: section, of: collection)
-		event(context)
+		return nil
 	}
 	
 }

@@ -40,18 +40,16 @@ public extension TableDirector {
 }
 
 // MARK: - TableSection Events
-public extension TableSection {
+public extension TableSectionView {
 	
-	public struct Events {
-		public var headerHeigth: (() -> CGFloat)? = nil
-		public var footerHeight: (() -> CGFloat)? = nil
-		public var estimatedHeaderHeight: (() -> CGFloat)? = nil
-		public var estimatedFooterHeight: (() -> CGFloat)? = nil
-		public var willDisplayHeader: ((UIView) -> Void)? = nil
-		public var willDisplayFooter: ((UIView) -> Void)? = nil
-		public var didEndDisplayHeader: ((UIView) -> Void)? = nil
-		public var didEndDisplayFooter: ((UIView) -> Void)? = nil
-		
+	public struct Events<T> {
+		public var dequeue: ((Context<T>) -> Void)? = nil
+		public var height: ((Context<T>) -> CGFloat)? = nil
+		public var estimatedHeight: ((Context<T>) -> CGFloat)? = nil
+		public var willDisplay: ((Context<T>) -> Void)? = nil
+		public var endDisplay: ((Context<T>) -> Void)? = nil
+		public var didDisplay: ((Context<T>) -> Void)? = nil
+
 		public init() {}
 	}
 	
