@@ -131,15 +131,24 @@ open class FlowCollectionDirector: CollectionDirector, UICollectionViewDelegateF
 	}
 	
 	open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-		return (self.sections[section].sectionInsets ?? self.sectionsInsets)
+		guard let value = self.sections[section].sectionInsets?() else {
+			return self.sectionsInsets
+		}
+		return value
 	}
 	
 	open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-		return (self.sections[section].minimumInterItemSpacing ?? self.minimumInteritemSpacing)
+		guard let value = self.sections[section].minimumInterItemSpacing?() else {
+			return self.minimumInteritemSpacing
+		}
+		return value
 	}
 	
 	open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-		return (self.sections[section].minimumLineSpacing ?? self.minimumLineSpacing)
+		guard let value = self.sections[section].minimumLineSpacing?() else {
+			return self.minimumLineSpacing
+		}
+		return value
 	}
 	
 	open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
