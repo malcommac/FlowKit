@@ -77,13 +77,22 @@ UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource
 	/// Set it to `true` to enable cell prefetching. By default is set to `false`.
 	public var prefetchEnabled: Bool {
 		set {
-			switch newValue {
-			case true: self.collection!.prefetchDataSource = self
-			case false: self.collection!.prefetchDataSource = nil
+			if #available(iOS 10.0, *) {
+				switch newValue {
+				case true: self.collection!.prefetchDataSource = self
+				case false: self.collection!.prefetchDataSource = nil
+				}
+			} else {
+				debugPrint("Prefetch is available only from iOS 10")
 			}
 		}
 		get {
-			return (self.collection!.prefetchDataSource != nil)
+			if #available(iOS 10.0, *) {
+				return (self.collection!.prefetchDataSource != nil)
+			} else {
+				debugPrint("Prefetch is available only from iOS 10")
+				return false
+			}
 		}
 	}
 

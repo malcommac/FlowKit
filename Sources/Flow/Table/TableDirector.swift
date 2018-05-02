@@ -93,13 +93,22 @@ public class TableDirector: NSObject, UITableViewDelegate, UITableViewDataSource
 	/// events inside enabled sections.
 	public var prefetchEnabled: Bool {
 		set {
-			switch newValue {
-			case true: 	self.tableView!.prefetchDataSource = self
-			case false: self.tableView!.prefetchDataSource = nil
+			if #available(iOS 10.0, *) {
+				switch newValue {
+				case true: 	self.tableView!.prefetchDataSource = self
+				case false: self.tableView!.prefetchDataSource = nil
+				}
+			} else {
+				debugPrint("Prefetch is available only from iOS 10")
 			}
 		}
 		get {
-			return (self.tableView!.prefetchDataSource != nil)
+			if #available(iOS 10.0, *) {
+				return (self.tableView!.prefetchDataSource != nil)
+			} else {
+				debugPrint("Prefetch is available only from iOS 10")
+				return false
+			}
 		}
 	}
 	

@@ -472,4 +472,4 @@ Run `carthage` to build the framework and drag the built `FlowKit.framework` int
 
 FlowKit is compatible with Swift 4.x.
 
-* iOS 10.0+
+* iOS 9.0+
