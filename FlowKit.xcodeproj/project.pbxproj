@@ -91,6 +91,7 @@
 		642448F6208C83F50005C395 /* TableFooterExample.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableFooterExample.xib; sourceTree = "<group>"; };
 		642448FA208CC7330005C395 /* CollectionHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CollectionHeader.xib; sourceTree = "<group>"; };
 		642448FC208CC73C0005C395 /* CollectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionHeader.swift; sourceTree = "<group>"; };
+		644A23342099B99000E281B7 /* FlowKitManager.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = FlowKitManager.podspec; sourceTree = "<group>"; };
 		64F7CAC9208B566D00676831 /* CollectionSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionSection.swift; sourceTree = "<group>"; };
 		64F7CACA208B566D00676831 /* CollectionAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionAdapter.swift; sourceTree = "<group>"; };
 		64F7CACB208B566D00676831 /* CollectionDragDropManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionDragDropManager.swift; sourceTree = "<group>"; };
@@ -141,6 +142,7 @@
 		52D6D9721BEFF229002C0205 = {
 			isa = PBXGroup;
 			children = (
+				644A23342099B99000E281B7 /* FlowKitManager.podspec */,
 				8933C7811EB5B7E0000D00A4 /* Sources */,
 				8933C7831EB5B7EB000D00A4 /* Tests */,
 				52D6D99C1BEFF38C002C0205 /* Configs */,

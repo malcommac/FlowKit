@@ -30,6 +30,12 @@
 import Foundation
 import UIKit
 
+/// No data shortcut when adapter does not need of a representable model
+public struct NoData: ModelProtocol {
+	public func isEqual(to other: ModelProtocol) -> Bool { return false }
+	public var identifier: Int = 0
+}
+
 internal struct InternalContext {
 	var model: ModelProtocol?
 	var models: [ModelProtocol]?
