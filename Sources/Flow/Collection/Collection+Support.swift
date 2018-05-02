@@ -68,7 +68,7 @@ extension ModelProtocol where Self: Equatable {
 extension ModelProtocol where Self: Hashable {
 	
 	public var hashValue: Int {
-		return self.identifier
+		return self.identifier.hashValue
 	}
 	
 }

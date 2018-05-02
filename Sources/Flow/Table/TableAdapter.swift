@@ -52,7 +52,7 @@ public class TableAdapter<M: ModelProtocol, C: CellProtocol>: TableAdapterProtoc
 	/// Initialize a new adapter with optional configuration callback.
 	///
 	/// - Parameter configuration: configuration callback
-	init(_ configuration: ((TableAdapter) -> (Void))? = nil) {
+	public init(_ configuration: ((TableAdapter) -> (Void))? = nil) {
 		configuration?(self)
 	}
 	
