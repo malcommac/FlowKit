@@ -54,7 +54,7 @@ public class CollectionAdapter<M: ModelProtocol, C: CellProtocol>: CollectionAda
 	/// Initialize a new adapter and allows its configuration via builder callback.
 	///
 	/// - Parameter configuration: configuration callback
-	init(_ configuration: ((CollectionAdapter) -> (Void))? = nil) {
+	public init(_ configuration: ((CollectionAdapter) -> (Void))? = nil) {
 		configuration?(self)
 	}
 	

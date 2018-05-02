@@ -81,7 +81,7 @@ public class TableSection: Hashable {
 	///   - headerTitle: header title as string
 	///   - footerTitle: footer title as string
 	///   - models: models to add (`nil` means empty array)
-	public convenience init(headerTitle: String? = nil, footerTitle: String? = nil,
+	public convenience init(headerTitle: String?, footerTitle: String?,
 							models: [ModelProtocol]? = nil) {
 		self.init(models)
 		self.headerTitle = headerTitle
@@ -94,8 +94,8 @@ public class TableSection: Hashable {
 	///   - headerView: header view
 	///   - footerView: footer view
 	///   - models: models to add (`nil` means empty array)
-	public convenience init(headerView: TableHeaderFooterProtocol? = nil,
-							footerView: TableHeaderFooterProtocol? = nil,
+	public convenience init(headerView: TableHeaderFooterProtocol?,
+							footerView: TableHeaderFooterProtocol?,
 							models: [ModelProtocol]? = nil) {
 		self.init(models)
 		self.headerView = headerView
