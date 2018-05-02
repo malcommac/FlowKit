@@ -42,17 +42,17 @@ public class CollectionSection: Equatable, Hashable {
 	/// Implement this method when you want to provide margins for sections in the flow layout.
 	/// If you do not implement this method, the margins are obtained from the properties of the flow layout object.
 	/// NOTE: It's valid only for flow layout.
-	open var sectionInsets: UIEdgeInsets? = nil
+	open var sectionInsets: (() -> (UIEdgeInsets))? = nil
 	
 	/// The minimum spacing (in points) to use between items in the same row or column.
 	/// If you do not implement this method, value is obtained from the properties of the flow layout object.
 	/// NOTE: It's valid only for flow layout.
-	open var minimumInterItemSpacing: CGFloat? = nil
+	open var minimumInterItemSpacing: (() -> (CGFloat))? = nil
 	
 	/// The minimum spacing (in points) to use between rows or columns.
 	/// If you do not implement this method, value is obtained from the properties of the flow layout object.
 	/// NOTE: It's valid only for flow layout.
-	open var minimumLineSpacing: CGFloat? = nil
+	open var minimumLineSpacing: (() -> (CGFloat))? = nil
 	
 	/// Header of the sections; instantiate a new object of `CollectionSectionView<UIReusableView>`.
 	/// NOTE: It's valid only for flow layout.
