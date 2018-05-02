@@ -53,26 +53,26 @@ public extension CollectionAdapter {
 	public struct Events<M,C> {
 		public typealias EventContext = Context<M,C>
 		
-		var dequeue: ((EventContext) -> Void)? = nil
-		var shouldSelect: ((EventContext) -> Bool)? = nil
-		var shouldDeselect: ((EventContext) -> Bool)? = nil
-		var didSelect: ((EventContext) -> Void)? = nil
-		var didDeselect: ((EventContext) -> Void)? = nil
-		var didHighlight: ((EventContext) -> Void)? = nil
-		var didUnhighlight: ((EventContext) -> Void)? = nil
-		var shouldHighlight: ((EventContext) -> Bool)? = nil
-		var willDisplay: ((_ cell: C, _ path: IndexPath) -> Void)? = nil
-		var endDisplay: ((_ cell: C, _ path: IndexPath) -> Void)? = nil
-		var shouldShowEditMenu: ((EventContext) -> Bool)? = nil
-		var canPerformEditAction: ((EventContext) -> Bool)? = nil
-		var performEditAction: ((_ ctx: EventContext, _ selector: Selector, _ sender: Any?) -> Void)? = nil
-		var canFocus: ((EventContext) -> Bool)? = nil
-		var itemSize: ((EventContext) -> CGSize)? = nil
+		public var dequeue: ((EventContext) -> Void)? = nil
+		public var shouldSelect: ((EventContext) -> Bool)? = nil
+		public var shouldDeselect: ((EventContext) -> Bool)? = nil
+		public var didSelect: ((EventContext) -> Void)? = nil
+		public var didDeselect: ((EventContext) -> Void)? = nil
+		public var didHighlight: ((EventContext) -> Void)? = nil
+		public var didUnhighlight: ((EventContext) -> Void)? = nil
+		public var shouldHighlight: ((EventContext) -> Bool)? = nil
+		public var willDisplay: ((_ cell: C, _ path: IndexPath) -> Void)? = nil
+		public var endDisplay: ((_ cell: C, _ path: IndexPath) -> Void)? = nil
+		public var shouldShowEditMenu: ((EventContext) -> Bool)? = nil
+		public var canPerformEditAction: ((EventContext) -> Bool)? = nil
+		public var performEditAction: ((_ ctx: EventContext, _ selector: Selector, _ sender: Any?) -> Void)? = nil
+		public var canFocus: ((EventContext) -> Bool)? = nil
+		public var itemSize: ((EventContext) -> CGSize)? = nil
 		//var generateDragPreview: ((EventContext) -> UIDragPreviewParameters?)? = nil
 		//var generateDropPreview: ((EventContext) -> UIDragPreviewParameters?)? = nil
-		var prefetch: ((_ items: [M], _ paths: [IndexPath], _ collection: UICollectionView) -> Void)? = nil
-		var cancelPrefetch: ((_ items: [M], _ paths: [IndexPath], _ collection: UICollectionView) -> Void)? = nil
-		var shouldSpringLoad: ((EventContext) -> Bool)? = nil
+		public var prefetch: ((_ items: [M], _ paths: [IndexPath], _ collection: UICollectionView) -> Void)? = nil
+		public var cancelPrefetch: ((_ items: [M], _ paths: [IndexPath], _ collection: UICollectionView) -> Void)? = nil
+		public var shouldSpringLoad: ((EventContext) -> Bool)? = nil
 	}
 	
 }
