@@ -40,29 +40,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	func applicationWillTerminate(_ application: UIApplication) {
 		// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 	}
-
-
 }
-
-public extension String {
-	
-	public var loc: String {
-		return NSLocalizedString(self, comment: self)
-	}
-	
-	public func loc(default str: String?) -> String? {
-		let localized = NSLocalizedString(self, comment: self)
-		if localized == self { return str }
-		return localized
-	}
-	
-	public var locUp: String {
-		return NSLocalizedString(self, comment: self).uppercased()
-	}
-	
-	public func loc(_ args: CVarArg...) -> String {
-		return String(format: self.loc, locale: nil, arguments: args)
-	}
-	
-}
-

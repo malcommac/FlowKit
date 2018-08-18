@@ -11,6 +11,6 @@ import UIKit
 
 public class TableExampleHeaderView: UITableViewHeaderFooterView {
 	
-	@IBOutlet public var titleLabel: UILabel?
+    @IBOutlet public var titleLabel: UILabel?
 	
 }

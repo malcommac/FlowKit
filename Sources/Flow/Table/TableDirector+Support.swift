@@ -132,7 +132,9 @@ internal enum TableAdapterEventsKey: Int {
 	case indentLevel
 	case willDisplay
 	case shouldSpringLoad
+    #if os(iOS)
 	case editActions
+    #endif
 	case tapOnAccessory
 	case willSelect
 	case tap

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder.AppleTV.XIB" version="3.0" toolsVersion="14313.13.2" targetRuntime="AppleTV" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="appleTV" orientation="landscape">
+        <adaptation id="dark"/>
+    </device>
+    <dependencies>
+        <deployment identifier="tvOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.9"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="FNk-8Q-zsp" customClass="TableExampleHeaderView" customModule="ExampleApp_tvOS" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="1920" height="270"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="M0h-nF-WiP">
+                    <rect key="frame" x="90" y="60" width="1740" height="150"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CUSTOM HEADER" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7pv-cE-ETM">
+                            <rect key="frame" x="673" y="46" width="395" height="58"/>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" red="0.92494326829999995" green="0.15120375159999999" blue="0.18415865300000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstItem="7pv-cE-ETM" firstAttribute="centerY" secondItem="M0h-nF-WiP" secondAttribute="centerY" id="4u4-sJ-Boe"/>
+                        <constraint firstItem="7pv-cE-ETM" firstAttribute="centerX" secondItem="M0h-nF-WiP" secondAttribute="centerX" id="HCa-pE-CuX"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <constraints>
+                <constraint firstItem="twB-F4-x3j" firstAttribute="bottom" secondItem="M0h-nF-WiP" secondAttribute="bottom" id="Yhz-LA-eoE"/>
+                <constraint firstItem="M0h-nF-WiP" firstAttribute="leading" secondItem="twB-F4-x3j" secondAttribute="leading" id="fgs-Sp-l5O"/>
+                <constraint firstItem="M0h-nF-WiP" firstAttribute="top" secondItem="twB-F4-x3j" secondAttribute="top" id="huM-3J-7Jj"/>
+                <constraint firstItem="twB-F4-x3j" firstAttribute="trailing" secondItem="M0h-nF-WiP" secondAttribute="trailing" id="t12-zW-yPx"/>
+            </constraints>
+            <nil key="simulatedTopBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="twB-F4-x3j"/>
+            <connections>
+                <outlet property="titleLabel" destination="7pv-cE-ETM" id="Csf-wV-woQ"/>
+            </connections>
+            <point key="canvasLocation" x="-307" y="-249"/>
+        </view>
+    </objects>
+</document>

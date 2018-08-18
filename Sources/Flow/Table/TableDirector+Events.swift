@@ -87,6 +87,7 @@ public extension TableAdapter {
 		public var willDisplay: ((EventContext) -> Void)? = nil
 		public var shouldSpringLoad: ((EventContext) -> Bool)? = nil
 		
+        @available(tvOS, unavailable, message: "Not available in tvOS")
 		public var editActions: ((EventContext) -> [UITableViewRowAction]?)? = nil
 		public var tapOnAccessory: ((EventContext) -> Void)? = nil
 		

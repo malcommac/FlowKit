@@ -77,20 +77,20 @@ UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource
 	/// Set it to `true` to enable cell prefetching. By default is set to `false`.
 	public var prefetchEnabled: Bool {
 		set {
-			if #available(iOS 10.0, *) {
+			if #available(iOS 10.0, tvOS 10.0, *) {
 				switch newValue {
 				case true: self.collection!.prefetchDataSource = self
 				case false: self.collection!.prefetchDataSource = nil
 				}
 			} else {
-				debugPrint("Prefetch is available only from iOS 10")
+				debugPrint("Prefetch is available only from iOS 10/tvOS 10")
 			}
 		}
 		get {
-			if #available(iOS 10.0, *) {
+			if #available(iOS 10.0, tvOS 10.0, *) {
 				return (self.collection!.prefetchDataSource != nil)
 			} else {
-				debugPrint("Prefetch is available only from iOS 10")
+				debugPrint("Prefetch is available only from iOS 10/tvOS 10")
 				return false
 			}
 		}
@@ -480,6 +480,7 @@ public extension CollectionDirector {
 	}
 	
 	@available(iOS 11.0, *)
+    @available(tvOS, unavailable, message: "Not vailable in tvOS")
 	public func collectionView(_ collectionView: UICollectionView, shouldSpringLoadItemAt indexPath: IndexPath, with context: UISpringLoadedInteractionContext) -> Bool {
 		let (model,adapter) = self.context(forItemAt: indexPath)
 		return ((adapter.dispatch(.shouldSpringLoad, context: InternalContext.init(model, indexPath, nil, collectionView)) as? Bool) ?? true)

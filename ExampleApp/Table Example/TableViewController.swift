@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FlowKit
 
 class TableViewController: UIViewController {
 	
@@ -30,7 +31,7 @@ class TableViewController: UIViewController {
 		
 		self.tableView?.director.add(section: self.getWinnerSection())
 
-		self.tableView?.director.rowHeight = .autoLayout(estimated: 100)
+		self.tableView?.director.rowHeight = .autoLayout(estimated: 200)
 		self.tableView?.director.reloadData(after: { _ in
 			
 			return TableReloadAnimations.default()
@@ -44,14 +45,18 @@ class TableViewController: UIViewController {
 		}
 		
 		let header = TableSectionView<TableExampleHeaderView>()
-		header.on.height = { _ in
-			return 150
+		header.on.height = { ctx in
+			return max(ctx.tableSize!.width, ctx.tableSize!.height) / 15
 		}
+        header.on.dequeue = { ctx in
+            ctx.view?.titleLabel?.text = "Cogito Ergo Sum"
+        }
+
 		
 		let footer = TableSectionView<TableFooterExample>()
-		footer.on.height = { _ in
-			return 30
-		}
+        footer.on.height = { ctx in
+            return max(ctx.tableSize!.width, ctx.tableSize!.height) / 20
+        }
 		footer.on.dequeue = { ctx in
 			ctx.view?.titleLabel?.text = "\(articles.count) Articles"
 		}

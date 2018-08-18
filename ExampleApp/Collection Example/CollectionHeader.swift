@@ -10,5 +10,5 @@ import Foundation
 import UIKit
 
 public class CollectionHeader: UICollectionReusableView {
-	@IBOutlet public var label: UILabel?
+    @IBOutlet public var label: UILabel!
 }

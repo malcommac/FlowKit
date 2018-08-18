@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FlowKit
 
 class CollectionExampleController: UIViewController {
 	
@@ -23,12 +24,15 @@ class CollectionExampleController: UIViewController {
 		self.director?.register(adapter: letterAdapter)
 		letterAdapter.on.dequeue = { ctx in
 			ctx.cell?.label?.text = "\(ctx.model)"
+            ctx.cell?.back?.layer.borderWidth = 2
+            ctx.cell?.back?.layer.borderColor = UIColor.darkGray.cgColor
+            ctx.cell?.back?.backgroundColor = UIColor.white
 		}
 		letterAdapter.on.didSelect = { ctx in
 			print("Tapped letter \(ctx.model)")
 		}
 		letterAdapter.on.itemSize = { ctx in
-			return CGSize.init(width: ctx.collectionSize!.width / 3.0, height: 100)
+            return CGSize(width: ctx.collectionSize!.width / 3.0, height: ctx.collectionSize!.height / 16.0)
 		}
 		
 		
@@ -39,22 +43,22 @@ class CollectionExampleController: UIViewController {
 			ctx.cell?.label?.text = "#\(ctx.model)"
 			ctx.cell?.back?.layer.borderWidth = 2
 			ctx.cell?.back?.layer.borderColor = UIColor.darkGray.cgColor
-			ctx.cell?.back?.backgroundColor = UIColor.white
+            ctx.cell?.backgroundColor = UIColor.lightGray
 		}
 		numberAdapter.on.didSelect = { ctx in
 			print("Tapped number \(ctx.model)")
 		}
 		numberAdapter.on.itemSize = { ctx in
-			return CGSize.init(width: ctx.collectionSize!.width / 3.0, height: 100)
+            return CGSize.init(width: ctx.collectionSize!.width / 3.0, height: ctx.collectionSize!.height / 16.0)
 		}
 		
-		var list: [ModelProtocol] = (0..<70).map { return $0 }
+		var list: [ModelProtocol] = (0..<99).map { return $0 }
 		list.append(contentsOf: ["A","B","C","D","E","F"])
 		list.shuffle()
 		
 		let header = CollectionSectionView<CollectionHeader>()
 		header.on.referenceSize = { _ in
-			return CGSize(width: self.collectionView!.frame.width, height: 40)
+            return CGSize(width: self.collectionView!.frame.width, height: self.collectionView!.frame.height / 8.0)
 		}
 		let section = CollectionSection.init(list, headerView: header)
 		
@@ -92,6 +96,7 @@ public class NumberCell: UICollectionViewCell {
 
 public class LetterCell: UICollectionViewCell {
 	@IBOutlet public var label: UILabel?
+    @IBOutlet public var back: UIView?
 }
 
 extension MutableCollection {

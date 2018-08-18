@@ -93,20 +93,20 @@ public class TableDirector: NSObject, UITableViewDelegate, UITableViewDataSource
 	/// events inside enabled sections.
 	public var prefetchEnabled: Bool {
 		set {
-			if #available(iOS 10.0, *) {
+			if #available(iOS 10.0, tvOS 10.0, *) {
 				switch newValue {
 				case true: 	self.tableView!.prefetchDataSource = self
 				case false: self.tableView!.prefetchDataSource = nil
 				}
 			} else {
-				debugPrint("Prefetch is available only from iOS 10")
+				debugPrint("Prefetch is available only from iOS 10/tvOS 10")
 			}
 		}
 		get {
-			if #available(iOS 10.0, *) {
+			if #available(iOS 10.0, tvOS 10.0, *) {
 				return (self.tableView!.prefetchDataSource != nil)
 			} else {
-				debugPrint("Prefetch is available only from iOS 10")
+				debugPrint("Prefetch is available only from iOS 10/tvOS 10")
 				return false
 			}
 		}
@@ -534,16 +534,20 @@ public extension TableDirector {
 	}
 	
 	@available(iOS 11.0, *)
+    @available(tvOS, unavailable, message: "Not available in tvOS")
 	public func tableView(_ tableView: UITableView, shouldSpringLoadRowAt indexPath: IndexPath, with context: UISpringLoadedInteractionContext) -> Bool {
 		let (model,adapter) = self.context(forItemAt: indexPath)
 		return ((adapter.dispatch(.shouldSpringLoad, context: InternalContext(model, indexPath, nil, tableView)) as? Bool) ?? true)
 	}
 	
+//    @available(tvOS, unavailable, message: "Available in iOS")
+    #if os(iOS)
 	public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
 		let (model,adapter) = self.context(forItemAt: indexPath)
 		return adapter.dispatch(.editActions, context: InternalContext(model, indexPath, nil, tableView)) as? [UITableViewRowAction]
 	}
-	
+    #endif
+    
 	public func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
 		let (model,adapter) = self.context(forItemAt: indexPath)
 		adapter.dispatch(.tapOnAccessory, context: InternalContext(model, indexPath, nil, tableView))
