@@ -32,7 +32,7 @@ class CollectionExampleController: UIViewController {
 			print("Tapped letter \(ctx.model)")
 		}
 		letterAdapter.on.itemSize = { ctx in
-            return CGSize(width: ctx.collectionSize!.width / 3.0, height: ctx.collectionSize!.height / 16.0)
+            return CGSize(width: ctx.collectionSize!.width / 3.0, height: max(ctx.collectionSize!.width, ctx.collectionSize!.height) / 16.0)
 		}
 		
 		
@@ -49,7 +49,7 @@ class CollectionExampleController: UIViewController {
 			print("Tapped number \(ctx.model)")
 		}
 		numberAdapter.on.itemSize = { ctx in
-            return CGSize.init(width: ctx.collectionSize!.width / 3.0, height: ctx.collectionSize!.height / 16.0)
+            return CGSize.init(width: ctx.collectionSize!.width / 3.0, height: max(ctx.collectionSize!.width, ctx.collectionSize!.height) / 16.0)
 		}
 		
 		var list: [ModelProtocol] = (0..<99).map { return $0 }

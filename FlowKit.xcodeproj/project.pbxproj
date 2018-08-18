@@ -73,7 +73,6 @@
 		D187A50A2126312C008BB082 /* FlowKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 52D6D97C1BEFF229002C0205 /* FlowKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D187A50E21263137008BB082 /* FlowKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D187A4C42125BB39008BB082 /* FlowKit.framework */; };
 		D187A50F21263137008BB082 /* FlowKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D187A4C42125BB39008BB082 /* FlowKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D187A5172126DFE3008BB082 /* FlowKit_tvOS.h in Headers */ = {isa = PBXBuildFile; fileRef = D187A4C62125BB39008BB082 /* FlowKit_tvOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D1D65A8F21278A86009DBDC0 /* String+Localise.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D65A8E21278A86009DBDC0 /* String+Localise.swift */; };
 		D1D65A9021278A86009DBDC0 /* String+Localise.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D65A8E21278A86009DBDC0 /* String+Localise.swift */; };
 /* End PBXBuildFile section */
@@ -168,8 +167,6 @@
 		AD2FAA261CD0B6D800659CF4 /* FlowKit.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = FlowKit.plist; sourceTree = "<group>"; };
 		AD2FAA281CD0B6E100659CF4 /* FlowKitTests.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = FlowKitTests.plist; sourceTree = "<group>"; };
 		D187A4C42125BB39008BB082 /* FlowKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FlowKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D187A4C62125BB39008BB082 /* FlowKit_tvOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FlowKit_tvOS.h; sourceTree = "<group>"; };
-		D187A4C72125BB39008BB082 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D187A4E32125C3D9008BB082 /* ExampleApp-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ExampleApp-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D187A4EC2125C3D9008BB082 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D187A4EE2125C3DC008BB082 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -230,7 +227,6 @@
 				8933C7831EB5B7EB000D00A4 /* Tests */,
 				52D6D99C1BEFF38C002C0205 /* Configs */,
 				642448C1208B792C0005C395 /* ExampleApp */,
-				D187A4C52125BB39008BB082 /* FlowKit-tvOS */,
 				52D6D97D1BEFF229002C0205 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -354,15 +350,6 @@
 			path = Tests/FlowKitTests;
 			sourceTree = "<group>";
 		};
-		D187A4C52125BB39008BB082 /* FlowKit-tvOS */ = {
-			isa = PBXGroup;
-			children = (
-				D187A4C62125BB39008BB082 /* FlowKit_tvOS.h */,
-				D187A4C72125BB39008BB082 /* Info.plist */,
-			);
-			path = "FlowKit-tvOS";
-			sourceTree = "<group>";
-		};
 		D187A4DE2125C344008BB082 /* Collection iOS */ = {
 			isa = PBXGroup;
 			children = (
@@ -446,7 +433,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D187A5172126DFE3008BB082 /* FlowKit_tvOS.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
