@@ -31,7 +31,7 @@ import Foundation
 import UIKit
 
 /// Adapter manages a model type with its associated view representation (a particular cell type).
-public class TableAdapter<M: ModelProtocol, C: CellProtocol>: TableAdapterProtocol,TableAdaterProtocolFunctions {
+open class TableAdapter<M: ModelProtocol, C: CellProtocol>: TableAdapterProtocol,TableAdaterProtocolFunctions {
 
 	/// TableAdapterProtocol conformances
 	public var modelType: Any.Type = M.self
