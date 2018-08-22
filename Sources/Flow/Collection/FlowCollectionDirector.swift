@@ -87,7 +87,7 @@ open class FlowCollectionDirector: CollectionDirector, UICollectionViewDelegateF
 	
 	/// Set the section reference starting point.
 	@available(iOS 11.0, *)
-	public var sectionInsetReference: UICollectionViewFlowLayoutSectionInsetReference {
+	public var sectionInsetReference: UICollectionViewFlowLayout.SectionInsetReference {
 		set { self.layout?.sectionInsetReference = newValue }
 		get { return self.layout!.sectionInsetReference }
 	}

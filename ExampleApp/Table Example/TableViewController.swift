@@ -21,7 +21,7 @@ class TableViewController: UIViewController {
 			ctx.cell?.subtitleLabel?.text = ctx.model.text
 		}
 		articleAdpt.on.tap = { ctx in
-			print("Tapped on article \(ctx.model.identifier)")
+			print("Tapped on article \(ctx.model.id)")
 			return .deselectAnimated
 		}
 		self.tableView?.director.register(adapter: articleAdpt)
@@ -70,12 +70,12 @@ class TableViewController: UIViewController {
 }
 
 public class Article: ModelProtocol, Hashable {
-	public var identifier: Int {
-		return id.hashValue
+	public var hashValue: Int {
+		return self.id.hashValue
 	}
-	
+
 	public static func == (lhs: Article, rhs: Article) -> Bool {
-		return (lhs.identifier == rhs.identifier)
+		return (lhs.id == rhs.id)
 	}
 	
 	public let title: String

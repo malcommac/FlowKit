@@ -72,7 +72,7 @@ public extension TableAdapter {
 		public var dequeue : ((EventContext) -> (Void))? = nil
 		
 		public var canEdit: ((EventContext) -> Bool)? = nil
-		public var commitEdit: ((_ ctx: EventContext, _ commit: UITableViewCellEditingStyle) -> Void)? = nil
+		public var commitEdit: ((_ ctx: EventContext, _ commit: UITableViewCell.EditingStyle) -> Void)? = nil
 		
 		public var canMoveRow: ((EventContext) -> Bool)? = nil
 		public var moveRow: ((_ ctx: EventContext, _ dest: IndexPath) -> Void)? = nil
@@ -97,7 +97,7 @@ public extension TableAdapter {
 		
 		public var willBeginEdit: ((EventContext) -> Void)? = nil
 		public var didEndEdit: ((EventContext) -> Void)? = nil
-		public var editStyle: ((EventContext) -> UITableViewCellEditingStyle)? = nil
+		public var editStyle: ((EventContext) -> UITableViewCell.EditingStyle)? = nil
 		public var deleteConfirmTitle: ((EventContext) -> String?)? = nil
 		public var editShouldIndent: ((EventContext) -> Bool)? = nil
 		

@@ -50,27 +50,7 @@ public extension UICollectionView {
 }
 
 public protocol ModelProtocol {
-	func isEqual(to other: ModelProtocol) -> Bool
-	var identifier: Int { get }
-}
-
-extension ModelProtocol where Self: Equatable {
-	
-	public func isEqual(to other: ModelProtocol) -> Bool {
-		guard let other = other as? Self else {
-			return false
-		}
-		return self == other
-	}
-	
-}
-
-extension ModelProtocol where Self: Hashable {
-	
-	public var hashValue: Int {
-		return self.identifier.hashValue
-	}
-	
+	var hashValue: Int { get }
 }
 
 //MARK: CELL PROTOCOL (implemented by UICollectionViewCell)
