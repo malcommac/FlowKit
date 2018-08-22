@@ -223,15 +223,15 @@
 			path = "Collection Example";
 			sourceTree = "<group>";
 		};
-		64F7CAC7208B566D00676831 /* Flow */ = {
+		64F7CAC7208B566D00676831 /* FlowKit */ = {
 			isa = PBXGroup;
 			children = (
 				64F7CAD5208B566D00676831 /* Table */,
 				64F7CAC8208B566D00676831 /* Collection */,
 				64F7CAD1208B566D00676831 /* Shared */,
 			);
-			name = Flow;
-			path = Sources/Flow;
+			name = FlowKit;
+			path = Sources/FlowKit;
 			sourceTree = SOURCE_ROOT;
 		};
 		64F7CAC8208B566D00676831 /* Collection */ = {
@@ -276,6 +276,7 @@
 		8933C7811EB5B7E0000D00A4 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				64F7CAC7208B566D00676831 /* FlowKit */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -284,7 +285,6 @@
 			isa = PBXGroup;
 			children = (
 				8933C7891EB5B82A000D00A4 /* FlowKitTests.swift */,
-				64F7CAC7208B566D00676831 /* Flow */,
 			);
 			name = Tests;
 			path = Tests/FlowKitTests;
