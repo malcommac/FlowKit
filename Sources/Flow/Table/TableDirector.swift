@@ -154,6 +154,7 @@ public class TableDirector: NSObject, UITableViewDelegate, UITableViewDataSource
 			return
 		}
 		
+		
 		// Keep a reference to removed items in order to perform diff and animation
 		let oldSections: [TableSection] = Array.init(self.sections)
 		var oldItemsInSections: [String: [ModelProtocol]] = [:]
@@ -162,26 +163,37 @@ public class TableDirector: NSObject, UITableViewDelegate, UITableViewDataSource
 		// Execute callback and return animations to perform
 		let animationsToPerform = (t(self) ?? TableReloadAnimations.default())
 
-		// Execute reload for sections
-		let changesInSection = SectionChanges.fromTableSections(old: oldSections, new: self.sections)
-		changesInSection.applyChanges(toTable: self.tableView, withAnimations: animationsToPerform)
-		
-		self.tableView?.beginUpdates()
-		self.sections.enumerated().forEach { (idx,newSection) in
-			if let oldSectionItems = oldItemsInSections[newSection.UUID] {
-				guard let oldItems = oldSectionItems as? [AnyHashable], let newItems = newSection.models as? [AnyHashable] else {
-					debugPrint("Malfunction: models in table must be conform to Hashable protocol in order to perform automatic diff")
-					return
+		func executeDiffAndUpdate() {
+			// Execute reload for sections
+			let changesInSection = SectionChanges.fromTableSections(old: oldSections, new: self.sections)
+			changesInSection.applyChanges(toTable: self.tableView, withAnimations: animationsToPerform)
+			
+			self.sections.enumerated().forEach { (idx,newSection) in
+				if let oldSectionItems = oldItemsInSections[newSection.UUID] {
+					guard let oldItems = oldSectionItems as? [AnyHashable], let newItems = newSection.models as? [AnyHashable] else {
+						debugPrint("Malfunction: models in table must be conform to Hashable protocol in order to perform automatic diff")
+						return
+					}
+					// models must conform to Hashable otherwise we are not able to perform diff
+					let diffData = diff(old: oldItems, new: newItems)
+					let itemChanges = SectionItemsChanges.create(fromChanges: diffData, section: idx)
+					itemChanges.applyChangesToSectionItems(ofTable: self.tableView, withAnimations: animationsToPerform)
 				}
-				// models must conform to Hashable otherwise we are not able to perform diff
-				let diffData = diff(old: oldItems, new: newItems)
-				let itemChanges = SectionItemsChanges.create(fromChanges: diffData, section: idx)
-				itemChanges.applyChangesToSectionItems(ofTable: self.tableView, withAnimations: animationsToPerform)
 			}
 		}
 		
-		self.tableView?.endUpdates()
-		DispatchQueue.main.asyncAfter(deadline: .now() + 0.25, execute: { onEnd?() })
+		if #available(iOS 11.0, *) {
+			self.tableView?.performBatchUpdates({
+				executeDiffAndUpdate()
+			}, completion: { end in
+				if end { onEnd?() }
+			})
+		} else {
+			self.tableView?.beginUpdates()
+			executeDiffAndUpdate()
+			self.tableView?.endUpdates()
+			DispatchQueue.main.asyncAfter(deadline: .now() + 0.25, execute: { onEnd?() })
+		}
 	}
 	
 	/// Change the content of the table.

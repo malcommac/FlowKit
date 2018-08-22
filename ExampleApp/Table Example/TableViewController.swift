@@ -15,19 +15,7 @@ class TableViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
-		let articleAdpt = TableAdapter<Article,TableArticleCell>()
-		articleAdpt.on.dequeue = { ctx in
-			ctx.cell?.titleLabel?.text = ctx.model.title
-			ctx.cell?.subtitleLabel?.text = ctx.model.text
-		}
-		articleAdpt.on.tap = { ctx in
-			print("Tapped on article \(ctx.model.id)")
-			return .deselectAnimated
-		}
-		self.tableView?.director.register(adapter: articleAdpt)
-		
-		
-		
+		self.tableView?.director.register(adapter: ArticleAdapter())
 		self.tableView?.director.add(section: self.getWinnerSection())
 
 		self.tableView?.director.rowHeight = .autoLayout(estimated: 100)
@@ -80,6 +68,22 @@ class TableViewController: UIViewController {
 	}
 
 
+}
+
+public class ArticleAdapter: TableAdapter<Article,TableArticleCell> {
+	
+	init() {
+		super.init()
+		self.on.dequeue = { ctx in
+			ctx.cell?.titleLabel?.text = ctx.model.title
+			ctx.cell?.subtitleLabel?.text = ctx.model.text
+		}
+		self.on.tap = { ctx in
+			print("Tapped on article \(ctx.model.id)")
+			return .deselectAnimated
+		}
+	}
+	
 }
 
 public class Article: ModelProtocol, Hashable {
