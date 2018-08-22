@@ -166,7 +166,6 @@ public class TableDirector: NSObject, UITableViewDelegate, UITableViewDataSource
 		let changesInSection = SectionChanges.fromTableSections(old: oldSections, new: self.sections)
 		changesInSection.applyChanges(toTable: self.tableView, withAnimations: animationsToPerform)
 		
-		// Execute reload for items in remaining sections
 		self.tableView?.beginUpdates()
 		self.sections.enumerated().forEach { (idx,newSection) in
 			if let oldSectionItems = oldItemsInSections[newSection.UUID] {

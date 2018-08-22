@@ -33,8 +33,21 @@ import UIKit
 /// Represent a single section of the table
 public class TableSection: Hashable {
 	
+	/// State of collapse for the section.
+	public var collapsed: Bool = false
+	
 	/// Items inside the section.
-	public private(set) var models: [ModelProtocol] = []
+	private var _models: [ModelProtocol] = []
+	
+	/// Items inside the section.
+	public private(set) var models: [ModelProtocol] {
+		get {
+			return collapsed ? [] : _models
+		}
+		set {
+			_models = newValue
+		}
+	}
 	
 	/// Title of the header; if `headerView` is set this value is ignored.
 	public var headerTitle: String?
@@ -190,7 +203,7 @@ public class TableSection: Hashable {
 	///   - destIndex: destination index
 	public func move(swappingAt sourceIndex: Int, with destIndex: Int) {
 		guard sourceIndex < self.models.count, destIndex < self.models.count else { return }
-		swap(&self.models[sourceIndex], &self.models[destIndex])
+		swap(&self.models[sourceIndex], &self._models[destIndex])
 	}
 	
 	/// Remove model at given index and insert at destination index.
