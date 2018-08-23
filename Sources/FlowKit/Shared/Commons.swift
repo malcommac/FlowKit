@@ -46,7 +46,7 @@ internal struct InternalContext {
 	var param2: Any?
 	var param3: Any?
 
-	public init(_ model: ModelProtocol?, _ path: IndexPath, _ cell: CellProtocol?, _ scrollview: UIScrollView,
+	init(_ model: ModelProtocol?, _ path: IndexPath, _ cell: CellProtocol?, _ scrollview: UIScrollView,
 				param1: Any? = nil, param2: Any? = nil, param3: Any? = nil) {
 		self.model = model
 		self.path = path
@@ -56,7 +56,7 @@ internal struct InternalContext {
 		self.param2 = param2
 	}
 	
-	public init(_ models: [ModelProtocol], _ paths: [IndexPath], _ scrollview: UIScrollView) {
+	init(_ models: [ModelProtocol], _ paths: [IndexPath], _ scrollview: UIScrollView) {
 		self.models = models
 		self.paths = paths
 		self.container = scrollview
