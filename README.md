@@ -105,8 +105,9 @@ The first step to use FlowKit is to assign a director to your list: you can do i
 let director = FlowCollectionDirector(self.collectionView)
 ```
 
-In order to render some data FlowKit must know what kind of data you want to show into the list; data is organized as pair of <Model,View> (where Model is the object you want to add into the table and view is the cell used to represent the data).
-**A model must be conform to `ModelProtocol` a simple protocol which require the presence of a property `hashValue` (like the same you can return from `Hashable`). This property is used to uniquely identify the model and evaluate the difference between items during automatic reload with animations.**
+In order to render some data FlowKit must know what kind of data you want to show into the list; data is organized as pair of `<Model,View>` (where `Model` is the object you want to add into the table and view is the cell used to represent the data).
+**A `Model` must be an object (both class or struct) conform to `ModelProtocol`: this is a simple protocol which require the presence of a property `modelID`.
+This property is used to uniquely identify the model and evaluate the difference between items during automatic reload with animations.**
 
 Adapter also allows to receive events used to configure the view and the behaviour: you can intercept tap for an instance of your model and do something, or just fillup received type-safe cell instance with model instance.
 
@@ -199,19 +200,18 @@ Now you are ready to present your data.
 
 ### Create Data Models (`ModelProtocol`)
 
-In order to render your data each object of the scroller must be conform to `ModelProtocol` which includes:
-
-- Must be conform to `Hashable` protocol (this is used to perform built-in automatic animations we'll see later)
-- Must implement a simple `identifier` property (used above)
+In order to render your data each object of the scroller must conforms to `ModelProtocol`, a simple protocol which require the implementation of `modelID` property (an `Int`). This property is used to uniquely identify the model and evaluate the difference between items during automatic reload with animations.
+A default implementation of this property is available for class based object (`AnyObject`) which uses the `ObjectIdentifier()`.
+Instead an explicit implementation must be provided for value based objects (ie. Structs).
 
 This is an example implementation of `Contact` model:
 
 ```swift
-public class Contact: ModelProtocol, Hashable {
+public class Contact: ModelProtocol {
 	public var name: String
 	public var GUID: String = NSUUID().uuidString
 
-	public var identifier: Int {
+	public var id: Int {
 		return GUID.hashValue
 	}
 	
