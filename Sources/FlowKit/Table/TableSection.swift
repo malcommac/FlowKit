@@ -132,6 +132,19 @@ public class TableSection: ModelProtocol {
 		self.models = models
 	}
 	
+	/// Replace a model instance at specified index.
+	///
+	/// - Parameters:
+	///   - model: new instance to use.
+	///   - index: index of the instance to replace.
+	/// - Returns: old instance, `nil` if provided `index` is invalid.
+	public func set(model: ModelProtocol, at index: Int) -> ModelProtocol? {
+		guard index > 0, index < self.models.count else { return nil }
+		let oldModel = self.models[index]
+		self.models[index] = model
+		return oldModel
+	}
+	
 	/// Add item at given index.
 	///
 	/// - Parameters:
