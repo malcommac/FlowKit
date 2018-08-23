@@ -170,12 +170,7 @@ public class TableDirector: NSObject, UITableViewDelegate, UITableViewDataSource
 			
 			self.sections.enumerated().forEach { (idx,newSection) in
 				if let oldSectionItems = oldItemsInSections[newSection.UUID] {
-					guard let oldItems = oldSectionItems as? [AnyHashable], let newItems = newSection.models as? [AnyHashable] else {
-						debugPrint("Malfunction: models in table must be conform to Hashable protocol in order to perform automatic diff")
-						return
-					}
-					// models must conform to Hashable otherwise we are not able to perform diff
-					let diffData = diff(old: oldItems, new: newItems)
+					let diffData = diff(old: oldSectionItems, new: newSection.models)
 					let itemChanges = SectionItemsChanges.create(fromChanges: diffData, section: idx)
 					itemChanges.applyChangesToSectionItems(ofTable: self.tableView, withAnimations: animationsToPerform)
 				}

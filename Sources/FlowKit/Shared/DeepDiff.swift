@@ -39,10 +39,10 @@ import Foundation
 ///   - old: Old collection
 ///   - new: New collection
 /// - Returns: A set of changes
-public func diff<T: Hashable>(
-	old: Array<T>,
-	new: Array<T>,
-	algorithm: DiffAware = Heckel()) -> [Change<T>] {
+public func diff(
+	old: [ModelProtocol],
+	new: [ModelProtocol],
+	algorithm: DiffAware = Heckel()) -> [Change<ModelProtocol>] {
 	
 	if let changes = algorithm.preprocess(old: old, new: new) {
 		return changes
@@ -119,11 +119,11 @@ public enum Change<T> {
 }
 
 public protocol DiffAware {
-	func diff<T: Hashable>(old: Array<T>, new: Array<T>) -> [Change<T>]
+	func diff(old: [ModelProtocol], new: [ModelProtocol]) -> [Change<ModelProtocol>]
 }
 
 extension DiffAware {
-	func preprocess<T: Hashable>(old: Array<T>, new: Array<T>) -> [Change<T>]? {
+	func preprocess(old: [ModelProtocol], new: [ModelProtocol]) -> [Change<ModelProtocol>]? {
 		switch (old.isEmpty, new.isEmpty) {
 		case (true, true):
 			// empty
@@ -203,7 +203,7 @@ public final class Heckel: DiffAware {
 	
 	public init() {}
 	
-	public func diff<T: Hashable>(old: Array<T>, new: Array<T>) -> [Change<T>] {
+	public func diff(old: [ModelProtocol], new: [ModelProtocol]) -> [Change<ModelProtocol>] {
 		// The Symbol Table
 		// Each line works as the key in the table look-up, i.e. as table[line].
 		var table: [Int: TableEntry] = [:]
@@ -219,8 +219,8 @@ public final class Heckel: DiffAware {
 		return changes
 	}
 	
-	private func perform1stPass<T: Hashable>(
-		new: Array<T>,
+	private func perform1stPass(
+		new: [ModelProtocol],
 		table: inout [Int: TableEntry],
 		newArray: inout [ArrayEntry]) {
 		
@@ -241,8 +241,8 @@ public final class Heckel: DiffAware {
 		}
 	}
 	
-	private func perform2ndPass<T: Hashable>(
-		old: Array<T>,
+	private func perform2ndPass(
+		old: [ModelProtocol],
 		table: inout [Int: TableEntry],
 		oldArray: inout [ArrayEntry]) {
 		
@@ -321,11 +321,11 @@ public final class Heckel: DiffAware {
 		}
 	}
 	
-	private func perform6thPass<T: Hashable>(
-		new: Array<T>,
-		old: Array<T>,
+	private func perform6thPass(
+		new: [ModelProtocol],
+		old: [ModelProtocol],
 		newArray: [ArrayEntry],
-		oldArray: [ArrayEntry]) -> [Change<T>] {
+		oldArray: [ArrayEntry]) -> [Change<ModelProtocol>] {
 		
 		// 6th pass
 		// At this point following our five passes,
@@ -358,7 +358,7 @@ public final class Heckel: DiffAware {
 		// Here, NA[i] == OA[j], but NA[i+1] != OA[j+1].
 		// This means our boundary is between the two lines.
 		
-		var changes = [Change<T>]()
+		var changes = [Change<ModelProtocol>]()
 		var deleteOffsets = Array(repeating: 0, count: old.count)
 		
 		// deletions
@@ -394,7 +394,7 @@ public final class Heckel: DiffAware {
 						index: newTuple.offset
 					)))
 				case .indexInOther(let oldIndex):
-					if old[oldIndex] != new[newTuple.offset] {
+					if old[oldIndex].hashValue != new[newTuple.offset].hashValue {
 						changes.append(.replace(Replace(
 							oldItem: old[oldIndex],
 							newItem: new[newTuple.offset],

@@ -106,7 +106,7 @@ let director = FlowCollectionDirector(self.collectionView)
 ```
 
 In order to render some data FlowKit must know what kind of data you want to show into the list; data is organized as pair of <Model,View> (where Model is the object you want to add into the table and view is the cell used to represent the data).
-A single model type **(any class which is conform to `ModelProtocol` and `Hashable`)** can be represented by one and only View (while a View can be used to represent different models).
+**A model must be conform to `ModelProtocol` a simple protocol which require the presence of a property `hashValue` (like the same you can return from `Hashable`). This property is used to uniquely identify the model and evaluate the difference between items during automatic reload with animations.**
 
 Adapter also allows to receive events used to configure the view and the behaviour: you can intercept tap for an instance of your model and do something, or just fillup received type-safe cell instance with model instance.
 

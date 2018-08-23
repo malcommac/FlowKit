@@ -31,7 +31,7 @@ import Foundation
 import UIKit
 
 /// Represent a single section of the table
-public class TableSection: Hashable {
+public class TableSection: Hashable, ModelProtocol {
 	
 	/// State of collapse for the section.
 	public var collapsed: Bool = false

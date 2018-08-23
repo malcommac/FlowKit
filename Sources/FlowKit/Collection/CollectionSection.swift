@@ -31,7 +31,7 @@ import Foundation
 import UIKit
 
 /// Represent a single section of the collection.
-public class CollectionSection: Equatable, Hashable {
+public class CollectionSection: Equatable, Hashable, ModelProtocol {
 	
 	/// Identifier of the section
 	public var UUID: String = NSUUID().uuidString
