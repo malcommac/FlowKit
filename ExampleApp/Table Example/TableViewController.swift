@@ -80,30 +80,28 @@ public class ArticleAdapter: TableAdapter<Article,TableArticleCell> {
 		}
 		self.on.tap = { ctx in
 			ctx.cell?.accessoryType = UITableViewCell.AccessoryType.checkmark
-			print("Tapped on article \(ctx.model.id)")
+			print("Tapped on article \(ctx.model.modelID)")
 			return .deselectAnimated
 		}
 	}
 	
 }
 
-public class Article: ModelProtocol, Hashable {
-	public var hashValue: Int {
-		return self.id.hashValue
-	}
+public class Article: ModelProtocol {
 
 	public static func == (lhs: Article, rhs: Article) -> Bool {
-		return (lhs.id == rhs.id)
+		return (lhs.modelID == rhs.modelID)
 	}
 	
 	public let title: String
 	public let text: String
-	public let id: String = NSUUID().uuidString
+	public let articleId: String = NSUUID().uuidString
 
 	public init(title: String, text: String) {
 		self.title = title
 		self.text = text
 	}
+	
 }
 
 public class TableArticleCell: UITableViewCell {

@@ -228,7 +228,7 @@ internal final class Heckel: DiffAware {
 		// a. Each line i of file N is read in sequence
 		new.forEach { item in
 			// b. An entry for each line i is created in the table, if it doesn't already exist
-			let entry = table[item.hashValue] ?? TableEntry()
+			let entry = table[item.modelID] ?? TableEntry()
 			
 			// c. NC for the line's table entry is incremented
 			entry.newCounter = entry.newCounter.increment()
@@ -237,7 +237,7 @@ internal final class Heckel: DiffAware {
 			newArray.append(.tableEntry(entry))
 			
 			//
-			table[item.hashValue] = entry
+			table[item.modelID] = entry
 		}
 	}
 	
@@ -251,7 +251,7 @@ internal final class Heckel: DiffAware {
 		
 		old.enumerated().forEach { tuple in
 			// old
-			let entry = table[tuple.element.hashValue] ?? TableEntry()
+			let entry = table[tuple.element.modelID] ?? TableEntry()
 			
 			// oldCounter
 			entry.oldCounter = entry.oldCounter.increment()
@@ -263,7 +263,7 @@ internal final class Heckel: DiffAware {
 			oldArray.append(.tableEntry(entry))
 			
 			//
-			table[tuple.element.hashValue] = entry
+			table[tuple.element.modelID] = entry
 		}
 	}
 	
@@ -394,7 +394,7 @@ internal final class Heckel: DiffAware {
 						index: newTuple.offset
 					)))
 				case .indexInOther(let oldIndex):
-					if old[oldIndex].hashValue != new[newTuple.offset].hashValue {
+					if old[oldIndex].modelID != new[newTuple.offset].modelID {
 						changes.append(.replace(Replace(
 							oldItem: old[oldIndex],
 							newItem: new[newTuple.offset],

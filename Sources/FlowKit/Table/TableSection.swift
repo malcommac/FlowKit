@@ -31,7 +31,7 @@ import Foundation
 import UIKit
 
 /// Represent a single section of the table
-public class TableSection: Hashable, ModelProtocol {
+public class TableSection: ModelProtocol {
 	
 	/// State of collapse for the section.
 	public var collapsed: Bool = false
@@ -116,7 +116,7 @@ public class TableSection: Hashable, ModelProtocol {
 	}
 	
 	/// Hash identifier of the section.
-	public var hashValue: Int {
+	public var modelID: Int {
 		return self.UUID.hashValue
 	}
 	
