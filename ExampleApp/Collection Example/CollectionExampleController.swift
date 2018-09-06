@@ -8,6 +8,30 @@
 
 import UIKit
 
+public struct Number: ModelProtocol {
+	public var modelID: Int {
+		return value
+	}
+	
+	let value: Int
+	
+	init(_ value: Int) {
+		self.value = value
+	}
+}
+
+public struct Letter: ModelProtocol {
+	public var modelID: Int {
+		return self.value.hashValue
+	}
+	
+	let value: String
+	
+	init(_ value: String) {
+		self.value = value
+	}
+}
+
 class CollectionExampleController: UIViewController {
 	
 	@IBOutlet public var collectionView: UICollectionView?
@@ -19,7 +43,7 @@ class CollectionExampleController: UIViewController {
 		
 		self.director = FlowCollectionDirector(self.collectionView!)
 		
-		let letterAdapter = CollectionAdapter<String,LetterCell>()
+		let letterAdapter = CollectionAdapter<Letter,LetterCell>()
 		self.director?.register(adapter: letterAdapter)
 		letterAdapter.on.dequeue = { ctx in
 			ctx.cell?.label?.text = "\(ctx.model)"
@@ -33,7 +57,7 @@ class CollectionExampleController: UIViewController {
 		
 		
 		
-		let numberAdapter = CollectionAdapter<Int,NumberCell>()
+		let numberAdapter = CollectionAdapter<Number,NumberCell>()
 		self.director?.register(adapter: numberAdapter)
 		numberAdapter.on.dequeue = { ctx in
 			ctx.cell?.label?.text = "#\(ctx.model)"
@@ -48,8 +72,8 @@ class CollectionExampleController: UIViewController {
 			return CGSize.init(width: ctx.collectionSize!.width / 3.0, height: 100)
 		}
 		
-		var list: [ModelProtocol] = (0..<70).map { return $0 }
-		list.append(contentsOf: ["A","B","C","D","E","F"])
+		var list: [ModelProtocol] = (0..<70).map { return Number($0) }
+		list.append(contentsOf: [Letter("A"),Letter("B"),Letter("C"),Letter("D"),Letter("E"),Letter("F")])
 		list.shuffle()
 		
 		let header = CollectionSectionView<CollectionHeader>()
@@ -68,20 +92,6 @@ class CollectionExampleController: UIViewController {
 	}
 
 
-}
-
-extension Int: ModelProtocol {
-	public var identifier: Int {
-		return self
-	}
-	
-}
-
-extension String: ModelProtocol {
-	public var identifier: Int {
-		return self.hashValue
-	}
-	
 }
 
 public class NumberCell: UICollectionViewCell {

@@ -39,10 +39,10 @@ import Foundation
 ///   - old: Old collection
 ///   - new: New collection
 /// - Returns: A set of changes
-public func diff<T: Hashable>(
-	old: Array<T>,
-	new: Array<T>,
-	algorithm: DiffAware = Heckel()) -> [Change<T>] {
+internal func diff(
+	old: [ModelProtocol],
+	new: [ModelProtocol],
+	algorithm: DiffAware = Heckel()) -> [Change<ModelProtocol>] {
 	
 	if let changes = algorithm.preprocess(old: old, new: new) {
 		return changes
@@ -51,26 +51,26 @@ public func diff<T: Hashable>(
 	return algorithm.diff(old: old, new: new)
 }
 
-public struct Insert<T> {
-	public let item: T
-	public let index: Int
+internal struct Insert<T> {
+	let item: T
+	let index: Int
 }
 
-public struct Delete<T> {
-	public let item: T
-	public let index: Int
+internal struct Delete<T> {
+	let item: T
+	let index: Int
 }
 
-public struct Replace<T> {
-	public let oldItem: T
-	public let newItem: T
-	public let index: Int
+internal struct Replace<T> {
+	let oldItem: T
+	let newItem: T
+	let index: Int
 }
 
-public struct Move<T> {
-	public let item: T
-	public let fromIndex: Int
-	public let toIndex: Int
+internal struct Move<T> {
+	let item: T
+	let fromIndex: Int
+	let toIndex: Int
 }
 
 /// The computed changes from diff
@@ -79,13 +79,13 @@ public struct Move<T> {
 /// - delete: Delete an item from index
 /// - replace: Replace an item at index with another item
 /// - move: Move the same item from this index to another index
-public enum Change<T> {
+internal enum Change<T> {
 	case insert(Insert<T>)
 	case delete(Delete<T>)
 	case replace(Replace<T>)
 	case move(Move<T>)
 	
-	public var insert: Insert<T>? {
+	var insert: Insert<T>? {
 		if case .insert(let insert) = self {
 			return insert
 		}
@@ -93,7 +93,7 @@ public enum Change<T> {
 		return nil
 	}
 	
-	public var delete: Delete<T>? {
+	var delete: Delete<T>? {
 		if case .delete(let delete) = self {
 			return delete
 		}
@@ -101,7 +101,7 @@ public enum Change<T> {
 		return nil
 	}
 	
-	public var replace: Replace<T>? {
+	var replace: Replace<T>? {
 		if case .replace(let replace) = self {
 			return replace
 		}
@@ -109,7 +109,7 @@ public enum Change<T> {
 		return nil
 	}
 	
-	public var move: Move<T>? {
+	var move: Move<T>? {
 		if case .move(let move) = self {
 			return move
 		}
@@ -118,12 +118,12 @@ public enum Change<T> {
 	}
 }
 
-public protocol DiffAware {
-	func diff<T: Hashable>(old: Array<T>, new: Array<T>) -> [Change<T>]
+internal protocol DiffAware {
+	func diff(old: [ModelProtocol], new: [ModelProtocol]) -> [Change<ModelProtocol>]
 }
 
 extension DiffAware {
-	func preprocess<T: Hashable>(old: Array<T>, new: Array<T>) -> [Change<T>]? {
+	func preprocess(old: [ModelProtocol], new: [ModelProtocol]) -> [Change<ModelProtocol>]? {
 		switch (old.isEmpty, new.isEmpty) {
 		case (true, true):
 			// empty
@@ -144,7 +144,7 @@ extension DiffAware {
 	}
 }
 
-public final class Heckel: DiffAware {
+internal final class Heckel: DiffAware {
 	
 	// OC and NC can assume three values: 1, 2, and many.
 	enum Counter {
@@ -189,7 +189,7 @@ public final class Heckel: DiffAware {
 		// the line's number in the other file (N for OA, O for NA)
 		case indexInOther(Int)
 		
-		public static func == (lhs: ArrayEntry, rhs: ArrayEntry) -> Bool {
+		static func == (lhs: ArrayEntry, rhs: ArrayEntry) -> Bool {
 			switch (lhs, rhs) {
 			case (.tableEntry(let l), .tableEntry(let r)):
 				return l == r
@@ -201,9 +201,9 @@ public final class Heckel: DiffAware {
 		}
 	}
 	
-	public init() {}
+	init() {}
 	
-	public func diff<T: Hashable>(old: Array<T>, new: Array<T>) -> [Change<T>] {
+	func diff(old: [ModelProtocol], new: [ModelProtocol]) -> [Change<ModelProtocol>] {
 		// The Symbol Table
 		// Each line works as the key in the table look-up, i.e. as table[line].
 		var table: [Int: TableEntry] = [:]
@@ -219,8 +219,8 @@ public final class Heckel: DiffAware {
 		return changes
 	}
 	
-	private func perform1stPass<T: Hashable>(
-		new: Array<T>,
+	private func perform1stPass(
+		new: [ModelProtocol],
 		table: inout [Int: TableEntry],
 		newArray: inout [ArrayEntry]) {
 		
@@ -228,7 +228,7 @@ public final class Heckel: DiffAware {
 		// a. Each line i of file N is read in sequence
 		new.forEach { item in
 			// b. An entry for each line i is created in the table, if it doesn't already exist
-			let entry = table[item.hashValue] ?? TableEntry()
+			let entry = table[item.modelID] ?? TableEntry()
 			
 			// c. NC for the line's table entry is incremented
 			entry.newCounter = entry.newCounter.increment()
@@ -237,12 +237,12 @@ public final class Heckel: DiffAware {
 			newArray.append(.tableEntry(entry))
 			
 			//
-			table[item.hashValue] = entry
+			table[item.modelID] = entry
 		}
 	}
 	
-	private func perform2ndPass<T: Hashable>(
-		old: Array<T>,
+	private func perform2ndPass(
+		old: [ModelProtocol],
 		table: inout [Int: TableEntry],
 		oldArray: inout [ArrayEntry]) {
 		
@@ -251,7 +251,7 @@ public final class Heckel: DiffAware {
 		
 		old.enumerated().forEach { tuple in
 			// old
-			let entry = table[tuple.element.hashValue] ?? TableEntry()
+			let entry = table[tuple.element.modelID] ?? TableEntry()
 			
 			// oldCounter
 			entry.oldCounter = entry.oldCounter.increment()
@@ -263,7 +263,7 @@ public final class Heckel: DiffAware {
 			oldArray.append(.tableEntry(entry))
 			
 			//
-			table[tuple.element.hashValue] = entry
+			table[tuple.element.modelID] = entry
 		}
 	}
 	
@@ -321,11 +321,11 @@ public final class Heckel: DiffAware {
 		}
 	}
 	
-	private func perform6thPass<T: Hashable>(
-		new: Array<T>,
-		old: Array<T>,
+	private func perform6thPass(
+		new: [ModelProtocol],
+		old: [ModelProtocol],
 		newArray: [ArrayEntry],
-		oldArray: [ArrayEntry]) -> [Change<T>] {
+		oldArray: [ArrayEntry]) -> [Change<ModelProtocol>] {
 		
 		// 6th pass
 		// At this point following our five passes,
@@ -358,7 +358,7 @@ public final class Heckel: DiffAware {
 		// Here, NA[i] == OA[j], but NA[i+1] != OA[j+1].
 		// This means our boundary is between the two lines.
 		
-		var changes = [Change<T>]()
+		var changes = [Change<ModelProtocol>]()
 		var deleteOffsets = Array(repeating: 0, count: old.count)
 		
 		// deletions
@@ -394,7 +394,7 @@ public final class Heckel: DiffAware {
 						index: newTuple.offset
 					)))
 				case .indexInOther(let oldIndex):
-					if old[oldIndex] != new[newTuple.offset] {
+					if old[oldIndex].modelID != new[newTuple.offset].modelID {
 						changes.append(.replace(Replace(
 							oldItem: old[oldIndex],
 							newItem: new[newTuple.offset],

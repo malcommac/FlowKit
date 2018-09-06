@@ -30,15 +30,15 @@
 import Foundation
 import ObjectiveC.runtime
 
-public func getAssociatedValue<T>(key: String, object: AnyObject) -> T? {
+internal func getAssociatedValue<T>(key: String, object: AnyObject) -> T? {
 	return (objc_getAssociatedObject(object, key.address) as? AssociatedValue)?.value as? T
 }
 
-public func getAssociatedValue<T>(key: String, object: AnyObject, initialValue: @autoclosure () -> T) -> T {
+internal func getAssociatedValue<T>(key: String, object: AnyObject, initialValue: @autoclosure () -> T) -> T {
 	return getAssociatedValue(key: key, object: object) ?? setAndReturn(initialValue: initialValue(), key: key, object: object)
 }
 
-public func getAssociatedValue<T>(key: String, object: AnyObject, initialValue: () -> T) -> T {
+internal func getAssociatedValue<T>(key: String, object: AnyObject, initialValue: () -> T) -> T {
 	return getAssociatedValue(key: key, object: object) ?? setAndReturn(initialValue: initialValue(), key: key, object: object)
 }
 
@@ -47,11 +47,11 @@ fileprivate func setAndReturn<T>(initialValue: T, key: String, object: AnyObject
 	return initialValue
 }
 
-public func set<T>(associatedValue: T?, key: String, object: AnyObject) {
+internal func set<T>(associatedValue: T?, key: String, object: AnyObject) {
 	set(associatedValue: AssociatedValue(associatedValue), key: key, object: object)
 }
 
-public func set<T : AnyObject>(weakAssociatedValue: T?, key: String, object: AnyObject) {
+internal func set<T : AnyObject>(weakAssociatedValue: T?, key: String, object: AnyObject) {
 	set(associatedValue: AssociatedValue(weak: weakAssociatedValue), key: key, object: object)
 }
 

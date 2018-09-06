@@ -31,7 +31,7 @@ import Foundation
 import UIKit
 
 /// The adapter identify a pair of model and cell used to represent the data.
-public class CollectionAdapter<M: ModelProtocol, C: CellProtocol>: CollectionAdapterProtocol, CustomStringConvertible, AbstractAdapterProtocolFunctions {
+open class CollectionAdapter<M: ModelProtocol, C: CellProtocol>: CollectionAdapterProtocol, CustomStringConvertible, AbstractAdapterProtocolFunctions {
 
 	public var modelType: Any.Type = M.self
 	public var cellType: Any.Type = C.self

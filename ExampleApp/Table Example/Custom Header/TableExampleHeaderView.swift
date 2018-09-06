@@ -13,4 +13,16 @@ public class TableExampleHeaderView: UITableViewHeaderFooterView {
 	
 	@IBOutlet public var titleLabel: UILabel?
 	
+	public var whenTapped: (() -> Void)?
+	
+	public override func awakeFromNib() {
+		super.awakeFromNib()
+		
+		let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapped))
+		self.addGestureRecognizer(tapGesture)
+	}
+	
+	@objc private func tapped() {
+		whenTapped?()
+	}
 }

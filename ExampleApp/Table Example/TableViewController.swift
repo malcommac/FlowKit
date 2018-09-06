@@ -15,19 +15,7 @@ class TableViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
-		let articleAdpt = TableAdapter<Article,TableArticleCell>()
-		articleAdpt.on.dequeue = { ctx in
-			ctx.cell?.titleLabel?.text = ctx.model.title
-			ctx.cell?.subtitleLabel?.text = ctx.model.text
-		}
-		articleAdpt.on.tap = { ctx in
-			print("Tapped on article \(ctx.model.identifier)")
-			return .deselectAnimated
-		}
-		self.tableView?.director.register(adapter: articleAdpt)
-		
-		
-		
+		self.tableView?.director.register(adapter: ArticleAdapter())
 		self.tableView?.director.add(section: self.getWinnerSection())
 
 		self.tableView?.director.rowHeight = .autoLayout(estimated: 100)
@@ -44,6 +32,19 @@ class TableViewController: UIViewController {
 		}
 		
 		let header = TableSectionView<TableExampleHeaderView>()
+		header.on.willDisplay = { ctx in
+			guard let section = ctx.table?.director.sections[ctx.section] else { return }
+			
+			ctx.view?.titleLabel?.text = section.collapsed ? "Tap to expand" : "Tap to collapse"
+			ctx.view?.whenTapped = {
+				ctx.table?.director.reloadData(after: { (director) -> (TableReloadAnimations?) in
+					section.collapsed = !section.collapsed
+					return TableReloadAnimations.default()
+				}, onEnd: {
+					ctx.view?.titleLabel?.text = section.collapsed ? "Tap to expand" : "Tap to collapse"
+				})
+			}
+		}
 		header.on.height = { _ in
 			return 150
 		}
@@ -69,23 +70,38 @@ class TableViewController: UIViewController {
 
 }
 
-public class Article: ModelProtocol, Hashable {
-	public var identifier: Int {
-		return id.hashValue
+public class ArticleAdapter: TableAdapter<Article,TableArticleCell> {
+	
+	init() {
+		super.init()
+		self.on.dequeue = { ctx in
+			ctx.cell?.titleLabel?.text = ctx.model.title
+			ctx.cell?.subtitleLabel?.text = ctx.model.text
+		}
+		self.on.tap = { ctx in
+			ctx.cell?.accessoryType = UITableViewCell.AccessoryType.checkmark
+			print("Tapped on article \(ctx.model.modelID)")
+			return .deselectAnimated
+		}
 	}
 	
+}
+
+public class Article: ModelProtocol {
+
 	public static func == (lhs: Article, rhs: Article) -> Bool {
-		return (lhs.identifier == rhs.identifier)
+		return (lhs.modelID == rhs.modelID)
 	}
 	
 	public let title: String
 	public let text: String
-	public let id: String = NSUUID().uuidString
+	public let articleId: String = NSUUID().uuidString
 
 	public init(title: String, text: String) {
 		self.title = title
 		self.text = text
 	}
+	
 }
 
 public class TableArticleCell: UITableViewCell {

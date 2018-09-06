@@ -31,7 +31,7 @@ import Foundation
 import UIKit
 
 /// Represent a single section of the collection.
-public class CollectionSection: Equatable, Hashable {
+public class CollectionSection: Equatable, ModelProtocol {
 	
 	/// Identifier of the section
 	public var UUID: String = NSUUID().uuidString
@@ -104,7 +104,7 @@ public class CollectionSection: Equatable, Hashable {
 	
 	
 	/// Hash identifier of the section
-	public var hashValue: Int {
+	public var modelID: Int {
 		return self.UUID.hashValue
 	}
 	
@@ -118,6 +118,19 @@ public class CollectionSection: Equatable, Hashable {
 	/// - Parameter models: array of models to set.
 	public func set(models: [ModelProtocol]) {
 		self.models = models
+	}
+	
+	/// Replace a model instance at specified index.
+	///
+	/// - Parameters:
+	///   - model: new instance to use.
+	///   - index: index of the instance to replace.
+	/// - Returns: old instance, `nil` if provided `index` is invalid.
+	public func set(model: ModelProtocol, at index: Int) -> ModelProtocol? {
+		guard index > 0, index < self.models.count else { return nil }
+		let oldModel = self.models[index]
+		self.models[index] = model
+		return oldModel
 	}
 	
 	/// Add item at given index.

@@ -30,50 +30,34 @@
 import Foundation
 import UIKit
 
-public extension UICollectionView {
-	
-	private static let DIRECTOR_KEY = "flowkit.director"
-	
-	/// Return director associated with collection.
-	/// If not exist it will be created and assigned automatically.
-	public var director: FlowCollectionDirector {
-		get {
-			return getAssociatedValue(key: UICollectionView.DIRECTOR_KEY,
-									  object: self,
-									  initialValue: FlowCollectionDirector(self))
-		}
-		set {
-			set(associatedValue: newValue, key: UICollectionView.DIRECTOR_KEY, object: self)
-		}
-	}
-
-}
+//MARK: - ModelProtocol
 
 public protocol ModelProtocol {
-	func isEqual(to other: ModelProtocol) -> Bool
-	var identifier: Int { get }
+	
+	/// Implementation of the protocol require the presence of id property which is used
+	/// to uniquely identify an model. This is used by the DeepDiff library to evaluate
+	/// what cells are removed/moved or deleted from table/collection and provide the right
+	/// animation without an explicitly animation set.
+	///
+	/// NOTE:
+	/// Default implementation of this property is provided by any class via the extension
+	/// for `AnyObject` using the `ObjectIdentifier`.
+	/// An explicit implementation must be done by the developer for struct.
+	var modelID: Int { get }
+	
 }
 
-extension ModelProtocol where Self: Equatable {
+extension ModelProtocol where Self : AnyObject {
 	
-	public func isEqual(to other: ModelProtocol) -> Bool {
-		guard let other = other as? Self else {
-			return false
-		}
-		return self == other
+	/// Default implementation of the ModelProtocol protocol is provided for any class using
+	/// the `ObjectIdentifier`. You can still implement your own item.
+	public var modelID: Int {
+		return ObjectIdentifier(self).hashValue
 	}
 	
 }
 
-extension ModelProtocol where Self: Hashable {
-	
-	public var hashValue: Int {
-		return self.identifier.hashValue
-	}
-	
-}
-
-//MARK: CELL PROTOCOL (implemented by UICollectionViewCell)
+//MARK: - CellProtocol Implementation
 
 extension UICollectionViewCell: CellProtocol { }
 
@@ -98,7 +82,7 @@ public extension CellProtocol {
 	
 }
 
-//MARK: HEADER/FOOTER PROTOCOL (implemented by UICollectionReusableView)
+//MARK: - HeaderFooterProtocol
 
 public protocol HeaderFooterProtocol: class {
 	static var reuseIdentifier: String { get }
@@ -152,7 +136,7 @@ extension UICollectionReusableView : HeaderFooterProtocol {
 
 }
 
-//MARK: ABSTRACT PROTOCOLS
+//MARK: - Abstract Protocols
 
 public protocol AbstractAdapterProtocol {
 	var modelType: Any.Type { get }
@@ -169,7 +153,7 @@ public protocol AbstractCollectionReusableView {
 	var registerAsClass: Bool { get }
 }
 
-//MARK: INTERNAL PROTOCOLS
+//MARK: - Internal Protocols
 
 internal protocol AbstractCollectionHeaderFooterItem {
 	
@@ -224,4 +208,23 @@ internal enum CollectionSectionViewEventsKey: Int {
 	case didDisplay
 	case endDisplay
 	case willDisplay
+}
+
+public extension UICollectionView {
+	
+	private static let DIRECTOR_KEY = "flowkit.director"
+	
+	/// Return director associated with collection.
+	/// If not exist it will be created and assigned automatically.
+	public var director: FlowCollectionDirector {
+		get {
+			return getAssociatedValue(key: UICollectionView.DIRECTOR_KEY,
+									  object: self,
+									  initialValue: FlowCollectionDirector(self))
+		}
+		set {
+			set(associatedValue: newValue, key: UICollectionView.DIRECTOR_KEY, object: self)
+		}
+	}
+	
 }
