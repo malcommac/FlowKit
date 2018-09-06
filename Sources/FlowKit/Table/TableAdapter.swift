@@ -80,7 +80,7 @@ open class TableAdapter<M: ModelProtocol, C: CellProtocol>: TableAdapterProtocol
 			
 		case .commitEdit:
 			guard let callback = self.on.commitEdit else { return nil }
-			return callback(Context<M,C>(generic: context), (context.param1 as! UITableViewCell.EditingStyle))
+			return callback(Context<M,C>(generic: context), (context.param1 as! UITableViewCellEditingStyle))
 			
 		case .canMoveRow:
 			guard let callback = self.on.canMoveRow else { return nil }
