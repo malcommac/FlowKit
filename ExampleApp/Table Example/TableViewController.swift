@@ -79,7 +79,7 @@ public class ArticleAdapter: TableAdapter<Article,TableArticleCell> {
 			ctx.cell?.subtitleLabel?.text = ctx.model.text
 		}
 		self.on.tap = { ctx in
-			ctx.cell?.accessoryType = UITableViewCell.AccessoryType.checkmark
+            ctx.cell?.accessoryType = UITableViewCellAccessoryType.checkmark
 			print("Tapped on article \(ctx.model.modelID)")
 			return .deselectAnimated
 		}
