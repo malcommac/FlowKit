@@ -502,11 +502,11 @@ public extension CollectionDirector {
 		var identifier: String!
 		
 		switch kind {
-		case UICollectionElementKindSectionHeader:
+        case UICollectionView.elementKindSectionHeader:
 			guard let header = section.header else { return UICollectionReusableView() }
 			identifier = self.reusableRegister.registerHeaderFooter(header, type: kind)
 			
-		case UICollectionElementKindSectionFooter:
+        case UICollectionView.elementKindSectionFooter:
 			guard let footer = section.footer else { return UICollectionReusableView() }
 			identifier = self.reusableRegister.registerHeaderFooter(footer, type: kind)
 			
@@ -522,11 +522,11 @@ public extension CollectionDirector {
 	public func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
 		
 		switch elementKind {
-		case UICollectionElementKindSectionHeader:
+        case UICollectionView.elementKindSectionHeader:
 			let header = (sections[indexPath.section].header as? AbstractCollectionHeaderFooterItem)
 			let _ = header?.dispatch(.willDisplay, type: .header, view: view, section: indexPath.section, collection: collectionView)
 			self.on.willDisplayHeader?( (view,indexPath,collectionView) )
-		case UICollectionElementKindSectionFooter:
+        case UICollectionView.elementKindSectionFooter:
 			let footer = (sections[indexPath.section].footer as? AbstractCollectionHeaderFooterItem)
 			let _ = footer?.dispatch(.willDisplay, type: .footer, view: view, section: indexPath.section, collection: collectionView)
 			self.on.willDisplayFooter?( (view,indexPath,collectionView) )
@@ -539,11 +539,11 @@ public extension CollectionDirector {
 	public func collectionView(_ collectionView: UICollectionView, didEndDisplayingSupplementaryView view: UICollectionReusableView, forElementOfKind elementKind: String, at indexPath: IndexPath) {
 		
 		switch elementKind {
-		case UICollectionElementKindSectionHeader:
+        case UICollectionView.elementKindSectionHeader:
 			let header = (sections[indexPath.section].header as? AbstractCollectionHeaderFooterItem)
 			let _ = header?.dispatch(.endDisplay, type: .header, view: view, section: indexPath.section, collection: collectionView)
 			self.on.endDisplayHeader?( (view,indexPath,collectionView) )
-		case UICollectionElementKindSectionFooter:
+        case UICollectionView.elementKindSectionFooter:
 			let footer = (sections[indexPath.section].footer as? AbstractCollectionHeaderFooterItem)
 			let _ = footer?.dispatch(.endDisplay, type: .footer, view: view, section: indexPath.section, collection: collectionView)
 			self.on.endDisplayFooter?( (view,indexPath,collectionView) )
@@ -697,8 +697,8 @@ public extension CollectionDirector {
 		@discardableResult
 		internal func registerHeaderFooter(_ headerFooter: CollectionSectionProtocol, type: String) -> String {
 			let identifier = headerFooter.reuseIdentifier
-			if 	(type == UICollectionElementKindSectionHeader && self.headerIDs.contains(identifier)) ||
-				(type == UICollectionElementKindSectionFooter && self.footerIDs.contains(identifier)) {
+            if 	(type == UICollectionView.elementKindSectionHeader && self.headerIDs.contains(identifier)) ||
+                (type == UICollectionView.elementKindSectionFooter && self.footerIDs.contains(identifier)) {
 				return identifier
 			}
 			
