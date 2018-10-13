@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -14,6 +13,10 @@
         <scene sceneID="hNz-n2-bh7">
             <objects>
                 <viewController id="9pv-A4-QxB" customClass="TableViewController" customModule="ExampleApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="kbR-mD-icz"/>
+                        <viewControllerLayoutGuide type="bottom" id="mO9-jy-qOO"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="tsR-hK-woN">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -62,12 +65,11 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="PQr-Ze-W5v" firstAttribute="bottom" secondItem="jcz-1b-EUS" secondAttribute="bottom" id="J02-b3-Cp1"/>
-                            <constraint firstItem="jcz-1b-EUS" firstAttribute="leading" secondItem="PQr-Ze-W5v" secondAttribute="leading" id="KIO-nN-yaH"/>
-                            <constraint firstItem="PQr-Ze-W5v" firstAttribute="trailing" secondItem="jcz-1b-EUS" secondAttribute="trailing" id="ZSx-3q-vCc"/>
-                            <constraint firstItem="jcz-1b-EUS" firstAttribute="top" secondItem="PQr-Ze-W5v" secondAttribute="top" constant="15" id="uNe-uC-ecT"/>
+                            <constraint firstItem="mO9-jy-qOO" firstAttribute="top" secondItem="jcz-1b-EUS" secondAttribute="bottom" id="J02-b3-Cp1"/>
+                            <constraint firstItem="jcz-1b-EUS" firstAttribute="leading" secondItem="tsR-hK-woN" secondAttribute="leading" id="KIO-nN-yaH"/>
+                            <constraint firstAttribute="trailing" secondItem="jcz-1b-EUS" secondAttribute="trailing" id="ZSx-3q-vCc"/>
+                            <constraint firstItem="jcz-1b-EUS" firstAttribute="top" secondItem="kbR-mD-icz" secondAttribute="bottom" constant="15" id="uNe-uC-ecT"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="PQr-Ze-W5v"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="First" image="first" id="acW-dT-cKf"/>
                     <connections>
@@ -82,6 +84,10 @@
         <scene sceneID="wg7-f3-ORb">
             <objects>
                 <viewController storyboardIdentifier="CollectionExampleController" id="8rJ-Kc-sve" customClass="CollectionExampleController" customModule="ExampleApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Fbb-M9-AaG"/>
+                        <viewControllerLayoutGuide type="bottom" id="BXn-AZ-XR2"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="QS5-Rx-YEW">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -162,12 +168,11 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="sds-rC-oKn" firstAttribute="leading" secondItem="O1u-W8-tvY" secondAttribute="leading" id="1q2-z3-fBq"/>
-                            <constraint firstItem="O1u-W8-tvY" firstAttribute="trailing" secondItem="sds-rC-oKn" secondAttribute="trailing" id="3CF-Xc-E7a"/>
-                            <constraint firstItem="sds-rC-oKn" firstAttribute="top" secondItem="O1u-W8-tvY" secondAttribute="top" id="J7O-ar-xyS"/>
-                            <constraint firstItem="O1u-W8-tvY" firstAttribute="bottom" secondItem="sds-rC-oKn" secondAttribute="bottom" id="qcp-vc-4u2"/>
+                            <constraint firstItem="sds-rC-oKn" firstAttribute="leading" secondItem="QS5-Rx-YEW" secondAttribute="leading" id="1q2-z3-fBq"/>
+                            <constraint firstAttribute="trailing" secondItem="sds-rC-oKn" secondAttribute="trailing" id="3CF-Xc-E7a"/>
+                            <constraint firstItem="sds-rC-oKn" firstAttribute="top" secondItem="Fbb-M9-AaG" secondAttribute="bottom" id="J7O-ar-xyS"/>
+                            <constraint firstItem="BXn-AZ-XR2" firstAttribute="top" secondItem="sds-rC-oKn" secondAttribute="bottom" id="qcp-vc-4u2"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="O1u-W8-tvY"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Second" image="second" id="cPa-gy-q4n"/>
                     <connections>

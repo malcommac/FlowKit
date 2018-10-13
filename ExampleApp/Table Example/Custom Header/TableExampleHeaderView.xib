@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -35,14 +34,13 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="twB-F4-x3j" firstAttribute="bottom" secondItem="M0h-nF-WiP" secondAttribute="bottom" id="Yhz-LA-eoE"/>
-                <constraint firstItem="M0h-nF-WiP" firstAttribute="leading" secondItem="twB-F4-x3j" secondAttribute="leading" id="fgs-Sp-l5O"/>
-                <constraint firstItem="M0h-nF-WiP" firstAttribute="top" secondItem="twB-F4-x3j" secondAttribute="top" id="huM-3J-7Jj"/>
-                <constraint firstItem="twB-F4-x3j" firstAttribute="trailing" secondItem="M0h-nF-WiP" secondAttribute="trailing" id="t12-zW-yPx"/>
+                <constraint firstAttribute="bottom" secondItem="M0h-nF-WiP" secondAttribute="bottom" id="Yhz-LA-eoE"/>
+                <constraint firstItem="M0h-nF-WiP" firstAttribute="leading" secondItem="FNk-8Q-zsp" secondAttribute="leading" id="fgs-Sp-l5O"/>
+                <constraint firstItem="M0h-nF-WiP" firstAttribute="top" secondItem="FNk-8Q-zsp" secondAttribute="top" id="huM-3J-7Jj"/>
+                <constraint firstAttribute="trailing" secondItem="M0h-nF-WiP" secondAttribute="trailing" id="t12-zW-yPx"/>
             </constraints>
             <nil key="simulatedTopBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <viewLayoutGuide key="safeArea" id="twB-F4-x3j"/>
             <connections>
                 <outlet property="titleLabel" destination="7pv-cE-ETM" id="Csf-wV-woQ"/>
             </connections>
