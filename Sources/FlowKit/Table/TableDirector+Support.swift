@@ -60,19 +60,33 @@ public enum TableSelectionState {
 	case deselectAnimated
 }
 
-/// Animations used with reload
-public struct TableReloadAnimations {
-	
-    public var rowDeletionAnimation: UITableView.RowAnimation = .automatic
-    public var rowInsertionAnimation: UITableView.RowAnimation = .automatic
-    public var rowReloadAnimation: UITableView.RowAnimation = .automatic
-	
-    public var sectionDeletionAnimation: UITableView.RowAnimation = .automatic
-    public var sectionInsertionAnimation: UITableView.RowAnimation = .automatic
-    public var sectionReloadAnimation: UITableView.RowAnimation = .automatic
+public enum TableAnimationAction {
+	case delete
+	case insert
+	case reload
+}
 
-	public init() { }
+public protocol TableReloadAnimationProtocol {
 	
+	func animationForRow(action: TableAnimationAction) -> UITableView.RowAnimation
+	func animationForSection(action: TableAnimationAction) -> UITableView.RowAnimation
+	
+}
+
+public extension TableReloadAnimationProtocol {
+	
+	func animationForRow(action: TableAnimationAction) -> UITableView.RowAnimation {
+		return .automatic
+	}
+	
+	func animationForSection(action: TableAnimationAction) -> UITableView.RowAnimation {
+		return .automatic
+	}
+	
+}
+
+/// Animations used with reload
+public struct TableReloadAnimations: TableReloadAnimationProtocol {
 	public static func `default`() -> TableReloadAnimations {
 		return TableReloadAnimations()
 	}

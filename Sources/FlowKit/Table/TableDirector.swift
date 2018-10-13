@@ -147,7 +147,7 @@ public class TableDirector: NSObject, UITableViewDelegate, UITableViewDataSource
 	///			  diffing is performed and a reload is made with using table's animation configuration (`TableReloadAnimations`). If `nil` is
 	///			  returned the `TableReloadAnimations.default()` automatic animation is made.
 	///   - onEnd: optional callback called at the end of the reload.
-	public func reloadData(after task: ((TableDirector) -> (TableReloadAnimations?))? = nil, onEnd: (() -> (Void))? = nil) {
+	public func reloadData(after task: ((TableDirector) -> (TableReloadAnimationProtocol?))? = nil, onEnd: (() -> (Void))? = nil) {
 		guard let t = task else {
 			self.tableView?.reloadData()
 			DispatchQueue.main.asyncAfter(deadline: .now() + 0.25, execute: { onEnd?() })

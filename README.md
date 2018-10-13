@@ -383,7 +383,7 @@ tableView.director.reloadData(after: { _ in
 })
 ```
 
-For `TableDirector` you must provide a `TableReloadAnimations` configuration which defines what kind of `UITableViewRowAnimation` must be applied for each type of change (insert/delete/reload/move). `TableReloadAnimations.default()` just uses `.automatic` for each type.
+For `TableDirector` you must provide a `TableReloadAnimations` configuration which defines what kind of `UITableViewRowAnimation` must be applied for each type of change (insert/delete/reload/move). `TableReloadAnimations.default()` just uses `.automatic` for each type (you can also implement your own object which need to be conform to `TableReloadAnimationProtocol` protocol).
 
 For `CollectionDirector` you don't need to return anything; evaluation is made for you based upon the layout used.
 
