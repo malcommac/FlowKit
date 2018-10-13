@@ -80,7 +80,7 @@ open class TableAdapter<M: ModelProtocol, C: CellProtocol>: TableAdapterProtocol
 			
 		case .commitEdit:
 			guard let callback = self.on.commitEdit else { return nil }
-			return callback(Context<M,C>(generic: context), (context.param1 as! UITableViewCellEditingStyle))
+            return callback(Context<M,C>(generic: context), (context.param1 as! UITableViewCell.EditingStyle))
 			
 		case .canMoveRow:
 			guard let callback = self.on.canMoveRow else { return nil }
@@ -198,14 +198,21 @@ open class TableAdapter<M: ModelProtocol, C: CellProtocol>: TableAdapterProtocol
 			guard let callback = self.on.canFocus else { return nil }
 			return callback(Context<M,C>(generic: context))
 			
-		/*case .leadingSwipeActions:
-			guard let callback = self.on.leadingSwipeActions else { return nil }
-			return c(Context<M,C>(generic: context))
+		case .leadingSwipeActions:
+			if #available(iOS 11, *) {
+				guard let callback = self.on.leadingSwipeActions else { return nil }
+				return callback(Context<M,C>(generic: context))
+			} else {
+				debugPrint("Supported only for iOS 11 or higher")
+			}
 			
 		case .trailingSwipeActions:
-			guard let callback = self.on.trailingSwipeActions else { return nil }
-			return c(Context<M,C>(generic: context))
-		*/
+			if #available(iOS 11, *) {
+				guard let callback = self.on.trailingSwipeActions else { return nil }
+				return callback(Context<M,C>(generic: context))
+			} else {
+				debugPrint("Supported only for iOS 11 or higher")
+			}
 		}
 		return nil
 	}

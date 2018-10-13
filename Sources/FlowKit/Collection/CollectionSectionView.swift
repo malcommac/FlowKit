@@ -30,7 +30,7 @@
 import Foundation
 import UIKit
 
-public class CollectionSectionView<T: HeaderFooterProtocol>: CollectionSectionProtocol,AbstractCollectionHeaderFooterItem, CustomStringConvertible {	
+open class CollectionSectionView<T: HeaderFooterProtocol>: CollectionSectionProtocol,AbstractCollectionHeaderFooterItem, CustomStringConvertible {	
 	
 	// Protocol default implementation
 	public var viewClass: AnyClass { return T.self }

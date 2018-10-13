@@ -30,7 +30,7 @@
 import Foundation
 import UIKit
 
-public class TableSectionView<T: HeaderFooterProtocol>: TableHeaderFooterProtocol, AbstractTableHeaderFooterItem, CustomStringConvertible {
+open class TableSectionView<T: HeaderFooterProtocol>: TableHeaderFooterProtocol, AbstractTableHeaderFooterItem, CustomStringConvertible {
 	
 	public var viewClass: AnyClass { return T.self }
 	public var reuseIdentifier: String { return T.reuseIdentifier }

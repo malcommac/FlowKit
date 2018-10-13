@@ -86,8 +86,20 @@ public extension CollectionDirector {
 		var layoutDidChange: ((_ old: UICollectionViewLayout, _ new: UICollectionViewLayout) -> UICollectionViewTransitionLayout?)? = nil
 		var targetOffset: ((_ proposedContentOffset: CGPoint) -> CGPoint)? = nil
 		var moveItemPath: ((_ originalIndexPath: IndexPath, _ proposedIndexPath: IndexPath) -> IndexPath)? = nil
-		var shouldUpdateFocus: ((_ context: UICollectionViewFocusUpdateContext) -> Bool)? = nil
-		var didUpdateFocus: ((_ context: UICollectionViewFocusUpdateContext, _ coordinator: UIFocusAnimationCoordinator) -> Void)? = nil
+        
+        private var _shouldUpdateFocus: ((_ context: AnyObject) -> Bool)? = nil
+        @available(iOS 9.0, *)
+        var shouldUpdateFocus: ((_ context: UICollectionViewFocusUpdateContext) -> Bool)? {
+            get { return _shouldUpdateFocus }
+            set { _shouldUpdateFocus = newValue as? ((AnyObject) -> Bool) }
+        }
+        
+        private var _didUpdateFocus: ((_ context: AnyObject, _ coordinator: AnyObject) -> Void)? = nil
+        @available(iOS 9.0, *)
+        var didUpdateFocus: ((_ context: UICollectionViewFocusUpdateContext, _ coordinator: UIFocusAnimationCoordinator) -> Void)? {
+            get { return _didUpdateFocus }
+            set { _didUpdateFocus = newValue as? ((AnyObject, AnyObject) -> Void) }
+        }
 		
 		var willDisplayHeader : ((HeaderFooterEvent) -> Void)? = nil
 		var willDisplayFooter : ((HeaderFooterEvent) -> Void)? = nil

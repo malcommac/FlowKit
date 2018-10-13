@@ -31,7 +31,7 @@ import Foundation
 import UIKit
 
 /// Represent a single section of the collection.
-public class CollectionSection: Equatable, ModelProtocol {
+open class CollectionSection: Equatable, ModelProtocol {
 	
 	/// Identifier of the section
 	public var UUID: String = NSUUID().uuidString
@@ -126,8 +126,9 @@ public class CollectionSection: Equatable, ModelProtocol {
 	///   - model: new instance to use.
 	///   - index: index of the instance to replace.
 	/// - Returns: old instance, `nil` if provided `index` is invalid.
+	@discardableResult
 	public func set(model: ModelProtocol, at index: Int) -> ModelProtocol? {
-		guard index > 0, index < self.models.count else { return nil }
+		guard index >= 0, index < self.models.count else { return nil }
 		let oldModel = self.models[index]
 		self.models[index] = model
 		return oldModel
