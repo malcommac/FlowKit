@@ -115,8 +115,12 @@ public extension TableAdapter {
 		
 		public var canFocus: ((EventContext) -> Bool)? = nil
 
-		//public var leadingSwipeActions: ((EventContext) -> UISwipeActionsConfiguration?)? = nil
-		//public var trailingSwipeActions: ((EventContext) -> UISwipeActionsConfiguration?)? = nil
+		@available(iOS 11, *)
+		public lazy var leadingSwipeActions: ((EventContext) -> UISwipeActionsConfiguration?)? = nil
+
+		@available(iOS 11, *)
+		public lazy var trailingSwipeActions: ((EventContext) -> UISwipeActionsConfiguration?)? = nil
+
 	}
 	
 }

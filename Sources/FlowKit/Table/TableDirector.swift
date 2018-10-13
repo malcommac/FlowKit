@@ -658,16 +658,17 @@ public extension TableDirector {
 		return ((adapter.dispatch(.canFocus, context: InternalContext(model, indexPath, nil, tableView)) as? Bool) ?? true)
 	}
 	
-	/*
+	@available(iOS 11, *)
 	public func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
 		let (model,adapter) = self.context(forItemAt: indexPath)
 		return adapter.dispatch(.leadingSwipeActions, context: InternalContext.init(model, indexPath, nil, tableView)) as? UISwipeActionsConfiguration
 	}
+	
 	@available(iOS 11.0, *)
 	public func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
 		let (model,adapter) = self.context(forItemAt: indexPath)
 		return adapter.dispatch(.trailingSwipeActions, context: InternalContext.init(model, indexPath, nil, tableView)) as? UISwipeActionsConfiguration
-	}*/
+	}
 	
 	/// Indexes
 	
