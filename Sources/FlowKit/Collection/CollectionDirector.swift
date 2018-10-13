@@ -485,6 +485,7 @@ public extension CollectionDirector {
 		return ((adapter.dispatch(.shouldSpringLoad, context: InternalContext.init(model, indexPath, nil, collectionView)) as? Bool) ?? true)
 	}
 	
+    @available(iOS 9.0, *)
 	public func collectionView(_ collectionView: UICollectionView, shouldUpdateFocusIn context: UICollectionViewFocusUpdateContext) -> Bool {
 		guard let update = self.on.shouldUpdateFocus?(context) else {
 			return true
@@ -492,6 +493,7 @@ public extension CollectionDirector {
 		return update
 	}
 	
+    @available(iOS 9.0, *)
 	public func collectionView(_ collectionView: UICollectionView, didUpdateFocusIn context: UICollectionViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator) {
 		self.on.didUpdateFocus?(context,coordinator)
 	}

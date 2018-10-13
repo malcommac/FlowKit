@@ -61,6 +61,7 @@ open class FlowCollectionDirector: CollectionDirector, UICollectionViewDelegateF
 	/// Each new header view that scrolls to the top of the screen pushes the previously pinned header view offscreen.
 	///
 	/// The default value of this property is `false`.
+    @available(iOS 9.0, *)
 	public var stickyHeaders: Bool {
 		set { self.layout?.sectionHeadersPinToVisibleBounds = newValue }
 		get { return (self.layout?.sectionHeadersPinToVisibleBounds ?? false) }
@@ -71,6 +72,7 @@ open class FlowCollectionDirector: CollectionDirector, UICollectionViewDelegateF
 	/// Each new footer view that scrolls to the bottom of the screen pushes the previously pinned footer view offscreen.
 	///
 	/// The default value of this property is `false`.
+    @available(iOS 9.0, *)
 	public var stickyFooters: Bool {
 		set { self.layout?.sectionFootersPinToVisibleBounds = newValue }
 		get { return (self.layout?.sectionFootersPinToVisibleBounds ?? false) }
