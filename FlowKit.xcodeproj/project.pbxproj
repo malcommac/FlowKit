@@ -8,6 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		52D6D9871BEFF229002C0205 /* FlowKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52D6D97C1BEFF229002C0205 /* FlowKit.framework */; };
+		641B559721A495E40024EDAF /* FlowStackViewRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 641B559421A495E40024EDAF /* FlowStackViewRow.swift */; };
+		641B559821A495E40024EDAF /* FlowStackViewRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 641B559421A495E40024EDAF /* FlowStackViewRow.swift */; };
+		641B559921A495E40024EDAF /* FlowStackViewSeparator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 641B559521A495E40024EDAF /* FlowStackViewSeparator.swift */; };
+		641B559A21A495E40024EDAF /* FlowStackViewSeparator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 641B559521A495E40024EDAF /* FlowStackViewSeparator.swift */; };
+		641B559B21A495E40024EDAF /* FlowStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 641B559621A495E40024EDAF /* FlowStackView.swift */; };
+		641B559C21A495E40024EDAF /* FlowStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 641B559621A495E40024EDAF /* FlowStackView.swift */; };
+		641B559F21A496730024EDAF /* FlowStackView+Extras.swift in Sources */ = {isa = PBXBuildFile; fileRef = 641B559E21A496720024EDAF /* FlowStackView+Extras.swift */; };
+		641B55A021A496730024EDAF /* FlowStackView+Extras.swift in Sources */ = {isa = PBXBuildFile; fileRef = 641B559E21A496720024EDAF /* FlowStackView+Extras.swift */; };
 		642448C3208B792C0005C395 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 642448C2208B792C0005C395 /* AppDelegate.swift */; };
 		642448C5208B792C0005C395 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 642448C4208B792C0005C395 /* TableViewController.swift */; };
 		642448C7208B792C0005C395 /* CollectionExampleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 642448C6208B792C0005C395 /* CollectionExampleController.swift */; };
@@ -74,6 +82,10 @@
 /* Begin PBXFileReference section */
 		52D6D97C1BEFF229002C0205 /* FlowKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FlowKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		52D6D9861BEFF229002C0205 /* FlowKit-iOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "FlowKit-iOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		641B559421A495E40024EDAF /* FlowStackViewRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlowStackViewRow.swift; sourceTree = "<group>"; };
+		641B559521A495E40024EDAF /* FlowStackViewSeparator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlowStackViewSeparator.swift; sourceTree = "<group>"; };
+		641B559621A495E40024EDAF /* FlowStackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlowStackView.swift; sourceTree = "<group>"; };
+		641B559E21A496720024EDAF /* FlowStackView+Extras.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FlowStackView+Extras.swift"; sourceTree = "<group>"; };
 		642448C0208B792C0005C395 /* ExampleApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExampleApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		642448C2208B792C0005C395 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		642448C4208B792C0005C395 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
@@ -172,6 +184,17 @@
 			path = Configs;
 			sourceTree = "<group>";
 		};
+		641B559D21A495E70024EDAF /* StackView */ = {
+			isa = PBXGroup;
+			children = (
+				641B559621A495E40024EDAF /* FlowStackView.swift */,
+				641B559421A495E40024EDAF /* FlowStackViewRow.swift */,
+				641B559521A495E40024EDAF /* FlowStackViewSeparator.swift */,
+				641B559E21A496720024EDAF /* FlowStackView+Extras.swift */,
+			);
+			path = StackView;
+			sourceTree = "<group>";
+		};
 		642448C1208B792C0005C395 /* ExampleApp */ = {
 			isa = PBXGroup;
 			children = (
@@ -228,6 +251,7 @@
 		64F7CAC7208B566D00676831 /* FlowKit */ = {
 			isa = PBXGroup;
 			children = (
+				641B559D21A495E70024EDAF /* StackView */,
 				64F7CAD5208B566D00676831 /* Table */,
 				64F7CAC8208B566D00676831 /* Collection */,
 				64F7CAD1208B566D00676831 /* Shared */,
@@ -457,6 +481,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				641B559B21A495E40024EDAF /* FlowStackView.swift in Sources */,
 				64F7CAE7208B566D00676831 /* TableSection.swift in Sources */,
 				64F7CAE5208B566D00676831 /* DeepDiff+Helpers.swift in Sources */,
 				64F7CADB208B566D00676831 /* CollectionSection.swift in Sources */,
@@ -473,7 +498,10 @@
 				64F7CAE1208B566D00676831 /* Collection+Support.swift in Sources */,
 				64F7CAE0208B566D00676831 /* CollectionSectionView.swift in Sources */,
 				64F7CAE8208B566D00676831 /* TableDirector+Support.swift in Sources */,
+				641B559721A495E40024EDAF /* FlowStackViewRow.swift in Sources */,
+				641B559921A495E40024EDAF /* FlowStackViewSeparator.swift in Sources */,
 				642448E5208B7C380005C395 /* AssociatedValues.swift in Sources */,
+				641B559F21A496730024EDAF /* FlowStackView+Extras.swift in Sources */,
 				64F7CADF208B566D00676831 /* CollectionAdapter+Events.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -490,11 +518,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				641B55A021A496730024EDAF /* FlowStackView+Extras.swift in Sources */,
 				642448DD208B7A130005C395 /* FlowCollectionDirector.swift in Sources */,
 				642448DF208B7A130005C395 /* CollectionSectionView.swift in Sources */,
 				642448E3208B7A130005C395 /* DeepDiff+Helpers.swift in Sources */,
 				642448D9208B7A130005C395 /* CollectionDirector.swift in Sources */,
 				642448C7208B792C0005C395 /* CollectionExampleController.swift in Sources */,
+				641B559821A495E40024EDAF /* FlowStackViewRow.swift in Sources */,
 				642448D8208B7A130005C395 /* TableDirector+Events.swift in Sources */,
 				642448FD208CC73C0005C395 /* CollectionHeader.swift in Sources */,
 				642448C3208B792C0005C395 /* AppDelegate.swift in Sources */,
@@ -507,9 +537,11 @@
 				642448EC208B80E00005C395 /* TableExampleHeaderView.swift in Sources */,
 				642448DC208B7A130005C395 /* CollectionDragDropManager.swift in Sources */,
 				642448E6208B7C3A0005C395 /* AssociatedValues.swift in Sources */,
+				641B559C21A495E40024EDAF /* FlowStackView.swift in Sources */,
 				642448E1208B7A130005C395 /* Commons.swift in Sources */,
 				642448D7208B7A130005C395 /* TableDirector+Support.swift in Sources */,
 				642448C5208B792C0005C395 /* TableViewController.swift in Sources */,
+				641B559A21A495E40024EDAF /* FlowStackViewSeparator.swift in Sources */,
 				642448DE208B7A130005C395 /* CollectionAdapter+Events.swift in Sources */,
 				642448E2208B7A130005C395 /* DeepDiff.swift in Sources */,
 				642448DB208B7A130005C395 /* CollectionSection.swift in Sources */,
@@ -748,7 +780,7 @@
 				DEVELOPMENT_TEAM = E5DU3FA699;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = ExampleApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.flowkit.demoapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -775,7 +807,7 @@
 				DEVELOPMENT_TEAM = E5DU3FA699;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = ExampleApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.flowkit.demoapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
