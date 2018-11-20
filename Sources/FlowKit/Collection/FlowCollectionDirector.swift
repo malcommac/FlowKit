@@ -109,10 +109,6 @@ open class FlowCollectionDirector: CollectionDirector, UICollectionViewDelegateF
 			collection.collectionViewLayout = newLayout
 		}
 		super.init(collection)
-
-		self.layout?.sectionInset = .zero
-		self.layout?.minimumInteritemSpacing = CGFloat.leastNormalMagnitude
-		self.layout?.minimumLineSpacing = 0
 	}
 	
 	//MARK: UICollectionViewDelegateFlowLayout Events
