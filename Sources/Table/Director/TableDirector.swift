@@ -16,7 +16,9 @@ open class TableDirector: NSObject {
 	public private(set) weak var table: UITableView?
 
 	/// Registered adapters for table.
-	public private(set) var adapters = [String: TableAdapterProtocol]()
+	public private(set) var cellAdapters = [String: TableAdapterProtocol]()
+    
+    public private(set) var headerFooterAdapters = [String: TableHeaderFooterAdapterProtocol]()
 
 	/// Events related to the behaviour of the table.
 	public private(set) var scrollViewEvents = ScrollViewEventsHandler()
@@ -65,15 +67,15 @@ open class TableDirector: NSObject {
 		table.delegate = self
 	}
 
-	// MARK: - Register Adapters -
+	// MARK: - Register Cell Adapters -
 	
 	/// Register a sequence of adapter for the table. If an adapter is already
 	/// registered request will be ignored automatically.
 	///
 	/// - Parameter adapters: adapters to register.
-	public func registerAdapters(_ adapters: [TableAdapterProtocol]) {
+	public func registerCellAdapters(_ adapters: [TableAdapterProtocol]) {
 		adapters.forEach {
-			registerAdapter($0)
+			registerCellAdapter($0)
 		}
 	}
 
@@ -83,12 +85,15 @@ open class TableDirector: NSObject {
 	/// If adapter is already registered it will be ignored automatically.
 	///
 	/// - Parameter adapter: adapter instance to register.
-	public func registerAdapter(_ adapter: TableAdapterProtocol) {
-		guard adapters[adapter.modelIdentifier] == nil else {
-			return
+    @discardableResult
+	public func registerCellAdapter(_ adapter: TableAdapterProtocol) -> String {
+        let id = adapter.modelIdentifier
+		guard cellAdapters[id] == nil else {
+			return id
 		}
-		adapters[adapter.modelIdentifier] = adapter
+		cellAdapters[id] = adapter
 		adapter.registerReusableCellViewForDirector(self)
+        return id
 	}
 
 	/// Return a list of the adapters involved into the render of the the given models
@@ -97,13 +102,13 @@ open class TableDirector: NSObject {
 	///
 	/// - Parameter paths: paths of the model instances.
 	/// - Returns: `[PrefetchModelsGroup]`
-	internal func adaptersForIndexPaths(_ paths: [IndexPath]) -> [PrefetchModelsGroup] {
+	internal func cellAdaptersForIndexPaths(_ paths: [IndexPath]) -> [PrefetchModelsGroup] {
 		let result = paths.reduce(into: [String: PrefetchModelsGroup]()) { (result, indexPath) in
 			let model = sections[indexPath.section].elements[indexPath.item]
 
 			var context = result[model.modelClassIdentifier]
 			if context == nil {
-				guard let adapter = adapters[model.modelClassIdentifier] else {
+				guard let adapter = cellAdapters[model.modelClassIdentifier] else {
 					fatalError("Failed to get adapter for model: '\(model)' at (\(indexPath.section),\(indexPath.row))")
 				}
 				context = PrefetchModelsGroup(adapter: adapter)
@@ -113,6 +118,30 @@ open class TableDirector: NSObject {
 		}
 		return Array(result.values)
 	}
+    
+    // MARK: - Register Header/Footer Adapters -
+    
+    public func registerHeaderFooterAdapters(_ adapters: [TableHeaderFooterAdapterProtocol]) {
+        adapters.forEach {
+            registerHeaderFooterAdapter($0)
+        }
+    }
+    
+    @discardableResult
+    public func registerHeaderFooterAdapter(_ adapter: TableHeaderFooterAdapterProtocol) -> String {
+        let id = adapter.modelCellIdentifier
+        guard headerFooterAdapters[id] == nil else {
+            return id
+        }
+        headerFooterAdapters[id] = adapter
+        return adapter.registerHeaderFooterViewForDirector(self)
+    }
+    
+    @usableFromInline
+    internal func adapterForHeaderFooterView(_ view: UIView) -> TableHeaderFooterAdapterProtocol? {
+        guard let view = view as? UITableViewHeaderFooterView else { return nil }
+        return headerFooterAdapters[type(of: view).reusableViewIdentifier]
+    }
 	
 	// MARK: - Add Sections -
 
@@ -318,14 +347,14 @@ open class TableDirector: NSObject {
 	/// - Returns: model instance and adapter used to represent it.
 	internal func context(forItemAt path: IndexPath) -> (model: ElementRepresentable, adapter: TableAdapterProtocol) {
 		let modelInstance = sections[path.section].elements[path.row]
-		guard let adapter = self.adapters[modelInstance.modelClassIdentifier] else {
+		guard let adapter = self.cellAdapters[modelInstance.modelClassIdentifier] else {
 			fatalError("No register adapter for model '\(modelInstance.modelClassIdentifier)' at (\(path.section),\(path.row))")
 		}
 		return (modelInstance, adapter)
 	}
 
 	internal func adapterForCell(_ cell: UITableViewCell) -> TableAdapterProtocol? {
-		return adapters.first(where: { item in
+		return cellAdapters.first(where: { item in
 			return item.value.modelCellType == type(of: cell)
 		})?.value
 	}
@@ -385,20 +414,23 @@ extension TableDirector: UITableViewDataSource, UITableViewDelegate {
 	// MARK: - Header/Footer -
 	
 	public func tableView(_ tableView: UITableView, didEndDisplayingHeaderView view: UIView, forSection section: Int) {
-		// TODO
-        print("")
+		let adapter = adapterForHeaderFooterView(view)
+        let _ = adapter?.dispatch(.endDisplay, isHeader: true, view: view, section: section)
 	}
 	
 	public func tableView(_ tableView: UITableView, didEndDisplayingFooterView view: UIView, forSection section: Int) {
-		// TODO
+        let adapter = adapterForHeaderFooterView(view)
+        let _ = adapter?.dispatch(.endDisplay, isHeader: false, view: view, section: section)
 	}
 
 	public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-		let _ = sections[section].headerView?.dispatch(.willDisplay, isHeader: true, view: view, section: section, table: tableView)
+        let adapter = adapterForHeaderFooterView(view)
+        let _ = adapter?.dispatch(.willDisplay, isHeader: true, view: view, section: section)
 	}
 
 	public func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
-		let _ = sections[section].footerView?.dispatch(.willDisplay, isHeader: false, view: view, section: section, table: tableView)
+        let adapter = adapterForHeaderFooterView(view)
+        let _ = adapter?.dispatch(.willDisplay, isHeader: false, view: view, section: section)
 	}
 
 	public func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -410,48 +442,44 @@ extension TableDirector: UITableViewDataSource, UITableViewDelegate {
 	}
 
 	public func tableView(_ tableView: UITableView, viewForHeaderInSection sectionIdx: Int) -> UIView? {
-		guard let header = sections[sectionIdx].headerView else {
-			return nil
-		}
-		let id = header.registerHeaderFooterViewForDirector(self)
-		let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: id)
-		header.dispatch(.dequeue, isHeader: false, view: headerView, section: sectionIdx, table: tableView)
+        guard let header = sections[sectionIdx].headerView, let headerView = header.dequeueHeaderFooterForDirector(self) else {
+            return nil
+        }
+		header.dispatch(.dequeue, isHeader: false, view: headerView, section: sectionIdx)
 		return headerView
 	}
 
 	public func tableView(_ tableView: UITableView, viewForFooterInSection sectionIdx: Int) -> UIView? {
-		guard let footer = sections[sectionIdx].footerView else {
-			return nil
-		}
-		let id = footer.registerHeaderFooterViewForDirector(self)
-		let footerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: id)
-		footer.dispatch(.dequeue, isHeader: false, view: footerView, section: sectionIdx, table: tableView)
+        guard let footer = sections[sectionIdx].footerView, let footerView = footer.dequeueHeaderFooterForDirector(self) else {
+            return nil
+        }
+		footer.dispatch(.dequeue, isHeader: false, view: footerView, section: sectionIdx)
 		return footerView
 	}
 
 	public func tableView(_ tableView: UITableView, heightForHeaderInSection index: Int) -> CGFloat {
-		let height = sections[index].headerView?.dispatch(.headerHeight, isHeader: true, view: nil, section: index, table: tableView)
+		let height = sections[index].headerView?.dispatch(.headerHeight, isHeader: true, view: nil, section: index)
 		return (height as? CGFloat ?? UITableView.automaticDimension)
 	}
 
 	public func tableView(_ tableView: UITableView, heightForFooterInSection index: Int) -> CGFloat {
-		let height = sections[index].footerView?.dispatch(.footerHeight, isHeader: true, view: nil, section: index, table: tableView)
+		let height = sections[index].footerView?.dispatch(.footerHeight, isHeader: true, view: nil, section: index)
 		return (height as? CGFloat ?? UITableView.automaticDimension)
 	}
 
 	public func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection index: Int) -> CGFloat {
-		let estHeight = sections[index].headerView?.dispatch(.estHeaderHeight, isHeader: true, view: nil, section: index, table: tableView)
+		let estHeight = sections[index].headerView?.dispatch(.estHeaderHeight, isHeader: true, view: nil, section: index)
 		guard let estimatedHeight = estHeight as? CGFloat else {
-            let height = sections[index].headerView?.dispatch(.headerHeight, isHeader: true, view: nil, section: index, table: tableView)
+            let height = sections[index].headerView?.dispatch(.headerHeight, isHeader: true, view: nil, section: index)
             return height as? CGFloat ?? sections[index].unspecifiedHeaderHeight
 		}
 		return estimatedHeight
 	}
 
 	public func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection index: Int) -> CGFloat {
-		let estHeight = sections[index].footerView?.dispatch(.estFooterHeight, isHeader: true, view: nil, section: index, table: tableView)
+		let estHeight = sections[index].footerView?.dispatch(.estFooterHeight, isHeader: true, view: nil, section: index)
 		guard let estimatedHeight = estHeight as? CGFloat else {
-			let height = sections[index].footerView?.dispatch(.footerHeight, isHeader: true, view: nil, section: index, table: tableView)
+			let height = sections[index].footerView?.dispatch(.footerHeight, isHeader: true, view: nil, section: index)
             return height as? CGFloat ?? sections[index].unspecifiedFooterHeight
 		}
 		return estimatedHeight
@@ -496,13 +524,13 @@ extension TableDirector: UITableViewDataSource, UITableViewDelegate {
 	// MARK: - Prefetching -
 	
 	public func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
-		adaptersForIndexPaths(indexPaths).forEach { group in
+		cellAdaptersForIndexPaths(indexPaths).forEach { group in
 			group.adapter.dispatchEvent(.prefetch, model: group.models, cell: nil, path: nil, params: group.indexPaths)
 		}
 	}
 	
 	public func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
-		adaptersForIndexPaths(indexPaths).forEach { group in
+		cellAdaptersForIndexPaths(indexPaths).forEach { group in
 			group.adapter.dispatchEvent(.cancelPrefetch, model: group.models, cell: nil, path: nil, params: group.indexPaths)
 		}
 	}

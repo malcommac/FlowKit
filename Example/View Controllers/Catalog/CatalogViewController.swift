@@ -38,8 +38,8 @@ class CatalogViewController: UIViewController {
 		tableDirector = TableDirector(table: tableView)
 		tableDirector?.rowHeight = .explicit(60)
 
-		let catalogAdapter = TableAdapter<CatalogItem, CatalogItemCell>()
-		tableDirector?.registerAdapter(catalogAdapter)
+		let catalogAdapter = TableCellAdapter<CatalogItem, CatalogItemCell>()
+		tableDirector?.registerCellAdapter(catalogAdapter)
 
 		catalogAdapter.events.dequeue = { ctx in
 			ctx.cell?.item = ctx.element

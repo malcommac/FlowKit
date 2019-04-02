@@ -22,10 +22,10 @@ public class TableSection: Equatable, Copying, DifferentiableSection {
 	public var footerTitle: String?
 
 	/// View of the header. It overrides any set value for `headerTitle`.
-	public var headerView: TableSectionHeaderFooterProtocol?
+	public var headerView: TableHeaderFooterAdapterProtocol?
 
 	/// View of the footer. It overrides any set value for `footerView`.
-	public var footerView: TableSectionHeaderFooterProtocol?
+	public var footerView: TableHeaderFooterAdapterProtocol?
 
     /// Return the height of the header when no estimated height is specified.
     internal var unspecifiedHeaderHeight: CGFloat {
@@ -107,13 +107,13 @@ public class TableSection: Equatable, Copying, DifferentiableSection {
 		self.allElements = elements
 		self.identifier = id ?? UUID().uuidString
 	}
-
-	public convenience init(id: String? = nil, elements: [ElementRepresentable] = [],
-				header: TableSectionHeaderFooterProtocol? = nil, footer: TableSectionHeaderFooterProtocol? = nil) {
-		self.init(id: id, elements: elements)
-		self.headerView = header
-		self.footerView = footer
-	}
+    
+    public convenience init(id: String? = nil, elements: [ElementRepresentable] = [],
+                            header: TableHeaderFooterAdapterProtocol, footer: TableHeaderFooterAdapterProtocol) {
+        self.init(id: id, elements: elements)
+        self.headerView = header
+        self.footerView = footer
+    }
 
 	public convenience init(id: String? = nil, elements: [ElementRepresentable] = [],
 							header: String? = nil, footer: String? = nil) {
@@ -228,7 +228,7 @@ public class TableSection: Equatable, Copying, DifferentiableSection {
     /// Return the best height of the header/footer based upon what kind of item is set.
     /// If a view is set the `UITableView.automaticDimension` is used.
     /// If title is set 0 is returned if string is empty otherwise `CGFloat.leastNonzeroMagnitude`.
-    fileprivate func unspecifiedHeightForHeaderFooter(view: TableSectionHeaderFooterProtocol?, title: String?) -> CGFloat {
+    fileprivate func unspecifiedHeightForHeaderFooter(view: TableHeaderFooterAdapterProtocol?, title: String?) -> CGFloat {
         if let _ = view {
             return UITableView.automaticDimension
         }

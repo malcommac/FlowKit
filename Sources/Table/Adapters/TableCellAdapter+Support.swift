@@ -21,7 +21,7 @@ public enum TableAdapterCellAction {
 	case deselectAnimated
 }
 
-public extension TableAdapter {
+public extension TableCellAdapter {
 
 	// MARK: - TableAdapter.Event -
 
