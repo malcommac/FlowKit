@@ -136,14 +136,14 @@ public extension FlowCollectionDirector {
 	}
 
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-		guard let size = sections[section].headerView?.dispatch(.referenceSize, isHeader: true, view: nil, section: section) as? CGSize else {
+        guard let size = sections[section].headerView?.dispatch(.referenceSize, isHeader: true, view: nil, section: section) as? CGSize else {
 			return .zero
 		}
 		return size
 	}
 
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-		guard let size = sections[section].headerView?.dispatch(.referenceSize, isHeader: false, view: nil, section: section) as? CGSize else {
+        guard let size = sections[section].footerView?.dispatch(.referenceSize, isHeader: false, view: nil, section: section) as? CGSize else {
 			return .zero
 		}
 		return size

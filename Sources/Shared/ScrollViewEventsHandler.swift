@@ -33,29 +33,3 @@ public struct ScrollViewEventsHandler {
 	var didChangeAdjustedContentInset: ((UIScrollView) -> Void)? = nil
 
 }
-
-extension String: Differentiable, ElementRepresentable {
-
-	public var differenceIdentifier: String {
-		return self
-	}
-
-	public func isContentEqual(to other: Differentiable) -> Bool {
-		guard let other = other as? String else { return false }
-		return self == other
-	}
-
-}
-
-extension Int: Differentiable, ElementRepresentable {
-
-	public var differenceIdentifier: String {
-		return String(self)
-	}
-
-	public func isContentEqual(to other: Differentiable) -> Bool {
-		guard let other = other as? Int else { return false }
-		return self == other
-	}
-
-}

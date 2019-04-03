@@ -10,7 +10,8 @@ import UIKit
 
 public class CatalogItem: Differentiable, ElementRepresentable, Equatable {
 	let icon: UIImage
-	let title: String
+    let title: String
+    var shortDesc: String = ""
 	let id: String
 
 	public var differenceIdentifier: String {

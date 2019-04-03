@@ -8,6 +8,8 @@
 
 import UIKit
 
+// MARK: - TableHeaderFooterAdapterProtocol -
+
 public protocol TableHeaderFooterAdapterProtocol {
     var modelCellType: Any.Type { get }
     
@@ -26,17 +28,24 @@ public extension TableHeaderFooterAdapterProtocol {
     
 }
 
+// MARK: - TableHeaderFooterAdapter -
 
 public class TableHeaderFooterAdapter<View: UITableViewHeaderFooterView>: TableHeaderFooterAdapterProtocol {
+    
+    // MARK: - Public Properties -
     
     public var modelCellType: Any.Type = View.self
     
     // Events you can assign to monitor the header/footer of a section.
     public var events = HeaderFooterEventsSubscriber()
     
+    // MARK: - Initialization -
+    
     public init(_ configuration: ((TableHeaderFooterAdapter) -> ())? = nil) {
         configuration?(self)
     }
+    
+    // MARK: - Helper Function s-
     
     public func registerHeaderFooterViewForDirector(_ director: TableDirector) -> String {
         let id = View.reusableViewIdentifier

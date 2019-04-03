@@ -56,11 +56,11 @@ public extension TableDirector {
 internal extension TableDirector {
 
 	class PrefetchModelsGroup {
-		let adapter: TableAdapterProtocol
+		let adapter: TableCellAdapterProtocol
 		var models: [ElementRepresentable] = []
 		var indexPaths: [IndexPath] = []
 
-		init(adapter: TableAdapterProtocol) {
+		init(adapter: TableCellAdapterProtocol) {
 			self.adapter = adapter
 		}
 	}

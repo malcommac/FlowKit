@@ -14,7 +14,10 @@ open class CollectionDirector: NSObject,
 	//MARK: - Private Properties -
 
 	/// Registered adapters for this collection manager
-	internal var adapters = [String: CollectionAdapterProtocol]()
+    private var cellAdapters = [String: CollectionCellAdapterProtocol]()
+    
+    /// Registered adapters for header/footer
+    private var headerFooterAdapters = [String: CollectionHeaderFooterAdapterProtocol]()
 
 	/// Registered cell identifiers
 	internal var cellReuseIDs = Set<String>()
@@ -86,7 +89,7 @@ open class CollectionDirector: NSObject,
 	/// registered request will be ignored automatically.
 	///
 	/// - Parameter adapters: adapters to register.
-	public func registerAdapters(_ adapters: [CollectionAdapterProtocol]) {
+	public func registerAdapters(_ adapters: [CollectionCellAdapterProtocol]) {
 		adapters.forEach {
 			registerAdapter($0)
 		}
@@ -98,13 +101,59 @@ open class CollectionDirector: NSObject,
 	/// If adapter is already registered it will be ignored automatically.
 	///
 	/// - Parameter adapter: adapter instance to register.
-	public func registerAdapter(_ adapter: CollectionAdapterProtocol) {
-		guard adapters[adapter.modelIdentifier] == nil else {
+	public func registerAdapter(_ adapter: CollectionCellAdapterProtocol) {
+		guard cellAdapters[adapter.modelIdentifier] == nil else {
 			return
 		}
-		adapters[adapter.modelIdentifier] = adapter
+		cellAdapters[adapter.modelIdentifier] = adapter
 		adapter.registerReusableCellViewForDirector(self)
 	}
+    
+    // MARK: - Register Header/Footer Adapters -
+    
+    /// Register a new adapters for header and footer custom view.
+    ///
+    /// - Parameter adapters: adapters.
+    public func registerHeaderFooterAdapters(_ adapters: [CollectionHeaderFooterAdapterProtocol]) {
+        adapters.forEach {
+            registerHeaderFooterAdapter($0)
+        }
+    }
+    
+    /// Register header/footer for header/footer custom view.
+    ///
+    /// - Parameter adapter: adapter.
+    /// - Returns: registered identifier.
+    @discardableResult
+    public func registerHeaderFooterAdapter(_ adapter: CollectionHeaderFooterAdapterProtocol) -> String {
+        let id = adapter.modelCellIdentifier
+        guard headerFooterAdapters[id] == nil else {
+            return id
+        }
+        headerFooterAdapters[id] = adapter
+        let _ = adapter.registerHeaderFooterViewForDirector(self, kind: UICollectionView.elementKindSectionHeader)
+        let _ = adapter.registerHeaderFooterViewForDirector(self, kind: UICollectionView.elementKindSectionFooter)
+        return id
+    }
+    
+    /// Return the adapter used to render specific header/footer at given indexPath.
+    ///
+    /// - Parameters:
+    ///   - kind: kind of header/footer.
+    ///   - indexPath: index path.
+    /// - Returns: adapter if any
+    internal func adapterForHeaderFooter(_ kind: String, indexPath: IndexPath) -> CollectionHeaderFooterAdapterProtocol? {
+        let adapter: CollectionHeaderFooterAdapterProtocol?
+        switch kind {
+        case UICollectionView.elementKindSectionHeader:
+            adapter = sections[indexPath.section].headerView
+        case UICollectionView.elementKindSectionFooter:
+            adapter = sections[indexPath.section].footerView
+        default:
+            return nil
+        }
+        return adapter
+    }
 
 	// MARK: - Public Functions -
 
@@ -233,9 +282,9 @@ open class CollectionDirector: NSObject,
 
 	// MARK: - Private Methods -
 
-	internal func context(forItemAt indexPath: IndexPath) -> (ElementRepresentable, CollectionAdapterProtocol) {
+	internal func context(forItemAt indexPath: IndexPath) -> (ElementRepresentable, CollectionCellAdapterProtocol) {
 		let modelInstance = sections[indexPath.section].elements[indexPath.row]
-		guard let adapter = adapters[modelInstance.modelClassIdentifier] else {
+		guard let adapter = cellAdapters[modelInstance.modelClassIdentifier] else {
 			fatalError("No register adapter for model '\(modelInstance.modelClassIdentifier)' at (\(indexPath.section),\(indexPath.row))")
 		}
 		return (modelInstance, adapter)
@@ -381,37 +430,22 @@ public extension CollectionDirector {
 	// MARK: - Header/Footer -
 
 	func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-
-		let headerFooterView: CollectionSectionHeaderFooterProtocol?
-		switch kind {
-		case UICollectionView.elementKindSectionHeader:
-			headerFooterView = sections[indexPath.section].headerView
-		case UICollectionView.elementKindSectionFooter:
-			headerFooterView = sections[indexPath.section].footerView
-		default:
-			return UICollectionReusableView()
-		}
-
-		if headerFooterView == nil {
-			return UICollectionReusableView()
-		}
-
-		let id = headerFooterView!.registerHeaderFooterViewForDirector(self, type: kind)
-		return collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: id, for: indexPath)
+        let adapter = adapterForHeaderFooter(kind, indexPath: indexPath)
+        return adapter?.dequeueHeaderFooterForDirector(self, type: kind, indexPath: indexPath) ?? UICollectionReusableView()
 	}
 
 	func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
-		let headerFooterView = headerFooterForSection(ofType: elementKind, at: indexPath)
-		let _ = headerFooterView?.dispatch(.willDisplay, isHeader: true, view: view, section: indexPath.section)
+        let adapter = adapterForHeaderFooter(elementKind, indexPath: indexPath)
+        let _ = adapter?.dispatch(.willDisplay, isHeader: true, view: view, section: indexPath.section)
 		view.layer.zPosition = 0
 	}
 
 	func collectionView(_ collectionView: UICollectionView, didEndDisplayingSupplementaryView view: UICollectionReusableView, forElementOfKind elementKind: String, at indexPath: IndexPath) {
-		let headerFooterView = headerFooterForSection(ofType: elementKind, at: indexPath)
-		let _ = headerFooterView?.dispatch(.endDisplay, isHeader: true, view: view, section: indexPath.section)
+        let adapter = adapterForHeaderFooter(elementKind, indexPath: indexPath)
+        let _ = adapter?.dispatch(.endDisplay, isHeader: true, view: view, section: indexPath.section)
 	}
 
-	func headerFooterForSection(ofType type: String, at indexPath: IndexPath) -> CollectionSectionHeaderFooterProtocol? {
+	func headerFooterForSection(ofType type: String, at indexPath: IndexPath) -> CollectionHeaderFooterAdapterProtocol? {
 		switch type {
 		case UICollectionView.elementKindSectionHeader:
 			return sections[indexPath.section].headerView
@@ -444,7 +478,7 @@ public extension CollectionDirector {
 
 			var context = result[model.modelClassIdentifier]
 			if context == nil {
-				guard let adapter = adapters[model.modelClassIdentifier] else {
+				guard let adapter = cellAdapters[model.modelClassIdentifier] else {
 					fatalError("Failed to get adapter for model: '\(model)' at (\(indexPath.section),\(indexPath.row))")
 				}
 				context = PrefetchModelsGroup(adapter: adapter)

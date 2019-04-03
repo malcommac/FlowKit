@@ -8,7 +8,7 @@
 
 import UIKit
 
-public extension CollectionHeaderFooter {
+public extension CollectionHeaderFooterAdapter {
 
 	struct Event {
 

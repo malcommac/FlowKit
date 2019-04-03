@@ -10,23 +10,22 @@ open class TableDirector: NSObject {
 	/// Registered header/footer's view identifiers.
 	internal var headerFooterReuseIdentifiers = Set<String>()
 
+    /// Registered adapters for table.
+    private var cellAdapters = [String: TableCellAdapterProtocol]()
+    
+    /// Registered adapters for header/footers.
+    private var headerFooterAdapters = [String: TableHeaderFooterAdapterProtocol]()
+    
 	// MARK: - Public Properties -
 
 	/// Managed `UITableView` instance, not retained.
 	public private(set) weak var table: UITableView?
 
-	/// Registered adapters for table.
-	public private(set) var cellAdapters = [String: TableAdapterProtocol]()
-    
-    public private(set) var headerFooterAdapters = [String: TableHeaderFooterAdapterProtocol]()
-
 	/// Events related to the behaviour of the table.
-	public private(set) var scrollViewEvents = ScrollViewEventsHandler()
+	public var scrollViewEvents = ScrollViewEventsHandler()
 	
 	/// Sections of the table.
 	public private(set) var sections = [TableSection]()
-    
-    private var removedSections = [TableSection]()
     
 	/// Return first section.
 	public var firstSection: TableSection? {
@@ -58,7 +57,9 @@ open class TableDirector: NSObject {
 
 	// MARK: - Initialization -
 
-
+    /// Initialize a new director for specified table.
+    ///
+    /// - Parameter table: table to manage.
 	public init(table: UITableView) {
 		super.init()
 		self.table = table
@@ -73,7 +74,7 @@ open class TableDirector: NSObject {
 	/// registered request will be ignored automatically.
 	///
 	/// - Parameter adapters: adapters to register.
-	public func registerCellAdapters(_ adapters: [TableAdapterProtocol]) {
+	public func registerCellAdapters(_ adapters: [TableCellAdapterProtocol]) {
 		adapters.forEach {
 			registerCellAdapter($0)
 		}
@@ -86,7 +87,7 @@ open class TableDirector: NSObject {
 	///
 	/// - Parameter adapter: adapter instance to register.
     @discardableResult
-	public func registerCellAdapter(_ adapter: TableAdapterProtocol) -> String {
+	public func registerCellAdapter(_ adapter: TableCellAdapterProtocol) -> String {
         let id = adapter.modelIdentifier
 		guard cellAdapters[id] == nil else {
 			return id
@@ -121,12 +122,19 @@ open class TableDirector: NSObject {
     
     // MARK: - Register Header/Footer Adapters -
     
+    /// Register a set of adapters to render header/footer's custom views.
+    ///
+    /// - Parameter adapters: adapters to register.
     public func registerHeaderFooterAdapters(_ adapters: [TableHeaderFooterAdapterProtocol]) {
         adapters.forEach {
             registerHeaderFooterAdapter($0)
         }
     }
     
+    /// Register a new adapter to render custom header/footer's view.
+    ///
+    /// - Parameter adapter: adapter to register.
+    /// - Returns: registered identifier.
     @discardableResult
     public func registerHeaderFooterAdapter(_ adapter: TableHeaderFooterAdapterProtocol) -> String {
         let id = adapter.modelCellIdentifier
@@ -137,6 +145,10 @@ open class TableDirector: NSObject {
         return adapter.registerHeaderFooterViewForDirector(self)
     }
     
+    /// Return associated adapter to render specific header/footer view instance.
+    ///
+    /// - Parameter view: view to render, fails if it's not a subclass of `UITableViewHeaderFooterView`.
+    /// - Returns: adapter.
     @usableFromInline
     internal func adapterForHeaderFooterView(_ view: UIView) -> TableHeaderFooterAdapterProtocol? {
         guard let view = view as? UITableViewHeaderFooterView else { return nil }
@@ -345,7 +357,7 @@ open class TableDirector: NSObject {
 	///
 	/// - Parameter path: path of the item to render.
 	/// - Returns: model instance and adapter used to represent it.
-	internal func context(forItemAt path: IndexPath) -> (model: ElementRepresentable, adapter: TableAdapterProtocol) {
+	internal func context(forItemAt path: IndexPath) -> (model: ElementRepresentable, adapter: TableCellAdapterProtocol) {
 		let modelInstance = sections[path.section].elements[path.row]
 		guard let adapter = self.cellAdapters[modelInstance.modelClassIdentifier] else {
 			fatalError("No register adapter for model '\(modelInstance.modelClassIdentifier)' at (\(path.section),\(path.row))")
@@ -353,7 +365,7 @@ open class TableDirector: NSObject {
 		return (modelInstance, adapter)
 	}
 
-	internal func adapterForCell(_ cell: UITableViewCell) -> TableAdapterProtocol? {
+	internal func adapterForCell(_ cell: UITableViewCell) -> TableCellAdapterProtocol? {
 		return cellAdapters.first(where: { item in
 			return item.value.modelCellType == type(of: cell)
 		})?.value

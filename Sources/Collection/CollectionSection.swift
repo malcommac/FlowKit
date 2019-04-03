@@ -20,10 +20,10 @@ open class CollectionSection: Equatable, Copying, DifferentiableSection {
 	public private(set) var elements: [ElementRepresentable]
 
 	/// View of the header. It overrides any set value for `headerTitle`.
-	public var headerView: CollectionSectionHeaderFooterProtocol?
+	public var headerView: CollectionHeaderFooterAdapterProtocol?
 
 	/// View of the footer. It overrides any set value for `footerView`.
-	public var footerView: CollectionSectionHeaderFooterProtocol?
+	public var footerView: CollectionHeaderFooterAdapterProtocol?
 
 	// MARK: - Differentiable/Equatable Conformances -
 
@@ -89,7 +89,7 @@ open class CollectionSection: Equatable, Copying, DifferentiableSection {
 	}
 
 	public convenience init(id: String? = nil, elements: [ElementRepresentable] = [],
-							header: CollectionSectionHeaderFooterProtocol?, footer: CollectionSectionHeaderFooterProtocol?) {
+							header: CollectionHeaderFooterAdapterProtocol?, footer: CollectionHeaderFooterAdapterProtocol?) {
 		self.init(id: id, elements: elements)
 		self.headerView = header
 		self.footerView = footer

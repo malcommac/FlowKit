@@ -55,11 +55,11 @@ public extension CollectionDirector {
 	}
 
 	internal class PrefetchModelsGroup {
-		let adapter: 	CollectionAdapterProtocol
+		let adapter: 	CollectionCellAdapterProtocol
 		var models: 	[ElementRepresentable] = []
 		var indexPaths: [IndexPath] = []
 
-		public init(adapter: CollectionAdapterProtocol) {
+		public init(adapter: CollectionCellAdapterProtocol) {
 			self.adapter = adapter
 		}
 	}

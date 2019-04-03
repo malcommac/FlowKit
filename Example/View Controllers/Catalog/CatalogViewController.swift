@@ -37,7 +37,7 @@ class CatalogViewController: UIViewController {
 	private func prepareTable() {
 		tableDirector = TableDirector(table: tableView)
 		tableDirector?.rowHeight = .explicit(60)
-
+        
 		let catalogAdapter = TableCellAdapter<CatalogItem, CatalogItemCell>()
 		tableDirector?.registerCellAdapter(catalogAdapter)
 
@@ -54,7 +54,8 @@ class CatalogViewController: UIViewController {
 	// MARK: - Prepare Contents -
 
 	private func prepareTableContents() {
-		let tables_ex1 = CatalogItem(id: "ex1", icon: "tableView".image, title: "Team Players Example")
+		let tables_ex1 = CatalogItem(id: "ex1", icon: "tableView".image, title: "Contacts")
+        tables_ex1.shortDesc = "An example of UITableView with different models managed by different adapters. It also shows how to reload data automatically and autolayout on cells."
 		let sectionTables = TableSection(elements: [tables_ex1], header: "UITableView Examples")
 
 		tableDirector?.add(sections: [sectionTables])
@@ -74,7 +75,7 @@ class CatalogViewController: UIViewController {
 		guard let item = item else { return nil }
 		switch item.id {
 		case "ex1":
-			return TeamPlayersController.create()
+            return ContactsController.create(items: DataSet.shared.companies)
 		default:
 			return nil
 		}

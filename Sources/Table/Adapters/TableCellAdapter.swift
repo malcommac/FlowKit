@@ -8,7 +8,7 @@
 
 import UIKit
 
-open class TableCellAdapter<Model: ElementRepresentable, Cell: ReusableViewProtocol>: TableAdapterProtocol {
+open class TableCellAdapter<Model: ElementRepresentable, Cell: ReusableViewProtocol>: TableCellAdapterProtocol {
 
 	// MARK: - TableAdapterProtocol Conformance -
 

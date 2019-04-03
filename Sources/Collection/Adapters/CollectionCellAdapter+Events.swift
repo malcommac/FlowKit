@@ -8,7 +8,7 @@
 
 import UIKit
 
-public extension CollectionAdapter {
+public extension CollectionCellAdapter {
 
 	struct Event {
 

@@ -19,6 +19,12 @@ public protocol ReusableViewProtocol: class {
 	static func registerReusableView(inCollection collection: UICollectionView?, as type: ReusableViewRegistrationType)
 }
 
+public enum ReusableViewSource {
+    case fromStoryboard
+    case fromXib(name: String?, bundle: Bundle?)
+    case fromClass
+}
+
 public extension ReusableViewProtocol {
 
 	static var reusableViewType: AnyObject.Type {

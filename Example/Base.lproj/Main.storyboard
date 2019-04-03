@@ -82,6 +82,7 @@
                                         </constraints>
                                         <connections>
                                             <outlet property="iconImageView" destination="r1F-hq-CgE" id="v4J-3t-4ee"/>
+                                            <outlet property="shortDescLabel" destination="BpR-OR-gqG" id="9L6-eD-QhZ"/>
                                             <outlet property="titleLabel" destination="5Ph-wc-TjU" id="YyU-Bu-mdo"/>
                                         </connections>
                                     </tableViewCell>
