@@ -47,7 +47,6 @@ open class TableCellAdapter<Model: ElementRepresentable, Cell: ReusableViewProto
 		return true
 	}
 
-
 	// MARK: - Supporting Functions -
 
 	@discardableResult

@@ -16,7 +16,7 @@ public extension CollectionCellAdapter {
 		public let indexPath: IndexPath?
 
 		/// Represented model instance
-		public let model: Model
+		public let element: Model
 
 		/// Managed source collection
 		public private(set) weak var collection: UICollectionView?
@@ -50,8 +50,8 @@ public extension CollectionCellAdapter {
 		///   - cell: source generic cell
 		///   - path: cell's path
 		///   - collection: parent cell's collection instance
-		internal init(model: Any?, cell: Any?, path: IndexPath?) {
-			self.model = model as! Model
+		internal init(element: Any?, cell: Any?, path: IndexPath?) {
+			self.element = element as! Model
 			self._cell = cell as? Cell
 			self.indexPath = path
 		}

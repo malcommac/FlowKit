@@ -15,7 +15,7 @@ public protocol CollectionHeaderFooterAdapterProtocol {
     func dequeueHeaderFooterForDirector(_ director: CollectionDirector, type: String, indexPath: IndexPath) -> UICollectionReusableView?
     
     @discardableResult
-    func dispatch(_ event: CollectionSectionEvents, isHeader: Bool, view: UIView?, section: Int) -> Any?
+    func dispatch(_ event: CollectionSectionEvents, isHeader: Bool, view: UIView?, sectionIdx: Int, section: CollectionSection?) -> Any?
 }
 
 public extension CollectionHeaderFooterAdapterProtocol {
@@ -26,13 +26,21 @@ public extension CollectionHeaderFooterAdapterProtocol {
     
 }
 
-public class CollectionHeaderFooterAdapter<View: UITableViewHeaderFooterView>: CollectionHeaderFooterAdapterProtocol {
-    
-    
+public class CollectionHeaderFooterAdapter<View: UICollectionReusableView>: CollectionHeaderFooterAdapterProtocol {
     public var modelCellType: Any.Type = View.self
     
+    // MARK: - Public Methods -
+
     /// Events you can subscribe for header/footer instances.
     public var events = EventsSubscriber()
+    
+    // MARK: - Initialization -
+    
+    public init(_ configuration: ((CollectionHeaderFooterAdapter) -> ())? = nil) {
+        configuration?(self)
+    }
+    
+    // MARK: - Private Methods -
     
     public func dequeueHeaderFooterForDirector(_ director: CollectionDirector, type: String, indexPath: IndexPath) -> UICollectionReusableView? {
         let identifier = View.reusableViewIdentifier
@@ -49,7 +57,7 @@ public class CollectionHeaderFooterAdapter<View: UITableViewHeaderFooterView>: C
         let collection = director.collection
         switch View.reusableViewSource {
         case .fromStoryboard:
-            fatalError("Cannot use storyboard to instantiate \(kind): \(View.reusableViewClass)")
+            break
             
         case .fromXib(let name, let bundle):
             let nib = UINib(nibName: name ?? identifier, bundle: bundle)
@@ -63,22 +71,22 @@ public class CollectionHeaderFooterAdapter<View: UITableViewHeaderFooterView>: C
         return identifier
     }
     
-    public func dispatch(_ event: CollectionSectionEvents, isHeader: Bool, view: UIView?, section: Int) -> Any? {
+    public func dispatch(_ event: CollectionSectionEvents, isHeader: Bool, view: UIView?, sectionIdx: Int, section: CollectionSection?) -> Any? {
         switch event {
         case .dequeue:
-            events.dequeue?(Event(isHeader: isHeader, view: view, at: section))
+            events.dequeue?(Event(isHeader: isHeader, view: view, at: sectionIdx, section: section))
             
         case .referenceSize:
-            return events.referenceSize?(Event(isHeader: isHeader, view: view, at: section))
+            return events.referenceSize?(Event(isHeader: isHeader, view: view, at: sectionIdx, section: section))
             
         case .didDisplay:
-            events.didDisplay?(Event(isHeader: isHeader, view: view, at: section))
+            events.didDisplay?(Event(isHeader: isHeader, view: view, at: sectionIdx, section: section))
             
         case .endDisplay:
-            events.endDisplay?(Event(isHeader: isHeader, view: view, at: section))
+            events.endDisplay?(Event(isHeader: isHeader, view: view, at: sectionIdx, section: section))
             
         case .willDisplay:
-            events.willDisplay?(Event(isHeader: isHeader, view: view, at: section))
+            events.willDisplay?(Event(isHeader: isHeader, view: view, at: sectionIdx, section: section))
             
         }
         return nil

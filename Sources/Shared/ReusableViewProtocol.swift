@@ -123,7 +123,13 @@ extension UITableViewCell : ReusableViewProtocol {
 }
 
 extension UICollectionViewCell : ReusableViewProtocol {
-	public static var reusableViewClass: AnyClass {
-		return self
-	}
+//    public static var reusableViewClass: AnyClass {
+//        return self
+//    }
+}
+
+extension UICollectionReusableView: ReusableViewProtocol {
+    public static var reusableViewClass: AnyClass {
+        return self
+    }
 }

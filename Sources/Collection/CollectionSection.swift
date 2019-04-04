@@ -24,6 +24,12 @@ open class CollectionSection: Equatable, Copying, DifferentiableSection {
 
 	/// View of the footer. It overrides any set value for `footerView`.
 	public var footerView: CollectionHeaderFooterAdapterProtocol?
+    
+    /// Header size.
+    open var headerSize: CGSize?
+    
+    /// Header size.
+    open var footerSize: CGSize?
 
 	// MARK: - Differentiable/Equatable Conformances -
 
@@ -53,18 +59,18 @@ open class CollectionSection: Equatable, Copying, DifferentiableSection {
 	/// Implement this method when you want to provide margins for sections in the flow layout.
 	/// If you do not implement this method, the margins are obtained from the properties of the flow layout object.
 	/// NOTE: It's valid only for flow layout.
-	open var sectionInsets: (() -> (UIEdgeInsets))? = nil
+	open var sectionInsets: UIEdgeInsets?
 
 	/// The minimum spacing (in points) to use between items in the same row or column.
 	/// If you do not implement this method, value is obtained from the properties of the flow layout object.
 	/// NOTE: It's valid only for flow layout.
-	open var minimumInterItemSpacing: (() -> (CGFloat))? = nil
+	open var minimumInterItemSpacing: CGFloat?
 
 	/// The minimum spacing (in points) to use between rows or columns.
 	/// If you do not implement this method, value is obtained from the properties of the flow layout object.
 	/// NOTE: It's valid only for flow layout.
-	open var minimumLineSpacing: (() -> (CGFloat))? = nil
-
+	open var minimumLineSpacing: CGFloat?
+    
 	// MARK: - Initialization -
 
 	public required init(original: CollectionSection) {
@@ -95,5 +101,123 @@ open class CollectionSection: Equatable, Copying, DifferentiableSection {
 		self.footerView = footer
 	}
 
+    // MARK: - Manage Content -
+    
+    /// Change the content of the section.
+    ///
+    /// - Parameter models: array of models to set.
+    public func set(models: [ElementRepresentable]) {
+        elements = models
+    }
+    
+    /// Replace a model instance at specified index.
+    ///
+    /// - Parameters:
+    ///   - model: new instance to use.
+    ///   - index: index of the instance to replace.
+    /// - Returns: old instance, `nil` if provided `index` is invalid.
+    @discardableResult
+    public func set(element: ElementRepresentable, at index: Int) -> ElementRepresentable? {
+        guard index >= 0, index < elements.count else { return nil }
+        let oldElement = elements[index]
+        elements[index] = element
+        return oldElement
+    }
+    
+    /// Add item at given index.
+    ///
+    /// - Parameters:
+    ///   - model: model to append
+    ///   - index: destination index; if invalid or `nil` model is append at the end of the list.
+    public func add(element: ElementRepresentable?, at index: Int?) {
+        guard let element = element else { return }
+        guard let index = index, index < elements.count else {
+            elements.append(element)
+            return
+        }
+        elements.insert(element, at: index)
+    }
+    
+    /// Add models starting at given index of the array.
+    ///
+    /// - Parameters:
+    ///   - models: models to insert.
+    ///   - index: destination starting index; if invalid or `nil` models are append at the end of the list.
+    public func add(elements newElements: [ElementRepresentable]?, at index: Int?) {
+        guard let newElements = newElements else { return }
+        guard let index = index, index < elements.count else {
+            elements.append(contentsOf: newElements)
+            return
+        }
+        elements.insert(contentsOf: newElements, at: index)
+    }
+    
+    /// Remove model at given index.
+    ///
+    /// - Parameter index: index to remove.
+    /// - Returns: removed model, `nil` if index is invalid.
+    @discardableResult
+    public func remove(at index: Int) -> ElementRepresentable? {
+        guard index < elements.count else { return nil }
+        return elements.remove(at: index)
+    }
+    
+    /// Remove model at given indexes set.
+    ///
+    /// - Parameter indexes: indexes to remove.
+    /// - Returns: an array of removed indexes starting from the lower index to the last one. Invalid indexes are ignored.
+    @discardableResult
+    public func remove(atIndexes indexes: IndexSet) -> [ElementRepresentable] {
+        var removed: [ElementRepresentable] = []
+        indexes.reversed().forEach {
+            if $0 < elements.count {
+                removed.append(elements.remove(at: $0))
+            }
+        }
+        return removed
+    }
+    
+    /// Remove all models into the section.
+    ///
+    /// - Parameter kp: `true` to keep the capacity and optimize operations.
+    /// - Returns: count removed items.
+    @discardableResult
+    public func removeAll(keepingCapacity kp: Bool = false) -> Int {
+        let count = elements.count
+        elements.removeAll(keepingCapacity: kp)
+        return count
+    }
+    
+    /// Swap model at given index to another destination index.
+    ///
+    /// - Parameters:
+    ///   - sourceIndex: source index
+    ///   - destIndex: destination index
+    public func move(swappingAt sourceIndex: Int, with destIndex: Int) {
+        guard sourceIndex < elements.count, destIndex < elements.count else { return }
+        swap(&elements[sourceIndex], &elements[destIndex])
+    }
+    
+    /// Remove model at given index and insert at destination index.
+    ///
+    /// - Parameters:
+    ///   - sourceIndex: source index
+    ///   - destIndex: destination index
+    public func move(from sourceIndex: Int, to destIndex: Int) {
+        guard sourceIndex < elements.count, destIndex < elements.count else { return }
+        let removed = elements.remove(at: sourceIndex)
+        elements.insert(removed, at: destIndex)
+    }
+    
+    // MARK: - Internal Helper -
+    
+    internal func evaluatedHeaderSize(section: Int) -> CGSize? {
+        return headerSize ?? headerView?.dispatch(.referenceSize, isHeader: true, view: nil, sectionIdx: section, section: self) as? CGSize
+    }
+    
+    internal func evaluatedFooterSize(section: Int) -> CGSize? {
+        return footerSize ?? footerView?.dispatch(.referenceSize, isHeader: false, view: nil, sectionIdx: section, section: self) as? CGSize
+    }
+    
 }
 

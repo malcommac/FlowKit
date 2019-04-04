@@ -37,7 +37,7 @@ public class AsyncImageView: UIImageView {
                     
                 }
                 else {
-                    print(error)
+                    debugPrint("Failed to load image: \(String(describing: error))")
                 }
             })
             task.resume()

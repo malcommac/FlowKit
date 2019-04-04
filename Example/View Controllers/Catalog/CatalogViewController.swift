@@ -58,7 +58,14 @@ class CatalogViewController: UIViewController {
         tables_ex1.shortDesc = "An example of UITableView with different models managed by different adapters. It also shows how to reload data automatically and autolayout on cells."
 		let sectionTables = TableSection(elements: [tables_ex1], header: "UITableView Examples")
 
-		tableDirector?.add(sections: [sectionTables])
+        
+        // Emoji
+        let coll_ex1 = CatalogItem(id: "ex2", icon: "collectionView".image, title: "Emoji Party")
+        coll_ex1.shortDesc = "An example of UITableView with different models managed by different adapters. It also shows how to reload data automatically and autolayout on cells."
+        let sectionCollections = TableSection(elements: [coll_ex1], header: "UICollectionView Examples")
+        
+        
+		tableDirector?.add(sections: [sectionTables,sectionCollections])
 		tableDirector?.reload()
 	}
 
@@ -76,6 +83,8 @@ class CatalogViewController: UIViewController {
 		switch item.id {
 		case "ex1":
             return ContactsController.create(items: DataSet.shared.companies)
+        case "ex2":
+            return EmojiBrowserController.create(items: DataSet.shared.emoji)
 		default:
 			return nil
 		}

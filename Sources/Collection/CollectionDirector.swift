@@ -279,6 +279,40 @@ open class CollectionDirector: NSObject,
 	public func lastSection() -> CollectionSection? {
 		return sections.last
 	}
+    
+    // MARK: - Reload Contents -
+    
+    /// Request for table contents reload.
+    ///
+    /// - Parameters:
+    ///   - update: this callback can be used to perform changes in your table's data (both from
+    ///                section and section's items perspective). At the end of the execution a
+    ///                fast diff is made automatically to get the differences before/after and perform
+    ///             an optional automatic animation.
+    ///                You must to return the animation to be performed at the end of the reload.
+    ///   - completion: completion is called at the end of the reload. In fact there is not an event
+    ///                    which indicates the end of the reload, so the method is called automatically
+    ///                    after a fixed time (0.25s).
+    public func reload(afterUpdate update: ((CollectionDirector) -> Void)? = nil,
+                       completion: (() -> Void)? = nil) {
+        guard let update = update else {
+            collection?.reloadData()
+            return
+        }
+        
+        let oldSections = self.sections // .map { $0.copy() }
+        update(self)
+        let changeset = StagedChangeset(source: oldSections, target: sections)
+        
+        /*collection?.reload(using: changeset, interrupt: { (changset) -> Bool in
+            return false
+        }, setData: { collection in
+            sections = collection
+        })*/
+        collection?.reload(using: changeset, setData: { collection in
+            sections = collection
+        })
+    }
 
 	// MARK: - Private Methods -
 
@@ -431,18 +465,20 @@ public extension CollectionDirector {
 
 	func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let adapter = adapterForHeaderFooter(kind, indexPath: indexPath)
-        return adapter?.dequeueHeaderFooterForDirector(self, type: kind, indexPath: indexPath) ?? UICollectionReusableView()
+        let view = adapter?.dequeueHeaderFooterForDirector(self, type: kind, indexPath: indexPath) ?? UICollectionReusableView()
+        let _ = adapter?.dispatch(.dequeue, isHeader: (kind == UICollectionView.elementKindSectionHeader), view: view, sectionIdx: indexPath.section, section: sectionAt(indexPath.section))
+        return view
 	}
 
 	func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
         let adapter = adapterForHeaderFooter(elementKind, indexPath: indexPath)
-        let _ = adapter?.dispatch(.willDisplay, isHeader: true, view: view, section: indexPath.section)
+        let _ = adapter?.dispatch(.willDisplay, isHeader: true, view: view, sectionIdx: indexPath.section, section: sectionAt(indexPath.section))
 		view.layer.zPosition = 0
 	}
 
 	func collectionView(_ collectionView: UICollectionView, didEndDisplayingSupplementaryView view: UICollectionReusableView, forElementOfKind elementKind: String, at indexPath: IndexPath) {
         let adapter = adapterForHeaderFooter(elementKind, indexPath: indexPath)
-        let _ = adapter?.dispatch(.endDisplay, isHeader: true, view: view, section: indexPath.section)
+        let _ = adapter?.dispatch(.endDisplay, isHeader: true, view: view, sectionIdx: indexPath.section, section: sectionAt(indexPath.section))
 	}
 
 	func headerFooterForSection(ofType type: String, at indexPath: IndexPath) -> CollectionHeaderFooterAdapterProtocol? {
