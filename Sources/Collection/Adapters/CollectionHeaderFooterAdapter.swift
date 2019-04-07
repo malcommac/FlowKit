@@ -53,7 +53,7 @@ public class CollectionHeaderFooterAdapter<View: UICollectionReusableView>: Coll
         let collection = director.collection
         switch View.reusableViewSource {
         case .fromStoryboard:
-            fatalError("Cannot use storyboard to instantiate \(kind): \(View.reusableViewClass)")
+            break
             
         case .fromXib(let name, let bundle):
             let nib = UINib(nibName: name ?? identifier, bundle: bundle)
