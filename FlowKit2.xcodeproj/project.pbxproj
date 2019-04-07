@@ -36,6 +36,11 @@
 		641ED40D2212EA74002D98D0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 641ED40C2212EA74002D98D0 /* Assets.xcassets */; };
 		641ED4102212EA74002D98D0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 641ED40E2212EA74002D98D0 /* LaunchScreen.storyboard */; };
 		641ED4272213254D002D98D0 /* GroupCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 641ED4222213254D002D98D0 /* GroupCell.xib */; };
+		6496BC062255E509002A4DFD /* EmojiBrowserController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6496BC052255E509002A4DFD /* EmojiBrowserController.swift */; };
+		6496BC092255E54C002A4DFD /* EmojiBrowserController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6496BC082255E54C002A4DFD /* EmojiBrowserController.storyboard */; };
+		6496BC0B2255E632002A4DFD /* emoji_db.json in Resources */ = {isa = PBXBuildFile; fileRef = 6496BC0A2255E631002A4DFD /* emoji_db.json */; };
+		6496BC0D2255E651002A4DFD /* EmojiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6496BC0C2255E651002A4DFD /* EmojiCell.swift */; };
+		6496BC112255F13F002A4DFD /* EmojiHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6496BC102255F13F002A4DFD /* EmojiHeaderView.swift */; };
 		649FD868222D3E3B00715EF4 /* TableDirector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 649FD867222D3E3B00715EF4 /* TableDirector.swift */; };
 		649FD869222D3E3C00715EF4 /* TableDirector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 649FD867222D3E3B00715EF4 /* TableDirector.swift */; };
 		649FD86A222D3E3C00715EF4 /* TableDirector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 649FD867222D3E3B00715EF4 /* TableDirector.swift */; };
@@ -46,11 +51,11 @@
 		649FD870222D3E7D00715EF4 /* TableCellAdapterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 649FD86D222D3E7D00715EF4 /* TableCellAdapterProtocol.swift */; };
 		649FD871222D3E7D00715EF4 /* TableCellAdapterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 649FD86D222D3E7D00715EF4 /* TableCellAdapterProtocol.swift */; };
 		649FD872222D3E7D00715EF4 /* TableCellAdapterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 649FD86D222D3E7D00715EF4 /* TableCellAdapterProtocol.swift */; };
-		649FD87A222D42DD00715EF4 /* ReusableViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 649FD879222D42DD00715EF4 /* ReusableViewProtocol.swift */; };
-		649FD87B222D42DD00715EF4 /* ReusableViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 649FD879222D42DD00715EF4 /* ReusableViewProtocol.swift */; };
-		649FD87C222D42DD00715EF4 /* ReusableViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 649FD879222D42DD00715EF4 /* ReusableViewProtocol.swift */; };
-		649FD87D222D42DD00715EF4 /* ReusableViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 649FD879222D42DD00715EF4 /* ReusableViewProtocol.swift */; };
-		649FD87E222D42DD00715EF4 /* ReusableViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 649FD879222D42DD00715EF4 /* ReusableViewProtocol.swift */; };
+		649FD87A222D42DD00715EF4 /* ReusableCellViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 649FD879222D42DD00715EF4 /* ReusableCellViewProtocol.swift */; };
+		649FD87B222D42DD00715EF4 /* ReusableCellViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 649FD879222D42DD00715EF4 /* ReusableCellViewProtocol.swift */; };
+		649FD87C222D42DD00715EF4 /* ReusableCellViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 649FD879222D42DD00715EF4 /* ReusableCellViewProtocol.swift */; };
+		649FD87D222D42DD00715EF4 /* ReusableCellViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 649FD879222D42DD00715EF4 /* ReusableCellViewProtocol.swift */; };
+		649FD87E222D42DD00715EF4 /* ReusableCellViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 649FD879222D42DD00715EF4 /* ReusableCellViewProtocol.swift */; };
 		649FD880222D654800715EF4 /* TableSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 649FD87F222D654800715EF4 /* TableSection.swift */; };
 		649FD881222D654800715EF4 /* TableSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 649FD87F222D654800715EF4 /* TableSection.swift */; };
 		649FD882222D654800715EF4 /* TableSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 649FD87F222D654800715EF4 /* TableSection.swift */; };
@@ -243,9 +248,14 @@
 		641ED40F2212EA74002D98D0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		641ED4112212EA74002D98D0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		641ED4222213254D002D98D0 /* GroupCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GroupCell.xib; sourceTree = "<group>"; };
+		6496BC052255E509002A4DFD /* EmojiBrowserController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiBrowserController.swift; sourceTree = "<group>"; };
+		6496BC082255E54C002A4DFD /* EmojiBrowserController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = EmojiBrowserController.storyboard; sourceTree = "<group>"; };
+		6496BC0A2255E631002A4DFD /* emoji_db.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = emoji_db.json; sourceTree = "<group>"; };
+		6496BC0C2255E651002A4DFD /* EmojiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCell.swift; sourceTree = "<group>"; };
+		6496BC102255F13F002A4DFD /* EmojiHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiHeaderView.swift; sourceTree = "<group>"; };
 		649FD867222D3E3B00715EF4 /* TableDirector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableDirector.swift; sourceTree = "<group>"; };
 		649FD86D222D3E7D00715EF4 /* TableCellAdapterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableCellAdapterProtocol.swift; sourceTree = "<group>"; };
-		649FD879222D42DD00715EF4 /* ReusableViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableViewProtocol.swift; sourceTree = "<group>"; };
+		649FD879222D42DD00715EF4 /* ReusableCellViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableCellViewProtocol.swift; sourceTree = "<group>"; };
 		649FD87F222D654800715EF4 /* TableSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableSection.swift; sourceTree = "<group>"; };
 		649FD88B222D65E800715EF4 /* TableCellAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableCellAdapter.swift; sourceTree = "<group>"; };
 		649FD897222D761B00715EF4 /* TableCellAdapter+Support.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TableCellAdapter+Support.swift"; sourceTree = "<group>"; };
@@ -478,6 +488,18 @@
 			path = Adapters;
 			sourceTree = "<group>";
 		};
+		6496BC072255E50B002A4DFD /* Emoji */ = {
+			isa = PBXGroup;
+			children = (
+				6496BC082255E54C002A4DFD /* EmojiBrowserController.storyboard */,
+				6496BC052255E509002A4DFD /* EmojiBrowserController.swift */,
+				6496BC0C2255E651002A4DFD /* EmojiCell.swift */,
+				6496BC102255F13F002A4DFD /* EmojiHeaderView.swift */,
+				6496BC0A2255E631002A4DFD /* emoji_db.json */,
+			);
+			path = Emoji;
+			sourceTree = "<group>";
+		};
 		64BB9E31224A643300A15593 /* Table */ = {
 			isa = PBXGroup;
 			children = (
@@ -549,7 +571,7 @@
 				641FB9E4223FE23900AA9E12 /* Difference */,
 				64BB9E6E224BB68500A15593 /* ScrollViewEventsHandler.swift */,
 				64E132B52253979000A8604B /* ElementRepresentable.swift */,
-				649FD879222D42DD00715EF4 /* ReusableViewProtocol.swift */,
+				649FD879222D42DD00715EF4 /* ReusableCellViewProtocol.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -596,6 +618,7 @@
 				64E132C62254BBDD00A8604B /* UIImageView.swift */,
 				64EB6ED0224D18BA006AFE74 /* Catalog */,
 				64EB6ED1224D18CB006AFE74 /* Contacts */,
+				6496BC072255E50B002A4DFD /* Emoji */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -956,7 +979,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6496BC0B2255E632002A4DFD /* emoji_db.json in Resources */,
 				64E132C52254B86C00A8604B /* people_db.json in Resources */,
+				6496BC092255E54C002A4DFD /* EmojiBrowserController.storyboard in Resources */,
 				641285F322350AFB00F1747F /* GroupHeaderView.xib in Resources */,
 				641ED4102212EA74002D98D0 /* LaunchScreen.storyboard in Resources */,
 				641ED40D2212EA74002D98D0 /* Assets.xcassets in Resources */,
@@ -1017,7 +1042,7 @@
 				649FD880222D654800715EF4 /* TableSection.swift in Sources */,
 				64B7EDF62242B75D000CA59E /* StagedChangeset.swift in Sources */,
 				6412860522351E6E00F1747F /* GroupFooterView.swift in Sources */,
-				649FD87A222D42DD00715EF4 /* ReusableViewProtocol.swift in Sources */,
+				649FD87A222D42DD00715EF4 /* ReusableCellViewProtocol.swift in Sources */,
 				649FD86E222D3E7D00715EF4 /* TableCellAdapterProtocol.swift in Sources */,
 				64B7EDEA2242B6C4000CA59E /* Changeset.swift in Sources */,
 				649FD868222D3E3B00715EF4 /* TableDirector.swift in Sources */,
@@ -1062,7 +1087,7 @@
 				649FD882222D654800715EF4 /* TableSection.swift in Sources */,
 				64B7EDF82242B75D000CA59E /* StagedChangeset.swift in Sources */,
 				6412860722351E6E00F1747F /* GroupFooterView.swift in Sources */,
-				649FD87C222D42DD00715EF4 /* ReusableViewProtocol.swift in Sources */,
+				649FD87C222D42DD00715EF4 /* ReusableCellViewProtocol.swift in Sources */,
 				649FD870222D3E7D00715EF4 /* TableCellAdapterProtocol.swift in Sources */,
 				64B7EDEC2242B6C4000CA59E /* Changeset.swift in Sources */,
 				649FD86A222D3E3C00715EF4 /* TableDirector.swift in Sources */,
@@ -1099,7 +1124,7 @@
 				649FD883222D654800715EF4 /* TableSection.swift in Sources */,
 				64B7EDF92242B75D000CA59E /* StagedChangeset.swift in Sources */,
 				6412860822351E6E00F1747F /* GroupFooterView.swift in Sources */,
-				649FD87D222D42DD00715EF4 /* ReusableViewProtocol.swift in Sources */,
+				649FD87D222D42DD00715EF4 /* ReusableCellViewProtocol.swift in Sources */,
 				649FD871222D3E7D00715EF4 /* TableCellAdapterProtocol.swift in Sources */,
 				64B7EDED2242B6C4000CA59E /* Changeset.swift in Sources */,
 				649FD86B222D3E3C00715EF4 /* TableDirector.swift in Sources */,
@@ -1136,7 +1161,7 @@
 				649FD881222D654800715EF4 /* TableSection.swift in Sources */,
 				64B7EDF72242B75D000CA59E /* StagedChangeset.swift in Sources */,
 				6412860622351E6E00F1747F /* GroupFooterView.swift in Sources */,
-				649FD87B222D42DD00715EF4 /* ReusableViewProtocol.swift in Sources */,
+				649FD87B222D42DD00715EF4 /* ReusableCellViewProtocol.swift in Sources */,
 				649FD86F222D3E7D00715EF4 /* TableCellAdapterProtocol.swift in Sources */,
 				64B7EDEB2242B6C4000CA59E /* Changeset.swift in Sources */,
 				649FD869222D3E3C00715EF4 /* TableDirector.swift in Sources */,
@@ -1168,6 +1193,7 @@
 				64E132CB2254E21300A8604B /* DataSet.swift in Sources */,
 				649FD86C222D3E3C00715EF4 /* TableDirector.swift in Sources */,
 				64EB6EC8224D0974006AFE74 /* CatalogItem.swift in Sources */,
+				6496BC062255E509002A4DFD /* EmojiBrowserController.swift in Sources */,
 				64BB9E46224A66CA00A15593 /* CollectionDirector+Support.swift in Sources */,
 				64B7EDFA2242B75D000CA59E /* StagedChangeset.swift in Sources */,
 				641ED4082212EA73002D98D0 /* CatalogViewController.swift in Sources */,
@@ -1180,10 +1206,12 @@
 				64E132C22254A4FE00A8604B /* ContactCompanyCell.swift in Sources */,
 				641ED4062212EA73002D98D0 /* AppDelegate.swift in Sources */,
 				64BB9E61224A827200A15593 /* CollectionCellAdapter+Events.swift in Sources */,
-				649FD87E222D42DD00715EF4 /* ReusableViewProtocol.swift in Sources */,
+				649FD87E222D42DD00715EF4 /* ReusableCellViewProtocol.swift in Sources */,
 				64EB6EC1224CDF01006AFE74 /* FlowStackViewSeparator.swift in Sources */,
 				64B7EDEE2242B6C4000CA59E /* Changeset.swift in Sources */,
 				641285FC22350C0D00F1747F /* TableSectionHeaderFooterProtocol.swift in Sources */,
+				6496BC112255F13F002A4DFD /* EmojiHeaderView.swift in Sources */,
+				6496BC0D2255E651002A4DFD /* EmojiCell.swift in Sources */,
 				6412861122351FB300F1747F /* CellUser.swift in Sources */,
 				64BB9E79224BC36900A15593 /* FlowCollectionDirector.swift in Sources */,
 				64BB9E53224A6A4E00A15593 /* CollectionCellAdapter.swift in Sources */,

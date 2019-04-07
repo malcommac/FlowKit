@@ -17,7 +17,7 @@ public protocol TableSectionHeaderFooterProtocol {
 	func dispatch(_ event: TableSectionEvents, isHeader: Bool, view: UIView?, section: Int, table: UITableView) -> Any?
 }
 
-extension UITableViewHeaderFooterView: ReusableViewProtocol {
+extension UITableViewHeaderFooterView: ReusableCellViewProtocol {
 	public static var reusableViewClass: AnyClass {
 		return self
 	}

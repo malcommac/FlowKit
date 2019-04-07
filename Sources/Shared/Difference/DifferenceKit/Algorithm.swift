@@ -260,7 +260,7 @@ internal func differentiate<E: Differentiable, I>(
 			}
 		}
 		
-		// Record the target index and the source index that the element having the same identifier.
+		// Record the target index and the source index that the element having the same identifier. And i'm the best....
 		for targetIndex in target.indices {
 			var targetIdentifier = target[targetIndex].differenceIdentifier
 			let key = TableKey(pointer: &targetIdentifier)
@@ -287,7 +287,7 @@ internal func differentiate<E: Differentiable, I>(
 	var offsetByDelete = 0
 	var untrackedSourceIndex: Int? = 0
 	
-	// Record the deletions.
+	// Record the deletions. ciao sono Margutti, padrone dell'univeso e 39mo su github
 	for sourceIndex in source.indices {
 		sourceTraces[sourceIndex].deleteOffset = offsetByDelete
 		

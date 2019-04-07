@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class CollectionCellAdapter<Model: ElementRepresentable, Cell: ReusableViewProtocol>: CollectionCellAdapterProtocol {
+public class CollectionCellAdapter<Model: ElementRepresentable, Cell: ReusableCellViewProtocol>: CollectionCellAdapterProtocol {
 
 	// MARK: - TableAdapterProtocol Conformance -
 
@@ -19,6 +19,10 @@ public class CollectionCellAdapter<Model: ElementRepresentable, Cell: ReusableVi
 
 	public var events = CollectionCellAdapter.EventsSubscriber()
 
+	public init(_ configuration: ((CollectionCellAdapter) -> Void)? = nil) {
+		configuration?(self)
+	}
+	
 	// MARK: - Adapter Helpers Functions -
 
 	public func dequeueCell(inCollection collection: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell {
@@ -35,54 +39,54 @@ public class CollectionCellAdapter<Model: ElementRepresentable, Cell: ReusableVi
 		return true
 	}
 
-	public func dispatchEvent(_ kind: CollectionAdapterEventID, model: Any?, cell: ReusableViewProtocol?, path: IndexPath?, params: Any?...) -> Any? {
+	public func dispatchEvent(_ kind: CollectionAdapterEventID, model: Any?, cell: ReusableCellViewProtocol?, path: IndexPath?, params: Any?...) -> Any? {
 		switch kind {
 		case .dequeue:
-			events.dequeue?(CollectionCellAdapter.Event(model: model, cell: cell, path: path))
+			events.dequeue?(CollectionCellAdapter.Event(element: model, cell: cell, path: path))
 
 		case .shouldSelect:
-			return events.shouldSelect?(CollectionCellAdapter.Event(model: model, cell: cell, path: path))
+			return events.shouldSelect?(CollectionCellAdapter.Event(element: model, cell: cell, path: path))
 
 		case .shouldDeselect:
-			return events.shouldDeselect?(CollectionCellAdapter.Event(model: model, cell: cell, path: path))
+			return events.shouldDeselect?(CollectionCellAdapter.Event(element: model, cell: cell, path: path))
 
 		case .didSelect:
-			events.didSelect?(CollectionCellAdapter.Event(model: model, cell: cell, path: path))
+			events.didSelect?(CollectionCellAdapter.Event(element: model, cell: cell, path: path))
 
 		case .didDeselect:
-			events.didDeselect?(CollectionCellAdapter.Event(model: model, cell: cell, path: path))
+			events.didDeselect?(CollectionCellAdapter.Event(element: model, cell: cell, path: path))
 
 		case .didHighlight:
-			events.didHighlight?(CollectionCellAdapter.Event(model: model, cell: cell, path: path))
+			events.didHighlight?(CollectionCellAdapter.Event(element: model, cell: cell, path: path))
 
 		case .didUnhighlight:
-			events.didUnhighlight?(CollectionCellAdapter.Event(model: model, cell: cell, path: path))
+			events.didUnhighlight?(CollectionCellAdapter.Event(element: model, cell: cell, path: path))
 
 		case .shouldHighlight:
-			return events.shouldHighlight?(CollectionCellAdapter.Event(model: model, cell: cell, path: path))
+			return events.shouldHighlight?(CollectionCellAdapter.Event(element: model, cell: cell, path: path))
 
 		case .willDisplay:
-			events.willDisplay?(CollectionCellAdapter.Event(model: model, cell: cell, path: path))
+			events.willDisplay?(CollectionCellAdapter.Event(element: model, cell: cell, path: path))
 
 		case .endDisplay:
-			events.endDisplay?(CollectionCellAdapter.Event(model: model, cell: cell, path: path))
+			events.endDisplay?(CollectionCellAdapter.Event(element: model, cell: cell, path: path))
 
 		case .shouldShowEditMenu:
-			return events.shouldShowEditMenu?(CollectionCellAdapter.Event(model: model, cell: cell, path: path))
+			return events.shouldShowEditMenu?(CollectionCellAdapter.Event(element: model, cell: cell, path: path))
 
 		case .canPerformEditAction:
-			return events.canPerformEditAction?(CollectionCellAdapter.Event(model: model, cell: cell, path: path))
+			return events.canPerformEditAction?(CollectionCellAdapter.Event(element: model, cell: cell, path: path))
 
 		case .performEditAction:
-			return events.performEditAction?(CollectionCellAdapter.Event(model: model, cell: cell, path: path),
+			return events.performEditAction?(CollectionCellAdapter.Event(element: model, cell: cell, path: path),
 				params.first as! Selector,
 				params.last as Any)
 
 		case .canFocus:
-			return events.canFocus?(CollectionCellAdapter.Event(model: model, cell: cell, path: path))
+			return events.canFocus?(CollectionCellAdapter.Event(element: model, cell: cell, path: path))
 
 		case .itemSize:
-			return events.itemSize?(CollectionCellAdapter.Event(model: model, cell: cell, path: path))
+			return events.itemSize?(CollectionCellAdapter.Event(element: model, cell: cell, path: path))
 
 		case .prefetch:
 			events.prefetch?(params.first as! [Model], params.last as! [IndexPath])
@@ -91,7 +95,7 @@ public class CollectionCellAdapter<Model: ElementRepresentable, Cell: ReusableVi
 			events.cancelPrefetch?(params.first as! [Model], params.last as! [IndexPath])
 
 		case .shouldSpringLoad:
-			return events.shouldSpringLoad?(CollectionCellAdapter.Event(model: model, cell: cell, path: path))
+			return events.shouldSpringLoad?(CollectionCellAdapter.Event(element: model, cell: cell, path: path))
 			
 		}
 

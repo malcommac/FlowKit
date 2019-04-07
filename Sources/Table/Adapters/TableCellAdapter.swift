@@ -8,7 +8,7 @@
 
 import UIKit
 
-open class TableCellAdapter<Model: ElementRepresentable, Cell: ReusableViewProtocol>: TableCellAdapterProtocol {
+open class TableCellAdapter<Model: ElementRepresentable, Cell: ReusableCellViewProtocol>: TableCellAdapterProtocol {
 
 	// MARK: - TableAdapterProtocol Conformance -
 
@@ -51,7 +51,7 @@ open class TableCellAdapter<Model: ElementRepresentable, Cell: ReusableViewProto
 	// MARK: - Supporting Functions -
 
 	@discardableResult
-	public func dispatchEvent(_ kind: TableAdapterEventID, model: Any?, cell: ReusableViewProtocol?, path: IndexPath?, params: Any?...) -> Any? {
+	public func dispatchEvent(_ kind: TableAdapterEventID, model: Any?, cell: ReusableCellViewProtocol?, path: IndexPath?, params: Any?...) -> Any? {
 		switch kind {
 		case .dequeue:
 			events.dequeue?(TableCellAdapter.Event(item: model, cell: cell, indexPath: path))

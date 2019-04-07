@@ -15,7 +15,7 @@ public protocol CollectionHeaderFooterAdapterProtocol {
     func dequeueHeaderFooterForDirector(_ director: CollectionDirector, type: String, indexPath: IndexPath) -> UICollectionReusableView?
     
     @discardableResult
-    func dispatch(_ event: CollectionSectionEvents, isHeader: Bool, view: UIView?, section: Int) -> Any?
+	func dispatch(_ event: CollectionSectionEvents, isHeader: Bool, view: UIView?, section: CollectionSection?, index: Int) -> Any?
 }
 
 public extension CollectionHeaderFooterAdapterProtocol {
@@ -26,13 +26,17 @@ public extension CollectionHeaderFooterAdapterProtocol {
     
 }
 
-public class CollectionHeaderFooterAdapter<View: UITableViewHeaderFooterView>: CollectionHeaderFooterAdapterProtocol {
+public class CollectionHeaderFooterAdapter<View: UICollectionReusableView>: CollectionHeaderFooterAdapterProtocol {
     
     
     public var modelCellType: Any.Type = View.self
     
     /// Events you can subscribe for header/footer instances.
     public var events = EventsSubscriber()
+	
+	public init(_ configuration: ((CollectionHeaderFooterAdapter) -> ())? = nil) {
+		configuration?(self)
+	}
     
     public func dequeueHeaderFooterForDirector(_ director: CollectionDirector, type: String, indexPath: IndexPath) -> UICollectionReusableView? {
         let identifier = View.reusableViewIdentifier
@@ -63,22 +67,22 @@ public class CollectionHeaderFooterAdapter<View: UITableViewHeaderFooterView>: C
         return identifier
     }
     
-    public func dispatch(_ event: CollectionSectionEvents, isHeader: Bool, view: UIView?, section: Int) -> Any? {
+	public func dispatch(_ event: CollectionSectionEvents, isHeader: Bool, view: UIView?, section: CollectionSection?, index: Int) -> Any? {
         switch event {
         case .dequeue:
-            events.dequeue?(Event(isHeader: isHeader, view: view, at: section))
+			events.dequeue?(Event(isHeader: isHeader, view: view, section: section, index: index))
             
         case .referenceSize:
-            return events.referenceSize?(Event(isHeader: isHeader, view: view, at: section))
+            return events.referenceSize?(Event(isHeader: isHeader, view: view, section: section, index: index))
             
         case .didDisplay:
-            events.didDisplay?(Event(isHeader: isHeader, view: view, at: section))
+            events.didDisplay?(Event(isHeader: isHeader, view: view, section: section, index: index))
             
         case .endDisplay:
-            events.endDisplay?(Event(isHeader: isHeader, view: view, at: section))
+            events.endDisplay?(Event(isHeader: isHeader, view: view, section: section, index: index))
             
         case .willDisplay:
-            events.willDisplay?(Event(isHeader: isHeader, view: view, at: section))
+            events.willDisplay?(Event(isHeader: isHeader, view: view, section: section, index: index))
             
         }
         return nil

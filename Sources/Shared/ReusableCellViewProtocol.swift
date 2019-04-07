@@ -8,7 +8,7 @@
 
 import UIKit
 
-public protocol ReusableViewProtocol: class {
+public protocol ReusableCellViewProtocol: class {
 
 	static var reusableViewType: AnyObject.Type { get }
 	static var reusableViewClass: AnyClass { get }
@@ -25,7 +25,7 @@ public enum ReusableViewSource {
     case fromClass
 }
 
-public extension ReusableViewProtocol {
+public extension ReusableCellViewProtocol {
 
 	static var reusableViewType: AnyObject.Type {
 		return reusableViewClass.self
@@ -116,13 +116,17 @@ public enum ReusableViewRegistrationType {
 	}
 }
 
-extension UITableViewCell : ReusableViewProtocol {
+extension UITableViewCell : ReusableCellViewProtocol {
 	public static var reusableViewClass: AnyClass {
 		return self
 	}
 }
 
-extension UICollectionViewCell : ReusableViewProtocol {
+extension UICollectionViewCell : ReusableCellViewProtocol {
+
+}
+
+extension UICollectionReusableView: ReusableCellViewProtocol {
 	public static var reusableViewClass: AnyClass {
 		return self
 	}

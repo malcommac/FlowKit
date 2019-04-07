@@ -115,35 +115,35 @@ public extension FlowCollectionDirector {
 	}
 
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-		guard let value = self.sections[section].sectionInsets?() else {
+		guard let value = self.sections[section].sectionInsets else {
 			return self.sectionsInsets
 		}
 		return value
 	}
 
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-		guard let value = self.sections[section].minimumInterItemSpacing?() else {
+		guard let value = self.sections[section].minimumInterItemSpacing else {
 			return self.minimumInteritemSpacing
 		}
 		return value
 	}
 
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-		guard let value = self.sections[section].minimumLineSpacing?() else {
+		guard let value = self.sections[section].minimumLineSpacing else {
 			return self.minimumLineSpacing
 		}
 		return value
 	}
 
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        guard let size = sections[section].headerView?.dispatch(.referenceSize, isHeader: true, view: nil, section: section) as? CGSize else {
+		guard let size = sections[section].headerView?.dispatch(.referenceSize, isHeader: true, view: nil, section: sections[section], index: section) as? CGSize else {
 			return .zero
 		}
 		return size
 	}
 
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-        guard let size = sections[section].footerView?.dispatch(.referenceSize, isHeader: false, view: nil, section: section) as? CGSize else {
+		guard let size = sections[section].footerView?.dispatch(.referenceSize, isHeader: false, view: nil, section: sections[section], index: section) as? CGSize else {
 			return .zero
 		}
 		return size

@@ -123,6 +123,10 @@ public class TableSection: Equatable, Copying, DifferentiableSection {
 	}
 
 	// MARK: - Content Managegment -
+	
+	public func set(elements newElements: [ElementRepresentable]) {
+		allElements = newElements
+	}
 
 	/// Replace a model instance at specified index.
 	///

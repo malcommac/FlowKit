@@ -279,6 +279,24 @@ open class CollectionDirector: NSObject,
 	public func lastSection() -> CollectionSection? {
 		return sections.last
 	}
+	
+	// MARK: - Reload -
+	
+	public func reload(afterUpdate update: ((CollectionDirector) -> Void)? = nil,
+					   completion: (() -> Void)? = nil) {
+		guard let update = update else {
+			collection?.reloadData()
+			return
+		}
+		
+		let oldSections = self.sections.map { $0.copy() }
+		update(self)
+		let changeset = StagedChangeset(source: oldSections, target: sections)
+		
+		collection?.reload(using: changeset, setData: {
+			self.sections = $0
+		})
+	}
 
 	// MARK: - Private Methods -
 
@@ -436,13 +454,13 @@ public extension CollectionDirector {
 
 	func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
         let adapter = adapterForHeaderFooter(elementKind, indexPath: indexPath)
-        let _ = adapter?.dispatch(.willDisplay, isHeader: true, view: view, section: indexPath.section)
+		let _ = adapter?.dispatch(.willDisplay, isHeader: true, view: view, section: sections[indexPath.section], index: indexPath.section)
 		view.layer.zPosition = 0
 	}
 
 	func collectionView(_ collectionView: UICollectionView, didEndDisplayingSupplementaryView view: UICollectionReusableView, forElementOfKind elementKind: String, at indexPath: IndexPath) {
         let adapter = adapterForHeaderFooter(elementKind, indexPath: indexPath)
-        let _ = adapter?.dispatch(.endDisplay, isHeader: true, view: view, section: indexPath.section)
+        let _ = adapter?.dispatch(.endDisplay, isHeader: true, view: view, section: sections[indexPath.section], index: indexPath.section)
 	}
 
 	func headerFooterForSection(ofType type: String, at indexPath: IndexPath) -> CollectionHeaderFooterAdapterProtocol? {

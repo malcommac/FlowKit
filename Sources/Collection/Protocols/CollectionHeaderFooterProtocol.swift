@@ -18,12 +18,16 @@ public extension CollectionHeaderFooterAdapter {
 		public private(set) var view: View?
 
 		/// Index of the section.
-		public private(set) var section: Int
+		public private(set) var sectionIndex: Int
+		
+		public private(set) var section: CollectionSection?
+
 
 		/// Initialize a new context (private).
-		public init(isHeader: Bool, view: UIView?, at section: Int) {
+		public init(isHeader: Bool, view: UIView?, section: CollectionSection?, index: Int) {
 			self.isHeader = isHeader
 			self.view = view as? View
+			self.sectionIndex = index
 			self.section = section
 		}
 	}
