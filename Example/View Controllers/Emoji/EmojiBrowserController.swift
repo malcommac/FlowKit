@@ -80,8 +80,25 @@ public class EmojiBrowserController: UIViewController {
 	
 	@IBAction public func shuffleItemsInAllSections(_ sender: Any) {
 		director?.reload(afterUpdate: { dir in
-			let item = dir.firstSection()!.remove(at: 0)
-			dir.lastSection()!.add(element: item, at: 0)
+			
+			for idx in 1..<dir.sections.count {
+				let sourceSection = dir.sections[idx]
+				var destSection: CollectionSection?
+				repeat {
+					let nextSectionIdx = Int.random(in: 0..<dir.sections.count)
+					if nextSectionIdx != idx {
+						destSection = dir.sections[nextSectionIdx]
+						break
+					}
+				} while true
+				
+				let randomRangeFrom = Int.random(in: 0..<sourceSection.elements.count)
+				let randomRangeTo = Int.random(in: randomRangeFrom..<sourceSection.elements.count)
+				let subArray = Array(sourceSection.elements[randomRangeFrom..<randomRangeTo])
+				destSection?.add(elements: subArray, at: 0)
+
+				
+			}
 		}, completion: nil)
 	}
     
