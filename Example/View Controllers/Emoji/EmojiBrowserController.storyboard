@@ -112,25 +112,39 @@
                                             <constraint firstAttribute="width" constant="130" id="5rf-ze-ADz"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                        <state key="normal" title="Shuffle Emojii In Sect"/>
+                                        <state key="normal" title="Shuffle In Section"/>
                                         <connections>
                                             <action selector="shuffleAllEmojiInSection:" destination="HSy-bc-Ed3" eventType="touchUpInside" id="Eek-P4-aRM"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rAN-CJ-dOL">
-                                        <rect key="frame" x="148" y="10" width="93" height="30"/>
+                                        <rect key="frame" x="148" y="10" width="100" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="zg1-fq-CtH"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                        <state key="normal" title="Shuffle Section"/>
+                                        <state key="normal" title="Shuffle Sections"/>
                                         <connections>
                                             <action selector="shuffleSection:" destination="HSy-bc-Ed3" eventType="touchUpInside" id="QvD-pR-vs3"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GpL-zg-EJp">
+                                        <rect key="frame" x="270" y="10" width="100" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="AbA-Oe-GFM"/>
+                                            <constraint firstAttribute="width" constant="100" id="P4Z-Eq-h00"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                        <state key="normal" title="Shuffle Sections"/>
+                                        <connections>
+                                            <action selector="shuffleItemsInAllSections:" destination="HSy-bc-Ed3" eventType="touchUpInside" id="M32-XJ-vul"/>
                                         </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.97636479139328003" green="0.97653168439865112" blue="0.97635418176651001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
+                                    <constraint firstItem="GpL-zg-EJp" firstAttribute="centerY" secondItem="729-XT-Njn" secondAttribute="centerY" id="6or-P4-tqB"/>
+                                    <constraint firstAttribute="trailing" secondItem="GpL-zg-EJp" secondAttribute="trailing" constant="5" id="A1r-6r-lfE"/>
                                     <constraint firstItem="oxI-7L-Cp9" firstAttribute="centerY" secondItem="729-XT-Njn" secondAttribute="centerY" id="ABS-EZ-4NO"/>
                                     <constraint firstAttribute="height" constant="50" id="Zs9-tt-XJB"/>
                                     <constraint firstItem="rAN-CJ-dOL" firstAttribute="centerY" secondItem="729-XT-Njn" secondAttribute="centerY" id="ew9-UR-Rbb"/>

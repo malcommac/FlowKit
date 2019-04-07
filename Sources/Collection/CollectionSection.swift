@@ -32,7 +32,15 @@ open class CollectionSection: Equatable, Copying, DifferentiableSection {
 	// MARK: - Differentiable/Equatable Conformances -
 
 	public static func == (lhs: CollectionSection, rhs: CollectionSection) -> Bool {
-		return lhs.identifier == rhs.identifier
+		guard lhs.identifier == rhs.identifier, lhs.elements.count == rhs.elements.count else {
+			return false
+		}
+		for item in lhs.elements.enumerated() {
+			if item.element.isContentEqual(to: rhs.elements[item.offset]) == false {
+				return false
+			}
+		}
+		return true
 	}
 
 	public var differenceIdentifier: String {
@@ -40,16 +48,10 @@ open class CollectionSection: Equatable, Copying, DifferentiableSection {
 	}
 
 	public func isContentEqual(to other: Differentiable) -> Bool {
-		guard let other = other as? TableSection,
-			elements.count == other.elements.count else {
-				return false
+		guard let other = other as? CollectionSection else {
+			return false
 		}
-		for item in elements.enumerated() {
-			if item.element.isContentEqual(to: other.elements[item.offset]) == false {
-				return false
-			}
-		}
-		return true
+		return self.identifier == other.identifier
 	}
 
 	// MARK: - FlowLayout Properties -

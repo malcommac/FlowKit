@@ -24,7 +24,7 @@ public class DataSet {
             return $0
         })
 		
-		self.emoji = generateEmojiSections(1, elements: 3)
+		self.emoji = generateEmojiSections(3, elements: 10)
     }
 	
 	private func generateEmojiSections(_ sections: Int = 3, elements: Int? = nil) -> [[String]] {
@@ -32,9 +32,11 @@ public class DataSet {
 		let emoji = try! JSONDecoder().decode([String].self, from: data).shuffled()
 		
 		var sectionsList = [[String]]()
-		for _ in 0..<sections {
-			let elementsCount = (elements != nil ? elements! : Int.random(in: 3..<emoji.count))
-			let emojInSection = Array(emoji[0..<elementsCount]).shuffled()
+		let elementsCount = (elements != nil ? elements! : Int.random(in: 3..<emoji.count))
+		for idx in 0..<sections {
+			let fromIdx = idx * elementsCount
+			let toIdx = fromIdx + elementsCount
+			let emojInSection = Array(emoji[fromIdx..<toIdx]).shuffled()
 			sectionsList.append(emojInSection)
 		}
 		

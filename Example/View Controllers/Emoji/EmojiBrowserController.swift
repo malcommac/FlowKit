@@ -77,5 +77,12 @@ public class EmojiBrowserController: UIViewController {
             dir.set(sections: shuffledSections)
         }, completion: nil)
     }
+	
+	@IBAction public func shuffleItemsInAllSections(_ sender: Any) {
+		director?.reload(afterUpdate: { dir in
+			let item = dir.firstSection()!.remove(at: 0)
+			dir.lastSection()!.add(element: item, at: 0)
+		}, completion: nil)
+	}
     
 }
