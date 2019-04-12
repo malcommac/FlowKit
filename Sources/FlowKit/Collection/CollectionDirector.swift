@@ -397,9 +397,8 @@ public extension CollectionDirector {
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-		self.adapters.forEach {
-			($0.value as! AbstractAdapterProtocolFunctions).dispatch(.endDisplay, context: InternalContext.init(nil, indexPath, cell, collectionView))
-		}
+        let (_,adapter) = self.context(forItemAt: indexPath)
+        adapter.dispatch(.endDisplay, context: InternalContext.init(nil, indexPath, cell, collectionView))
 	}
 
 	
