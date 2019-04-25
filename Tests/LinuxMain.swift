@@ -1,6 +1,6 @@
 import XCTest
-@testable import FlowKit2Tests
+@testable import FlowKitTests
 
 XCTMain([
-    testCase(FlowKit2Tests.allTests),
+    testCase(FlowKitTests.allTests),
 ])
