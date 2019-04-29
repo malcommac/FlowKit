@@ -517,7 +517,16 @@ public extension CollectionDirector {
 		}
 		
 		let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: identifier, for: indexPath)
-	
+
+        switch kind {
+        case UICollectionView.elementKindSectionHeader:
+            _ = (section.header as? AbstractCollectionHeaderFooterItem)?.dispatch(.dequeue, type: .header, view: view, section: indexPath.section, collection: collectionView)
+        case UICollectionView.elementKindSectionFooter:
+            _ = (section.header as? AbstractCollectionHeaderFooterItem)?.dispatch(.dequeue, type: .footer, view: view, section: indexPath.section, collection: collectionView)
+        default:
+            break
+        }
+
 		return view
 	}
 	
