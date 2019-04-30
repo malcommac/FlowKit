@@ -1,6 +1,6 @@
 # FlowKit
 
-FlowKit offers a data-driven declarative approach for building fast & flexible list in iOS.
+FlowKit offers a data-driven declarative approach for building fast & flexible list (UICollectionView & UITableView) in iOS.
 
 |  	| Features Highlights 	|
 |---	|---------------------------------------------------------------------------------	|
@@ -10,14 +10,14 @@ FlowKit offers a data-driven declarative approach for building fast & flexible l
 | 🚀 	| Blazing fast diff algorithm based upon [DifferenceKit](https://github.com/ra1028/DifferenceKit) 	|
 | 🧬 	| It uses standard UIKit components at its core. No magic! 	|
 | 💎 	| (COMING SOON) Support for scrollable declarative/fully customizable stack view. 	|
-| 🐦 	| Fully made in Swift from Swift ❥ Lovers 	|
+| 🐦 	| Fully made in Swift from Swift ❥ lovers 	|
 
 FlowKit was created and maintaned by [Daniele Margutti](https://github.com/malcommac) - My home site [www.danielemargutti.com](https://www.danielemargutti.com).
 
 ## Requirements
 
 - Xcode 9.0+
-- iOS 8.0+
+- iOS 10.0+
 - Swift 5+
 
 ## Installation
@@ -26,7 +26,7 @@ The preferred installation method is with CocoaPods. Add the following to your P
 
 `pod 'FlowKit', '~> 1.0'`
 
-## What you can achieve
+## What you will get
 
 This is how to achieve a fully functional Contacts list with FlowKit. It's just a silly example but you can create complex layout with heterogeneous models easily!
 
@@ -40,11 +40,16 @@ let contactAdapter = TableCellAdapter<Contact,ContactCell> { dr in
 	// and properties. ctx (context) received from event is a type-safe
 	// object both for model and cell!
 	dr.events.dequeue = { ctx in
+		// element is type-safe, it's the Contact instance!
+		// cell is type-safe, it's the ContactCell instance
 		ctx.cell?.item = ctx.element
 	}
 	dr.events.didSelect = { ctx in
 		let vc = ContactDetailVC(people: ctx.element)
 		navigationController.pushViewController(vc, animated: true)
+	}
+	dr.events.shouldHighlight = { ctx in
+		return ctx.element.isBlacklisted == false
 	}
 }
 // Since now our table can show Contact istances using ContactCell
@@ -65,18 +70,20 @@ DifferenceKit is released under the Apache 2.0 License.
 
 ## Documentation
 
-- 1 - Introduction: Director & Adapters
-- 2 - Getting Started
-- 3 - How-To
-	- 3.1 - Create Model
-	- 3.2 - Create UI (cells)
-	- 3.3 - Manage Self-Sized Cells
-	- 3.4 - Loading Cells from Storyboard, Xib or class
-	- 3.5 - Custom Section's Header/Footer (String/View based)
-	- 3.6 - Reload data with automatic animations
-- 4 - APIs Doc: Manage `UITableView`
-- 5 - APIs Doc: Manage `UICollectionView`
-- 6 - Listen for `UIScrollViewDelegate` events
+- 1 - [Introduction: Director & Adapters](#1)
+- 2 - [Getting Started](#2)
+- 3 - [How-To](#3)
+	- [3.1 - Create Model](#3.1)
+	- [3.2 - Create UI (cells)](#3.2)
+	- [3.3 - Manage Self-Sized Cells](#3.3)
+	- [3.4 - Loading Cells from Storyboard, Xib or class](#3.4)
+	- [3.5 - Custom Section's Header/Footer (String/View based)](#3.5)
+	- [3.6 - Reload data with automatic animations](#3.6)
+- 4 - [APIs Doc: Manage `UITableView`](./Documentation/Manage_Tables.md)
+- 5 - [APIs Doc: Manage `UICollectionView`](./Documentation/Manage_Collections.md)
+- 6 - [Listen for `UIScrollViewDelegate` events](./Documentation/Manage_UIScrollViewDelegate_Events.md)
+
+<a name="1"/>
 
 ### Introduction: Director & Adapters
 
@@ -103,6 +110,8 @@ The entire framework is based to this concept: a model can be rendered by a sing
 An adapter is also the centrail point to receive events where a particular instance of a model is involved in. For example: when an user tap on a row for a model instance of type A, you will receive the event (along with the relevant info: index path, involved model instance etc.) inside the adapter which manage that model.
 
 You will register as much adapters as models you have.
+
+<a name="2"/>
 
 ### Getting Started
 
@@ -161,6 +170,17 @@ director?.add(elements: contacts)
 director?.remove(section: 1)
 ```
 
+There are a plenty list of methods to manage both sections and elements into section:
+
+```swift
+director?.firstSection?.removeAt(2) // remove an element
+director?.remove(section: 2) // remove section
+director?.section("mySection").move(swappingAt: 0, with:1) // swap elements
+director?.add(elements: [...], at: 5) // add new elements
+// and more...
+```
+Once you have changed your data models you can call `reload()` function to sync it with UI.
+
 The following code create (automatically) a new `TableSection` with the `contacts` elements inside. If you need you can create a new section manually:
 
 ```swift
@@ -177,7 +197,11 @@ At anytime you are able to add new sections, move or replace items just by using
 
 Refresh is made without animation, but FlowKit is also able to refresh the content of your data by picking the best animation based on a blazing fast diff algorithm which compare the data before/after your changes. More details in the next chapter. 
 
+<a name="3"/>
+
 ### How-To
+
+<a name="3.1"/>
 
 #### Create Model
 
@@ -208,6 +232,7 @@ public class Contact: ElementRepresentable {
 	}
 }
 ```
+
 ##### Protocol Conformance
 
 Protocol conformance is made by adding:
@@ -215,6 +240,7 @@ Protocol conformance is made by adding:
 - `differenceIdentifier` property: An model needs to be uniquely identified to tell if there have been any insertions or deletions (it's the perfect place for a `uuid` property)
 - `isContentEqual(to:)` function: is used to check if any properties have changed, this is for replacement changes. If your model data change between reloads FlowKit updates the cell's UI accordingly.
 
+<a name="3.2"/>
 
 #### Create UI (Cells)
 
@@ -223,6 +249,8 @@ The second step is to create an UI representation of your model. Typically is a 
 ##### Reuse Identifier
 
 Cells must have as `reuseIdentifier` value the same name of the class itself (so `ContactCell` has also `ContactCell` as identifier; you can also configure it if you need but it's a good practice).
+
+<a name="3.3"/>
 
 ##### Loading Cells from Storyboard, Xib or class
 
@@ -274,6 +302,8 @@ contactAdpt.events.dequeue = { ctx in
 
 `ctx` is an object which includes all the necessary informations of an event, including type-safe instance of the model.
 
+<a name="3.4"/>
+
 #### Manage Self-Sized Cells
 
 Self-sized cells are easy to be configured, both for tables and collection views.
@@ -285,6 +315,8 @@ Accepted values are:
 - `default`: you must provide the height (table) or size (collection) of the cell
 - `auto(estimated: CGFloat)`: uses autolayout to evaluate the height of the cell; for Collection Views you can also provide your own calculation by overriding `preferredLayoutAttributesFitting()` function in cell instance.
 - `explicit(CGFloat)`: provide a fixed height for all cell types (faster if you plan to have all cell sized same)
+
+<a name="3.5"/>
 
 #### Custom Section's Header/Footer
 
@@ -326,6 +358,8 @@ let newSection = CollectionSection(id: "Section \(idx)" ,elements: elements, hea
 ```
 
 in the `ctx` parameter you will receive the section which generates the event.
+
+<a name="3.6"/>
 
 #### Reload data with automatic animations
 
