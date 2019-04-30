@@ -43,10 +43,16 @@ The following code is a just a silly example of what you can achieve using FlowK
 	- Create Model
 	- Create UI (cells)
 	- Manage Self-Sized Cells
-- APIs Documentation
-	- Events & Properties `TableDirector`
-	- Events & Properties `CollectionDirector`
-	- Events & Properties `FlowCollectionDirector`
+	- Loading Cells from Storyboard, Xib or class
+- APIs Documentation: Table
+	- `TableDirector`
+	- `TableSection`
+	- `TableAdapter`
+- APIs Documentation: Collection
+	- `CollectionDirector`
+	- `FlowCollectionDirector`
+	- `CollectionSection`
+	- `CollectionAdapter`
 
 ### Main Concepts: Director & Adapters
 
@@ -171,6 +177,7 @@ public class Contact: ElementRepresentable {
 	}
 }
 ```
+##### Protocol Conformance
 
 Protocol conformance is made by adding:
 
@@ -180,6 +187,33 @@ Protocol conformance is made by adding:
 #### Create UI (Cells)
 
 The second step is to create an UI representation of your model. Typically is a subclass of `UITableViewCell` or `UICollectionViewCell`.
+
+##### Reuse Identifier
+
+Cells must have as `reuseIdentifier` value the same name of the class itself (so `ContactCell` has also `ContactCell` as identifier; you can also configure it if you need but it's a good practice).
+
+##### Loading Cells from Storyboard, Xib or class
+
+By default cells are loaded from managed table/collection instance storyboard but sometimes you may also need to load them from external files like xib.
+In this case you must override the static `reusableViewSource` property of your cell subclass and provide the best loading source between values of `ReusableViewSource`:
+
+- `fromStoryboard`: load from storyboard (the default value, use it when your cell is defined as prototype inside table's instance).
+- `fromXib(name: String?, bundle: Bundle?)`: load from a specific xib file in a bundle (if `name` is nil it uses the same filename of the cell class, ie `ContactCell.xib`; if `bundle` is `nil` it uses the same bundle of your cell class.
+- `fromClass`: loading from class.
+
+The following example load a cell from an external xib file named `MyContactCell.xib`:
+
+```swift
+public class ContactCell: UITableViewCell {
+    // ...
+    
+    public static var reusableViewSource: ReusableViewSource {
+        return .fromXib(name: "MyContactCell", bundle: nil)
+    }
+}
+```
+
+##### Best Practices
 
 You don't need to conform any special protocol but, in order to keep your code clean, our suggestion is to create a public property which accepts the model instance and set it on adapter's `dequeue` event.
 
@@ -217,6 +251,10 @@ FlowKit support easy cell sizing using autolayout. You can set the size of the c
 Accepted values are:
 
 - `default`: you must provide the height (table) or size (collection) of the cell
-- `auto(estinated: CGFloat)`: uses autolayout to evaluate the height of the cell; for Collection Views you can also provide your own calculation by overriding `preferredLayoutAttributesFitting()` function in cell instance.
+- `auto(estimated: CGFloat)`: uses autolayout to evaluate the height of the cell; for Collection Views you can also provide your own calculation by overriding `preferredLayoutAttributesFitting()` function in cell instance.
 - `explicit(CGFloat)`: provide a fixed height for all cell types (faster if you plan to have all cell sized same)
+
+### APIs Documentation
+
+#### `TableDirector`
 
