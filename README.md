@@ -35,7 +35,10 @@ The following code is a just a silly example of what you can achieve using FlowK
 
 ## Documentation
 
-- Main Concepts
+- Main Concepts: Director & Adapters
+	- Director
+	- Adapters
+- Getting Started
 
 ### Main Concepts: Director & Adapters
 
@@ -51,7 +54,7 @@ The following directors are available:
 - `TableDirector` used to manage `UITableView` instances
 - `CollectionDirector` and `FlowCollectionDirector` used to manage `UICollectionView` with custom or `UICollectionViewFlowLayout` layout.
 
-#### Adapter
+#### Adapters
 
 Once you have created a new director for a list it's time to declare what kind of models your list can accept. Each model is assigned to one UI element (`UITableViewCell` subclass for tables, `UICollectionViewCell` subclass for collections).
 
@@ -63,3 +66,64 @@ An adapter is also the centrail point to receive events where a particular insta
 
 You will register as much adapters as models you have.
 
+### Getting Started
+
+The following code shows how to create a director to manage an `UITableView` (a much similar approach is used for `UICollectionView`).
+
+```swift
+public class MyController: UIViewController {
+	@IBOutlet public var table: UITableView!
+	
+	private var director: TableDirector?
+	
+	func viewDidLoad() {
+		super.viewDidLoad()
+		director = TableDirector(table: table)
+// ...
+```
+
+It's now time to declare what kind of content should manage our director. For shake of simplicity we'll declare just an adapter but you can declare how much adapters you need (you can also create your own director with adapters inside and reuse them as you need. This is a neat approach to reuse and decupling data).
+
+```swift
+	func viewDidLoad() {
+		// ...
+		let contactAdpt = TableCellAdapter<Contact, ContactCell>()
+		contactAdpt.events.rowHeight = { ctx in
+       		return 60.0 // explicit row height
+        }
+        contactAdpt.events.dequeue = { ctx in
+           // this is the suggested behaviour; your cell should expose a
+           // property of the type of the model it can be render and you will
+           // assign it on dequeue. It's type safe too!!
+			ctx.cell?.contactItem = ctx.element
+		}
+		director?.registerCellAdapter(contactAdpt)
+```
+
+This is minimum setup to render objects of type `Contact` using cell of type `ContactCell` using our director.
+You can configure and attach tons of other properties and events (using the adapter's `.events` property); you will found a more detailed description of each property below but all `UITableView`/`UICollectionView`'s events and properties are supported.
+
+Now it's time to add some content to our table.
+As we said FlowKit uses a declarative approach to content: this mean you set the content of a list by using imperative functions like `add`,`remove`,`move` both for sections and elements.
+
+```swift
+	let contacts = [
+		Contact(first: "John", last: "Doe"),
+		Contact(first: "Adam", last: "Best"),
+		...
+	]
+	// ...
+    director?.add(elements: contacts)
+```
+
+The following code create (automatically) a new `TableSection` with the `contacts` elements inside. If you need you can create a new section manually:
+
+```swift
+	// Create a new section explicitly. Each section has an unique id you can assign
+	// explicitly or leave FlowKit create an UUID for you. It's used for diff features.
+	let newSection = TableSection(id: "mySectionId", elements: contacts, header: "\(contacts) Contacts", footer: nil)
+    director?.add(section: newSection)
+```
+
+In order to sync the UI just call the `director?.reload()`, et voilà!
+Just few lines of code to create a fully functional list!
