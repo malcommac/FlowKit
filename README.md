@@ -28,35 +28,57 @@ The preferred installation method is with CocoaPods. Add the following to your P
 
 ## What you can achieve
 
-The following code is a just a silly example of what you can achieve using FlowKit:
+This is how to achieve a fully functional Contacts list with FlowKit. It's just a silly example but you can create complex layout with heterogeneous models easily!
 
 ```swift
+director = TableDirector(table: table)
+
+// An adapter encapsulate the logic to render a model (Contact) with a specific ui (ContactCell).
+let contactAdapter = TableCellAdapter<Contact,ContactCell> { dr in
+
+	// Each adapter exposes all the standard methods of a list, events
+	// and properties. ctx (context) received from event is a type-safe
+	// object both for model and cell!
+	dr.events.dequeue = { ctx in
+		ctx.cell?.item = ctx.element
+	}
+	dr.events.didSelect = { ctx in
+		let vc = ContactDetailVC(people: ctx.element)
+		navigationController.pushViewController(vc, animated: true)
+	}
+}
+// Since now our table can show Contact istances using ContactCell
+// All events are received only in its adapter.
+director?.registerCellAdapter(singleItem) 
+
+/// Manage your content in a declarative way!
+let friendsSection = TableSection(elements: [john,mark,anita])
+director?.add(section: friendsSection)
+director?.reload()
 ```
+
+## License
+
+FlowKit is released under the Apache 2.0 License.
+DifferenceKit is released under the Apache 2.0 License.
+[License file](./LICENSE).
 
 ## Documentation
 
-- Main Concepts: Director & Adapters
-	- Director
-	- Adapters
-- Getting Started
-- How-To
-	- Create Model
-	- Create UI (cells)
-	- Manage Self-Sized Cells
-	- Loading Cells from Storyboard, Xib or class
-	- Custom Section's Header/Footer (String/View based)
-	- Reload data with automatic animations
-- APIs Documentation: Table
-	- `TableDirector`
-	- `TableSection`
-	- `TableAdapter`
-- APIs Documentation: Collection
-	- `CollectionDirector`
-	- `FlowCollectionDirector`
-	- `CollectionSection`
-	- `CollectionAdapter`
+- 1 - Introduction: Director & Adapters
+- 2 - Getting Started
+- 3 - How-To
+	- 3.1 - Create Model
+	- 3.2 - Create UI (cells)
+	- 3.3 - Manage Self-Sized Cells
+	- 3.4 - Loading Cells from Storyboard, Xib or class
+	- 3.5 - Custom Section's Header/Footer (String/View based)
+	- 3.6 - Reload data with automatic animations
+- 4 - APIs Doc: Manage `UITableView`
+- 5 - APIs Doc: Manage `UICollectionView`
+- 6 - Listen for `UIScrollViewDelegate` events
 
-### Main Concepts: Director & Adapters
+### Introduction: Director & Adapters
 
 All the FlowKit's SDK is based upon two concepts: the **director** and the **adapter**.
 
@@ -101,19 +123,24 @@ public class MyController: UIViewController {
 It's now time to declare what kind of content should manage our director. For shake of simplicity we'll declare just an adapter but you can declare how much adapters you need (you can also create your own director with adapters inside and reuse them as you need. This is a neat approach to reuse and decupling data).
 
 ```swift
-	func viewDidLoad() {
-		// ...
-		let contactAdpt = TableCellAdapter<Contact, ContactCell>()
-		contactAdpt.events.rowHeight = { ctx in
-       		return 60.0 // explicit row height
-        }
-        contactAdpt.events.dequeue = { ctx in
-           // this is the suggested behaviour; your cell should expose a
-           // property of the type of the model it can be render and you will
-           // assign it on dequeue. It's type safe too!!
-			ctx.cell?.contact = ctx.element
-		}
-		director?.registerCellAdapter(contactAdpt)
+func viewDidLoad() {
+	// ...
+	let contactAdpt = TableCellAdapter<Contact, ContactCell>()
+	
+	// You can attach events for adapter configuration.
+	// The following example show how to set the row height and dequeue
+	
+	contactAdpt.events.rowHeight = { ctx in
+		return 60.0 // explicit row height
+	}
+	
+	contactAdpt.events.dequeue = { ctx in
+		// this is the suggested behaviour; your cell should expose a
+		// property of the type of the model it can be render and you will
+		// assign it on dequeue. It's type safe too!!
+		ctx.cell?.contact = ctx.element
+	}
+	director?.registerCellAdapter(contactAdpt)
 ```
 
 This is minimum setup to render objects of type `Contact` using cell of type `ContactCell` using our director.
@@ -123,22 +150,24 @@ Now it's time to add some content to our table.
 As we said FlowKit uses a declarative approach to content: this mean you set the content of a list by using imperative functions like `add`,`remove`,`move` both for sections and elements.
 
 ```swift
-	let contacts = [
-		Contact(first: "John", last: "Doe"),
-		Contact(first: "Adam", last: "Best"),
-		...
-	]
-	// ...
-    director?.add(elements: contacts)
+// You can add/remove/move elements at anytime in a declarative way
+let contacts = [
+	Contact(first: "John", last: "Doe"),
+	Contact(first: "Adam", last: "Best"),
+	...
+]
+// ...
+director?.add(elements: contacts)
+director?.remove(section: 1)
 ```
 
 The following code create (automatically) a new `TableSection` with the `contacts` elements inside. If you need you can create a new section manually:
 
 ```swift
-	// Create a new section explicitly. Each section has an unique id you can assign
-	// explicitly or leave FlowKit create an UUID for you. It's used for diff features.
-	let newSection = TableSection(id: "mySectionId", elements: contacts, header: "\(contacts) Contacts", footer: nil)
-    director?.add(section: newSection)
+// Create a new section explicitly. Each section has an unique id you can assign
+// explicitly or leave FlowKit create an UUID for you. It's used for diff features.
+let newSection = TableSection(id: "mySectionId", elements: contacts, header: "\(contacts) Contacts", footer: nil)
+director?.add(section: newSection)
 ```
 
 In order to sync the UI just call the `director?.reload()`, et voilà!
@@ -349,23 +378,3 @@ Compared to IGListKit it allows:
 |IGListKit    |❌    |❌     |❌  |❌    |
 
 Moreover it way faster than [IGListKit](https://github.com/Instagram/IGListKit) and [RxDataSources](https://github.com/RxSwiftCommunity/RxDataSources) counterparts!
-
-### APIs Documentation
-
-#### `TableDirector`
-
-The following methods are used to manage table's section and elements:
-
-| Method 	| Description 	|
-|-------------------------------	|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|
-| `set(sections:)` 	| Replace all the sections of the table with another set. 	|
-| `add(section:at:)` 	| Append a new section at the specified index of the table. If `index` is `nil` or not specified section will be happend, at the bottom of the table. 	|
-| `add(sections:at:)` 	| Add multiple section starting at specified index., If `index` is `nil` or omitted all sections will be added at the end of tha table. 	|
-| `section(at:)` 	| Get the section at specified index. If `index` is invalid `nil` is returned. 	|
-| `elementAt()` 	| Return element at given index path. If index is invalid `nil` is returned. 	|
-| `remove(section:)` 	| Remove section at specified index. If `index` is invalid no action is made and function return `nil`. 	|
-| `remove(sectionsAt:)` 	| Remove sections at specified indexes. Sections are removed in reverse order to keep consistency; any invalid index is ignored. 	|
-| `removeAll(keepingCapacity:)` 	| Remove all sections from the table. Pass `true` to keep the existing capacity, of the array after removing its elements. The default value is `false`. 	|
-| `move(swappingAt:with:)` 	| Swap source section at specified index with another section. If indexes are not valid no operation is made. 	|
-| `move(from:to:)` 	| Move section at specified index to a destination index. If indexes are invalids no operation is made. 	|
-| `add(elements:inSection:)` 	| Append items at the bottom of section at specified index. If section index is not specified a new section is created and append, at the end of the table with all items. 	|
