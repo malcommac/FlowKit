@@ -44,6 +44,8 @@ The following code is a just a silly example of what you can achieve using FlowK
 	- Create UI (cells)
 	- Manage Self-Sized Cells
 	- Loading Cells from Storyboard, Xib or class
+	- Custom Section's Header/Footer (String/View based)
+	- Reload data with automatic animations
 - APIs Documentation: Table
 	- `TableDirector`
 	- `TableSection`
@@ -184,6 +186,7 @@ Protocol conformance is made by adding:
 - `differenceIdentifier` property: An model needs to be uniquely identified to tell if there have been any insertions or deletions (it's the perfect place for a `uuid` property)
 - `isContentEqual(to:)` function: is used to check if any properties have changed, this is for replacement changes. If your model data change between reloads FlowKit updates the cell's UI accordingly.
 
+
 #### Create UI (Cells)
 
 The second step is to create an UI representation of your model. Typically is a subclass of `UITableViewCell` or `UICollectionViewCell`.
@@ -254,7 +257,115 @@ Accepted values are:
 - `auto(estimated: CGFloat)`: uses autolayout to evaluate the height of the cell; for Collection Views you can also provide your own calculation by overriding `preferredLayoutAttributesFitting()` function in cell instance.
 - `explicit(CGFloat)`: provide a fixed height for all cell types (faster if you plan to have all cell sized same)
 
+#### Custom Section's Header/Footer
+
+Sections (both `TableSection` and `CollectionSection`) can be configured to have both simple (`String`) or complex (custom views) header/footer.
+Custom Header/Footer are configured in the same way you have made for cells, by using the concept of adapter.
+
+To create a **simple string-based header/footer** just pass its value into the init of section object:
+
+```swift
+let newTableSection = TableSection(id: "sectionId", elements: contacts, header: "\(contacts.count) Contacts", footer: nil)
+```
+
+The following code create a section with a string header which contains the number of contacts inside that section.
+
+To create a **view-based header/footer** you must register an adapter using:
+
+- `TableHeaderFooterAdapter<View>` class for table (where `View` is a subclass of `UITableViewHeaderFooterView `)
+- `CollectionHeaderFooterAdapter<View>` for collections (where `View` is a subclass of `UICollectionReusableView`)
+
+In this case adapter keeps only the reference of the header/footer view class type (no explicit models are involved).
+
+The following example create a view-based header for a collection and configure it with some custom data:
+
+```swift
+// In our case our custom view is a class EmojiHeaderView subclass of UICollectionReusableView 
+let emojiHeader = CollectionHeaderFooterAdapter<EmojiHeaderView> { ctx in
+	ctx.events.dequeue = { ctx in // register for view dequeue events to setup some data
+		ctx.view?.titleLabel.text = ctx.section?.identifier ?? "-"
+	}
+}
+// Register adapter for header/footer
+director?.registerHeaderFooterAdapter(headerAdapter)
+```
+
+Once you have registered your header/footer you can assign it to the init of any section:
+
+```swift
+let newSection = CollectionSection(id: "Section \(idx)" ,elements: elements, header: emojiHeader, footer: nil)
+```
+
+in the `ctx` parameter you will receive the section which generates the event.
+
+#### Reload data with automatic animations
+
+FlowKit supports automatic animated reload of the data between changes.
+With this feature you don't need to think about calling (even *in the correct order*) `reloadRows/deleteRows/removeRows` methods when changing your data source: just perform changes to your model in a callback and, at the end, FlowKit will generate the corrrect sequence of the animations.
+
+This because in `performBatchUpdates` of `UITableView` and `UICollectionView`, there are combinations of operations that cause crash when applied simultaneously.
+To solve this problem, [DifferenceKit](https://github.com/ra1028/DifferenceKit/blob/master/README.md) takes an approach of split the set of differences at the minimal stages that can be perform batch-updates with no crashes.
+
+The following example:
+
+```swift
+director?.reload(afterUpdate: { dir in
+   dir.firstSection()!.elements.shuffled() // shuffle some items
+   dir.firstSection()!.remove(at: 4) // remove item at index 4
+   // ... do any other stuff with sections or elements in section
+}, completion: nil)
+```
+At the end of the call FlowKit will compare data models before/after and produce a changeset of animations to execute,
+
+Diffing algorithm is based upon the DifferenceKit framework, an O(n) difference algorithm optimized for performance in Swift. It supports all operations for animated UI batch-updates including section reloads.
+
+Compared to IGListKit it allows:
+
+**Supported collection**
+
+|             |Linear|Sectioned|Duplicate Element/Section|
+|:------------|:----:|:-------:|:-----------------------:|
+|FlowKit|✅    |✅       |✅                        |
+|RxDataSources|❌    |✅       |❌                        |
+|IGListKit    |✅    |❌       |✅                        |
+
+`Linear` means 1-dimensional collection.  
+`Sectioned` means 2-dimensional collection.  
+
+**Supported element differences**
+
+|             |Delete|Insert|Move|Reload  |Move across sections|
+|:------------|:----:|:----:|:--:|:------:|:------------------:|
+| FlowKit |✅    |✅     |✅  |✅      |✅                   |
+|RxDataSources|✅    |✅     |✅  |✅      |✅                   |
+|IGListKit    |✅    |✅     |✅  |✅      |❌                   |
+
+**Supported section differences**
+
+|             |Delete|Insert|Move|Reload|
+|:------------|:----:|:----:|:--:|:----:|
+|FlowKit|✅    |✅     |✅  |✅    |
+|RxDataSources|✅    |✅     |✅  |❌    |
+|IGListKit    |❌    |❌     |❌  |❌    |
+
+Moreover it way faster than [IGListKit](https://github.com/Instagram/IGListKit) and [RxDataSources](https://github.com/RxSwiftCommunity/RxDataSources) counterparts!
+
 ### APIs Documentation
 
 #### `TableDirector`
 
+The following methods are used to manage table's section and elements:
+
+| Method 	| Description 	|
+|-------------------------------	|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|
+| `set(sections:)` 	| Replace all the sections of the table with another set. 	|
+| `add(section:at:)` 	| Append a new section at the specified index of the table. If `index` is `nil` or not specified section will be happend, at the bottom of the table. 	|
+| `add(sections:at:)` 	| Add multiple section starting at specified index., If `index` is `nil` or omitted all sections will be added at the end of tha table. 	|
+| `section(at:)` 	| Get the section at specified index. If `index` is invalid `nil` is returned. 	|
+| `elementAt()` 	| Return element at given index path. If index is invalid `nil` is returned. 	|
+| `remove(section:)` 	| Remove section at specified index. If `index` is invalid no action is made and function return `nil`. 	|
+| `remove(sectionsAt:)` 	| Remove sections at specified indexes. Sections are removed in reverse order to keep consistency; any invalid index is ignored. 	|
+| `removeAll(keepingCapacity:)` 	| Remove all sections from the table. Pass `true` to keep the existing capacity, of the array after removing its elements. The default value is `false`. 	|
+| `move(swappingAt:with:)` 	| Swap source section at specified index with another section. If indexes are not valid no operation is made. 	|
+| `move(from:to:)` 	| Move section at specified index to a destination index. If indexes are invalids no operation is made. 	|
+| `add(elements:inSection:)` 	| Append items at the bottom of section at specified index. If section index is not specified a new section is created and append, at the end of the table with all items. 	|
