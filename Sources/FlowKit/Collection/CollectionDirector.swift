@@ -531,7 +531,8 @@ public extension CollectionDirector {
 	}
 	
 	public func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
-		
+
+        guard indexPath.section < sections.count else { return }
 		switch elementKind {
         case UICollectionView.elementKindSectionHeader:
 			let header = (sections[indexPath.section].header as? AbstractCollectionHeaderFooterItem)
@@ -548,7 +549,8 @@ public extension CollectionDirector {
 	}
 	
 	public func collectionView(_ collectionView: UICollectionView, didEndDisplayingSupplementaryView view: UICollectionReusableView, forElementOfKind elementKind: String, at indexPath: IndexPath) {
-		
+
+        guard indexPath.section < sections.count else { return }
 		switch elementKind {
         case UICollectionView.elementKindSectionHeader:
 			let header = (sections[indexPath.section].header as? AbstractCollectionHeaderFooterItem)
