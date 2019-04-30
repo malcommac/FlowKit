@@ -39,6 +39,14 @@ The following code is a just a silly example of what you can achieve using FlowK
 	- Director
 	- Adapters
 - Getting Started
+- How-To
+	- Create Model
+	- Create UI (cells)
+	- Manage Self-Sized Cells
+- APIs Documentation
+	- Events & Properties `TableDirector`
+	- Events & Properties `CollectionDirector`
+	- Events & Properties `FlowCollectionDirector`
 
 ### Main Concepts: Director & Adapters
 
@@ -95,7 +103,7 @@ It's now time to declare what kind of content should manage our director. For sh
            // this is the suggested behaviour; your cell should expose a
            // property of the type of the model it can be render and you will
            // assign it on dequeue. It's type safe too!!
-			ctx.cell?.contactItem = ctx.element
+			ctx.cell?.contact = ctx.element
 		}
 		director?.registerCellAdapter(contactAdpt)
 ```
@@ -127,3 +135,88 @@ The following code create (automatically) a new `TableSection` with the `contact
 
 In order to sync the UI just call the `director?.reload()`, et voilà!
 Just few lines of code to create a fully functional list!
+
+At anytime you are able to add new sections, move or replace items just by using the methods inside the `TableSection`/`CollectionSection` or `TableDirector`/`CollectionDirector` instances then calling `reload()` to refresh the content.
+
+Refresh is made without animation, but FlowKit is also able to refresh the content of your data by picking the best animation based on a blazing fast diff algorithm which compare the data before/after your changes. More details in the next chapter. 
+
+### How-To
+
+#### Create Model
+
+Models can be struct or classes; the only requirement is the conformance to `ElementRepresentable` protocol.
+This protocol is used by the diff algorithm in order to evaluate the difference between changes applied to models and pick the best animation to show it.
+
+This means you don't need to make any `performBatches` update neither to call `reloadRows/removeRows/addRows` methods manually... all these boring and crash-proned stuff are made automatically by FlowKit.
+
+The following example show our `Contact` model declaration:
+
+```swift
+public class Contact: ElementRepresentable {
+    let firstName: String
+    let lastName: String
+
+	public var differenceIdentifier: String {
+		return "\(self.firstName)_\(self.lastName)"
+	}
+
+	public func isContentEqual(to other: Differentiable) -> Bool {
+		guard let other = other as? Contact else { return false }
+		return other == self
+	}
+
+	init(first: String, last: String) {
+		self.firstName = first
+		self.lastName = last
+	}
+}
+```
+
+Protocol conformance is made by adding:
+
+- `differenceIdentifier` property: An model needs to be uniquely identified to tell if there have been any insertions or deletions (it's the perfect place for a `uuid` property)
+- `isContentEqual(to:)` function: is used to check if any properties have changed, this is for replacement changes. If your model data change between reloads FlowKit updates the cell's UI accordingly.
+
+#### Create UI (Cells)
+
+The second step is to create an UI representation of your model. Typically is a subclass of `UITableViewCell` or `UICollectionViewCell`.
+
+You don't need to conform any special protocol but, in order to keep your code clean, our suggestion is to create a public property which accepts the model instance and set it on adapter's `dequeue` event.
+
+```swift
+public class ContactCell: UITableViewCell {
+
+	// Your outlets
+    @IBOutlet public var ...
+
+	// Define a property you set on adapter's dequeue event
+	public var contact: Contact? {
+		didSet {
+           // setup your UI according with instance data
+		}
+	}
+}
+```
+
+In your adapter:
+
+```swift
+contactAdpt.events.dequeue = { ctx in
+	ctx.cell?.contact = ctx.element
+}
+```
+
+`ctx` is an object which includes all the necessary informations of an event, including type-safe instance of the model.
+
+#### Manage Self-Sized Cells
+
+Self-sized cells are easy to be configured, both for tables and collection views.
+
+FlowKit support easy cell sizing using autolayout. You can set the size of the cell by adapter or collection/table based. For autolayout driven cell sizing set the `rowHeight` (for `TableDirector`) or `itemSize` (for `CollectionDirector`/`FlowCollectionDirector`) to the autoLayout value, then provide an estimated value.
+
+Accepted values are:
+
+- `default`: you must provide the height (table) or size (collection) of the cell
+- `auto(estinated: CGFloat)`: uses autolayout to evaluate the height of the cell; for Collection Views you can also provide your own calculation by overriding `preferredLayoutAttributesFitting()` function in cell instance.
+- `explicit(CGFloat)`: provide a fixed height for all cell types (faster if you plan to have all cell sized same)
+
