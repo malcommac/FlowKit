@@ -80,6 +80,9 @@ class CollectionExampleController: UIViewController {
 		header.on.referenceSize = { _ in
 			return CGSize(width: self.collectionView!.frame.width, height: 40)
 		}
+        header.on.dequeue = { ctx in
+            ctx.view?.label?.text = "Header Title"
+        }
 		let section = CollectionSection.init(list, headerView: header)
 		
 		self.director?.add(section)

@@ -517,12 +517,22 @@ public extension CollectionDirector {
 		}
 		
 		let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: identifier, for: indexPath)
-	
+
+        switch kind {
+        case UICollectionView.elementKindSectionHeader:
+            _ = (section.header as? AbstractCollectionHeaderFooterItem)?.dispatch(.dequeue, type: .header, view: view, section: indexPath.section, collection: collectionView)
+        case UICollectionView.elementKindSectionFooter:
+            _ = (section.header as? AbstractCollectionHeaderFooterItem)?.dispatch(.dequeue, type: .footer, view: view, section: indexPath.section, collection: collectionView)
+        default:
+            break
+        }
+
 		return view
 	}
 	
 	public func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
-		
+
+        guard indexPath.section < sections.count else { return }
 		switch elementKind {
         case UICollectionView.elementKindSectionHeader:
 			let header = (sections[indexPath.section].header as? AbstractCollectionHeaderFooterItem)
@@ -539,7 +549,8 @@ public extension CollectionDirector {
 	}
 	
 	public func collectionView(_ collectionView: UICollectionView, didEndDisplayingSupplementaryView view: UICollectionReusableView, forElementOfKind elementKind: String, at indexPath: IndexPath) {
-		
+
+        guard indexPath.section < sections.count else { return }
 		switch elementKind {
         case UICollectionView.elementKindSectionHeader:
 			let header = (sections[indexPath.section].header as? AbstractCollectionHeaderFooterItem)
